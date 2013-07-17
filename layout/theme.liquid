@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="canonical" href="{{ canonical_url }}" /> 
+{% if template == "index" %}
+    <title>{{ shop.name  }}</title>
+{% elsif template contains "404" %}
+    <title>Page Not Found</title>
+{% else %}
+    <title>{{ page_title | escape }} | {{ shop.name }}</title>
+{% endif %}  
+    
+{% assign maxmeta = 155 %} 
+{% if template contains 'product' %}
+    <meta name="description" content="{{ product.description | strip_html | strip_newlines | truncate: maxmeta | escape }}" />
+{% elsif template contains 'page' %}
+    <meta name="description" content="{{ page.content | strip_html | strip_newlines | truncate: maxmeta | escape }}" />
+{% elsif template == 'index' and shop.description != '' %}
+    <meta name="description" content="{{ shop.description | strip_html | strip_newlines | truncate: maxmeta | escape}}" />
+{% endif %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {{ 'normalize.css' | asset_url | stylesheet_tag }}
+    {{ 'main.css' | asset_url | stylesheet_tag }}
+    {{ 'modernizr-2.6.2.min.js' | asset_url | script_tag }}
+    {{ content_for_header }}
+</head>
+<body class="homepage-image">
+<!--[if lt IE 7]>
+    <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<![endif]-->
+<div class="container clearfix">
+    <header>
+        <nav class="main-nav">
+            <ul class="l-horizontal-nav">
+                {% for link in linklists.main-menu.links %}
+                    <li class="{{ link.title | handleize }}"><a href="{{ link.url }}" title="{{ link.title }}"{% if link.active %} class="active"{% endif %}">{{ link.title }}</a></li>
+                {% endfor %}
+            </ul>
+        </nav>
+    </header>
+    {{ content_for_layout }}
+</div>
+<footer>
+    <nav class="footer-nav">
+        <ul class="l-horizontal-nav">
+            {% for link in linklists.footer.links %}
+                <li><a href="{{ link.url }}" title="{{ link.title }}" class="{{ link.title | handleize }}{% if link.active %} active{% endif %}">{{ link.title }}</a></li>
+            {% endfor %}
+        </ul>
+    </nav>
+</footer>
+
+
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="{{ "jquery-1.10.2.min.js" | asset_url }}"><\/script>')</script>
+    {{ 'plugins.js' | asset_url | script_tag }}
+    {{ 'main.js' | asset_url | script_tag }}
+</body>
+</html>
