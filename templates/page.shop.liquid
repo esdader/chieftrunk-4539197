@@ -1,0 +1,39 @@
+<nav class="shop-nav clearfix">
+    <ul class="l-horizontal-nav">
+        {% for link in linklists.shop-navigation.links %}
+            <li><a href="#{{ link.title | handleize }}" title="{{ link.title }}">{{ link.title }}</a></li>
+        {% endfor %}
+    </ul>
+</nav>
+<div class="container clearfix shop-landing">
+	{% for link in $linklists.shop-navigation.links %}
+		<section id="{{ link.title | handleize }}" class="clearfix shop-section">
+			<header class="shop-section-header">
+				<h1>{{ link.title | escape }}</h1>
+			</header>
+			<ul class="l-horizontal-nav">
+				<li>
+					<article>
+						<a href="#">
+							<img src="http://placehold.it/185x185" alt="product image">
+						</a>
+					</article>
+				</li>
+				<li>
+					<article>
+						<a href="#">
+							<img src="http://placehold.it/185x185" alt="product image">
+						</a>
+					</article>
+				</li>
+				<li>
+					<article>
+						<a href="#">
+							<img src="http://placehold.it/185x185" alt="product image">
+						</a>
+					</article>
+				</li>
+			</ul>
+		</section>
+	{% endfor %}
+</div>
