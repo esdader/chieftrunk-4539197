@@ -1,6 +1,15 @@
 /* @import must be at top of file, otherwise CSS will not work */
 @import url("//hello.myfonts.net/count/279300");
 
+/* webfonts */
+@font-face {font-family: 'NewsGothicBT-Bold';src: url('279300_0_0.eot');src: url('279300_0_0.eot?#iefix') format('embedded-opentype'),url('279300_0_0.woff') format('woff'),url('279300_0_0.ttf') format('truetype');}
+ 
+  
+@font-face {font-family: 'ClarendonBT-Light';src: url('279300_1_0.eot');src: url('279300_1_0.eot?#iefix') format('embedded-opentype'),url('279300_1_0.woff') format('woff'),url('279300_1_0.ttf') format('truetype');}
+ 
+  
+@font-face {font-family: 'CenturyStd-Book';src: url('279300_2_0.eot');src: url('279300_2_0.eot?#iefix') format('embedded-opentype'),url('279300_2_0.woff') format('woff'),url('279300_2_0.ttf') format('truetype');}
+
 /*
  * HTML5 Boilerplate
  *
@@ -24,6 +33,8 @@ textarea {
 body {
     font-size: 1em;
     line-height: 1.4;
+    font-family: "CenturyStd-Book", serif;
+    color: #464646;
 }
 
 /*
@@ -103,16 +114,12 @@ textarea {
 /* base
  * -------------------------------------------------------------------------- */
 
+a {
+    color: #464646;
+    text-decoration: none;
+}
 
 
-/* webfonts */
-@font-face {font-family: 'NewsGothicBT-Bold';src: url('279300_0_0.eot');src: url('279300_0_0.eot?#iefix') format('embedded-opentype'),url('279300_0_0.woff') format('woff'),url('279300_0_0.ttf') format('truetype');}
- 
-  
-@font-face {font-family: 'ClarendonBT-Light';src: url('279300_1_0.eot');src: url('279300_1_0.eot?#iefix') format('embedded-opentype'),url('279300_1_0.woff') format('woff'),url('279300_1_0.ttf') format('truetype');}
- 
-  
-@font-face {font-family: 'CenturyStd-Book';src: url('279300_2_0.eot');src: url('279300_2_0.eot?#iefix') format('embedded-opentype'),url('279300_2_0.woff') format('woff'),url('279300_2_0.ttf') format('truetype');}
 
 
 /* layout
@@ -123,20 +130,52 @@ textarea {
     -moz-box-sizing: border-box;    
     box-sizing: border-box;   
 }
-.container {
-    width: 944px;
+.main-header {
+    position: relative;
+    width: 59em;
     margin: 0 auto;
-    min-height: 44em;
+}
+.container {
+    position: relative;
+    width: 59em;
+    margin: 0 auto;
 }
 
-header {
-    width: 100%;
-}
 
-footer {
+.main-footer {
     width: 100%;
-    height: 28px;
+    height: 1.75em;
     background-color: #474747;
+    text-align: center;
+}
+
+.shop-landing {
+    width: 100%;
+    padding-bottom: 28px;
+    text-align: center;
+    background: #fff;
+}
+
+.shop-nav {
+    position: relative;
+    width: 59em;
+    margin: 2.5em auto 0 auto;
+    border-top: 1px solid #474747;
+    border-bottom: 1px solid #474747;
+    text-align: center;
+}
+
+.shop-section {
+    text-align: center;
+}
+.shop-section-header {
+    position: relative;
+    width: 94.4em;
+    margin: 0 auto;
+    border-top: 1px solid #474747;
+    border-bottom: 1px solid #474747;
+    font-size: .625em;
+    line-height: 2;
     text-align: center;
 }
 
@@ -144,80 +183,159 @@ footer {
     float: left;
 }
 
+.l-product-page {
+    margin-top: 12.1875em;
+}
+
+.shop-section article {
+    margin: 10px 15px;
+}
+
+.l-product-col {
+    width: 15em;
+    float: left;
+    position: relative;
+    display: inline-block;
+    border-top: 1px solid #474747;
+    text-align: center;
+}
+
+.product-images {
+    width: 9.375em;
+    float: right;
+    padding: 3px;
+    text-align: left;
+    border-bottom: 1px solid #474747;
+
+}
+
+.product-images img {
+    padding: 5px;   
+}
+
+.product-description {
+    width: 16.5em;
+    margin: 0 0 1.6em -1em;
+    line-height: 1.5;
+}
 
 /* mods
  * -------------------------------------------------------------------------- */
 
+
+/* full body image */
+.full-body-img {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-position: center center;
+    background-attachment: scroll;
+    background-repeat: no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+/* full body background images for different sections */
+
+/* home */
+.home-bg-img {
+    background-image: url({{ 'temp-homepage-bg.jpg' | asset_url }});
+}
+
+/* shop */
+.shop-bg-img {
+    background-image: url({{ 'temp_shop_landing_bg.jpg' | asset_url }});
+}
+
+/* individual product */
+.product-bg-img {
+    background-image: url({{ 'temp_product_bg.jpg' | asset_url }});
+}
+
+
 /* main nav */
 .main-nav ul {
-    margin: 40px 0 0 0;
+    margin: 2.5em 0 0 0;
     padding:0;
 }
 
 .main-nav li {
-    width: 94px;
-    height: 20px;
+    width: 5.875em;
+    height: 1.25em;
     border-right: 1px solid #464646;
 }
 .main-nav li:first-child {
-    width: 94px;
+    width: 5.875em;
     border-left: 1px solid #464646;
 }
-
-.main-nav .chief-trunk {
-    width: 377px;
-}
-.main-nav .chief-trunk a {
-    width: 377px;
-}
-
-.main-nav li:hover {
-    
-}
-
 .main-nav a {
-    width: 94px;
-    height: 20px;
+    width: 7.8333333333em;
+    height: 1.6666666666em;
     display: block;
     margin-top: 1px;
-    font-size: 10px;
-    line-height: 20px;
+    font-size: .75em;
+    line-height: 1.66666666;
     color: #464646;
     font-family: 'NewsGothicBT-Bold';
-    font-weight: bold;
-    letter-spacing: 1px;
+    font-weight: normal;
+    letter-spacing: 2px;
     text-align: center;
     text-decoration: none;
     text-transform: uppercase;
     
 }
+.main-nav li:first-child a {
+    width: 7.75em;
+}
+
+.main-nav .chief-trunk {
+    width: 23.5625em;
+}
+.main-nav .chief-trunk a {
+    margin-top: 0;
+    width: 31.416666666em;
+    background: url({{ 'chief_trunk_logo_dark.png' | asset_url }}) no-repeat center center;
+}
+.alt-color .main-nav .chief-trunk a {
+    background-image: url({{ 'chief_trunk_logo.png' | asset_url }});
+}
+
+.main-nav .active a,
 .main-nav a:hover {
     margin-top: 0;
     border-top: 1px solid #464646;
     border-bottom: 1px solid #464646;
 }
 
-.main-nav li:first-child a {
-    
-}
-
-.main-nav a:hover {
+.alt-color .main-nav li,
+.alt-color .main-nav li:first-child {
+    border-color: #fff;
 }
 
 .alt-color .main-nav a {
     color: #fff;
 }
-
-.alt-color .main-nav li:first-child a {
+.alt-color .main-nav .active a,
+.alt-color .main-nav a:hover {
+    border-color: #fff;
 }
 
-.homepage-image {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: url(temp-homepage-bg.jpg) no-repeat center top;
+.chief-trunk a:hover,
+.chief-trunk.active a {
+    border-top: none;
+    border-bottom: none;
+}
+
+/* main footer */
+.main-footer {
+    position: fixed;
+    left:0;
+    bottom: 0;
+    z-index: 999;
 }
 
 
@@ -230,7 +348,7 @@ footer {
 }
 
 .footer-nav li {
-    padding-left: 30px;
+    padding-left: 1.875em;
 }
 .footer-nav li:first-child {
     padding-left: 0;
@@ -239,20 +357,174 @@ footer {
 .footer-nav a {
     color: #fff;
     font-family: 'NewsGothicBT-Bold';
-    font-size: 10px;
-    line-height: 20px;
-    letter-spacing: 1px;
+    font-weight: normal;
+    font-size: .625em;
+    line-height: 2;
+    letter-spacing: 3px;
     text-transform: uppercase;
     text-decoration: none;
 }
 
-.footer-nav a:hoover {
+.footer-nav a:hover {
+    border-bottom: 2px solid #fff;
+}
+
+
+/* shop nav */
+.shop-nav ul {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0;
+    padding: 0;
+    font-size: .625em;
+    line-height: 1;
+}
+
+.shop-nav li {
+    padding-left: 3em;
+    font-size: 1em;
+    line-height: 1;
+}
+.shop-nav li:first-child {
+    padding-left: 0;
+}
+
+.shop-nav a {
+    color: #474747;
+    font-weight: normal;
+    font-size: 1em;
+    line-height: 2;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+.shop-nav a:hover {
+    border-bottom: 2px solid #474747;
+}
+
+/* shop landing container */
+
+.shop-landing {
+    margin-top: 100%;
+    padding-top: 3em;
+}
+
+/* shop section heading */
+
+.shop-section-header h1 {
+    margin: 0;
+    padding: .2em 0 0;
+    color: #474747;
+    font-weight: normal;
+    font-size: 1em;
+    line-height: 2;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+.shop-section ul {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    list-style: none;
 
 }
 
-.alt-color .footer-nav a {
+/* product page */
+
+.main-product-image {
+    position: absolute;
+    width: 604px;
+    left: 50%;
+    bottom: 36px;
+    margin-left: -302px;
+}
+
+.main-product-image img {
+    width: 100%;
+    height: auto;
+}
+
+.product-info {
+    font-size: .625em;
+    line-height: 1.4;
+}
+
+.product-name {
+    margin: 2em 0 0;
+    font-size: 1.2em;
+    line-height: 1.4;
+    font-weight: normal;
+    text-transform: capitalize;
+    letter-spacing: 2px;
+}
+
+.price {
+    margin-top: 1.1em 0;
+    font-size: 1em;
+    letter-spacing: 3px;
+}
+
+/* prev and next btns */
+.product-link {
+    position: absolute;
+    bottom: -4.75em;
+    letter-spacing: 2px;
+    width: 12.5em;
+    text-align: center;
+    left: 0;
+}
+
+.product-link.prev {
+    font-size: 1.2em;
+}
+
+.product-link.next {
+    font-size: .75em;
+}
+
+.shop-link {
+    font-size: 1.1em;
+    letter-spacing: 3px;
+}
+
+.add-to-cart-btn {
+    padding: .5em 0;
+    margin-top: 3em;
+    border-top: 1px solid #474747;
+    border-bottom: 1px solid #474747;
+    letter-spacing: 2px;
+    text-transform: uppercase;
 
 }
+
+
+/*
+
+    Supersized - Fullscreen Slideshow jQuery Plugin
+    Version : Core 3.2.1
+    
+    Site    : www.buildinternet.com/project/supersized
+    Author  : Sam Dunn
+    Company : One Mighty Roar (www.onemightyroar.com)
+    License : MIT License / GPL License
+    
+*/
+
+/* ==========================================================================
+   Supersized classes
+   ========================================================================== */
+body {  height:100%; }
+    img{ border:none; }
+    
+    #supersized-loader { position:absolute; top:50%; left:50%; z-index:0; width:60px; height:60px; margin:-30px 0 0 -30px; text-indent:-999em; background:url(progress.gif) no-repeat center center;}
+    
+    #supersized { position:fixed; left:0; top:0; overflow:hidden; z-index:-999; height:100%; width:100%; padding: 0; margin: 0;}
+        #supersized img{ width:auto; height:auto; position:relative; outline:none; border:none; }
+        
+        #supersized a { z-index:-30; position:fixed; overflow:hidden; top:0; left:0; width:100%; height:100%; background:#111; display:block; }
+            #supersized a.image-loading { background:#111 url(progress.gif) no-repeat center center; width:100%; height:100%; }
 
 
 

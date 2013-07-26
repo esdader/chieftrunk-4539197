@@ -30,23 +30,35 @@
     {{ 'modernizr-2.6.2.min.js' | asset_url | script_tag }}
     {{ content_for_header }}
 </head>
-<body class="homepage-image">
-<!--[if lt IE 7]>
-    <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-<![endif]-->
-<div class="container clearfix testing">
-    <header>
-        <nav class="main-nav">
-            <ul class="l-horizontal-nav">
-                {% for link in linklists.main-menu.links %}
-                    <li class="{{ link.title | handleize }}"><a href="{{ link.url }}" title="{{ link.title }}"{% if link.active %} class="active"{% endif %}">{{ link.title }}</a></li>
-                {% endfor %}
-            </ul>
-        </nav>
-    </header>
-    {{ content_for_layout }}
-</div>
-<footer>
+<body{% if template == 'index' %} class="alt-color"{% endif %}>
+{% if template == 'index' or template contains 'shop' or template contains 'product' %}
+    {% if template == 'index' %}
+        {% assign image_class = 'home' %}
+    {% elsif  template contains 'shop' %}
+        {% assign image_class = 'shop' %}
+    {% elsif  template contains 'product' %}
+        {% assign image_class = 'product' %}
+    {% endif %}
+    <div class="full-body-img {{ image_class }}-bg-img"> </div>
+{% endif %}
+<header class="main-header">
+    <nav class="main-nav clearfix">
+        <ul class="l-horizontal-nav">
+            {% for link in linklists.main-menu.links %}
+                {% assign link_title = link.title | handleize %}
+                <li class="{{ link_title }}{% if link.active %} active{% endif %}">
+                    <a href="{{ link.url }}" title="{{ link.title }}"{% if link_title == 'chief-trunk' %} class="ir"{% endif %}>
+                        {{ link.title }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </nav>
+</header>
+
+{{ content_for_layout }}
+
+<footer class="main-footer">
     <nav class="footer-nav">
         <ul class="l-horizontal-nav">
             {% for link in linklists.footer.links %}
@@ -62,5 +74,17 @@
     <script>window.jQuery || document.write('<script src="{{ "jquery-1.10.2.min.js" | asset_url }}"><\/script>')</script>
     {{ 'plugins.js' | asset_url | script_tag }}
     {{ 'main.js' | asset_url | script_tag }}
+
+    {% if template == 'index-not-now' %}
+        {{ 'supersized.3.2.7.min.js' | asset_url | script_tag }}        
+        <script>
+            jQuery(function($){
+                
+                $.supersized({
+                    slides  :   [ {image : "{{ 'temp-homepage-bg.jpg' | asset_url }}"} ]
+                });
+            });
+        </script>
+    {% endif %}
 </body>
 </html>

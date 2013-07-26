@@ -1,118 +1,29 @@
-<div id="col-main">
-
-  <div id="product" class="clearfix content">
-
-    <div id="product-information">
-
-      <p id="add-to-cart-msg"></p>
-
-      <div id="product-header" class="diagonal-divider clearfix">
-
-        <div id="product-header-title">
-          <h1 id="product-title">{{ product.title }}</h1>
-          {% if settings.show_vendor %}<h2 id="product-vendor">{{ product.vendor | link_to_vendor }}</h2>{% endif %}
+<div class="main-product-holder">
+      <img src="{{ "City_1_V1.png" | asset_url | }}" alt="">
+    </div> 
+<div class="container l-product-page clearfix">
+    <article>
+      <section class="l-product-col product-info">
+        <header>
+          <h1 class="product-name">Product Name</h1>
+        </header>
+        <p class="price">$1,000.00</p>
+        <div class="product-description">
+          <p>Ro veriorrovid quis eiundandit, untisit, nis aspievndel eosanderis sint in porem estotat as cus est eri nonseribus atem sum idebita deliciis ullis es volupta dolu.</p> </div> <a href="/page.shop" class="shop-link">Back to Shop</a>
+        <div class="add-to-cart-btn">
+          <a href="#">Add to Cart</a>
         </div>
-
-        {% if product.available %}
-        
-          {% assign hide_default_title = false %}
-          {% if product.variants.size == 1 and product.variants.first.title contains 'Default' %}
-            {% assign hide_default_title = true %}
-          {% endif %} 
-          
-          <form action="/cart/add" method="post" class="variants" id="product-actions" enctype="multipart/form-data">
-            <div class="options clearfix">  
-
-              <div class="variants-wrapper clearfix {% if hide_default_title %}visuallyhidden{% endif %}"> 
-                <select id="product-select" name="id">
-                  {% for variant in product.variants %}
-                  <option value="{{ variant.id }}">{{ variant.title | escape }} - {{ variant.price | money }}</option>
-                  {% endfor %}
-                </select>
-              </div>            
-                
-              <div id="purchase">
-                <p class="price"></p>                                 
-                <input class="btn" type="submit" name="add" id="add-to-cart" value="Add to Cart" />
-              </div>
-
-            </div><!-- /.options -->
-          </form>
-
-        {% else %}
-          <div id="product-actions" class="sold-out">
-            <div id="purchase">
-              <p class="price">Sold out.</p>      
-            </div>
-          </div>      
-        {% endif %}
-      </div><!-- /#product-header -->
-
-      
-      <div class="description">
-        {{ product.description }}
-        {% include 'social-sharing' %} 
-      </div>            
-
-    </div><!-- /#product-information -->
-    
-    <div id="product-gallery"{% if settings.main_image_display == 'Zoom-in' and product.images.size > 0 %} class="zoom-in"{% endif %}>
-
-      <div id="active-wrapper">
-        {% if settings.main_image_display == 'Lightbox' %}
-        <a href="{{ product.featured_image | product_img_url: 'original' }}" title="{{ product.featured_image.alt | escape }}" rel="fancybox">
-        {% endif %}     
-          <img style="max-width:303px" src="{{ product.featured_image | product_img_url: 'large' }}" alt="{{ product.title | escape }}" id="large-thumb" />
-        {% if settings.main_image_display == 'Lightbox' %}
-        </a>
-        {% endif %}
-      </div>
-
-      <ul id="thumbs" {% if product.images.size == 1 %}class="visuallyhidden"{% endif %}>
-        {% for image in product.images %}
-        {% unless forloop.first and settings.main_image_display == 'Lightbox' %}
-        <li>
-          <a{% if settings.main_image_display == 'Lightbox' %} rel="fancybox"{% endif %} class="gallery" href="{{ image | product_img_url: 'original' }}" title="{{ image.alt | escape }}">
-            <img src="{{ image | product_img_url: 'thumb' }}" alt="{{ image.alt | escape }}" />
-          </a>
-        </li>
-        {% endunless %}
-        {% endfor %}
-      </ul>
-      
-    </div><!-- /#product-gallery -->
-
-  </div><!-- /#product -->
-
-  {% if settings.productspg_related_products %}
-  
-    {% include 'related-products' %}
-
-  {% elsif settings.productspg_featured_collection != blank %}
-
-    {% assign collection = collections[settings.productspg_featured_collection] %}
-    {% assign products   = collection.products %}
-
-    {% if products.size > 0 %}
-      <section class="diagonal-divider clearfix">
-
-        {% unless settings.productspg_featured_collection_heading == blank %}
-        <header class="section-details clearfix">
-          <h1 class="section-title">{{ settings.productspg_featured_collection_heading | link_to: collection.url }}</h1>
-        </header> 
-        {% endunless %}
-
-        <ul class="product-grid" id="secondary-grid">
-          {% for product in products limit: settings.productspg_featured_limit %}
-          <li class="{% cycle '', '', '', 'last-in-row' %}">
-            {% include 'product-grid-item' %}
-          </li>
-          {% endfor %}
-        </ul>      
-
+        <a href="#" class="product-link prev">&lt; Previous Product</a>
       </section>
-    {% endif %}
-
-  {% endif %}
-
-</div><!-- /#col-main -->
+      <secion class="l-product-col product-images">
+        <a href="#"><img src="http://placehold.it/60x60" alt=""></a>
+        <a href="#"><img src="http://placehold.it/60x60" alt=""></a>
+        <a href="#"><img src="http://placehold.it/60x60" alt=""></a>
+        <a href="#"><img src="http://placehold.it/60x60" alt=""></a>
+        <a href="#"><img src="http://placehold.it/60x60" alt=""></a>
+        <a href="#"><img src="http://placehold.it/60x60" alt=""></a>
+        <a href="#" class="product-link next">Next Product &gt;</a>
+      </section>  
+    </article>
+    
+</div>
