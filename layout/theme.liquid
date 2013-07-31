@@ -43,6 +43,8 @@
 {% endif %}
 <header class="main-header">
     <nav class="main-nav clearfix">
+        <a href="{{ shop.url }}" class="main-logo logo-dark"><img src="{{ 'chief_trunk_logo_dark.png' | asset_url }}" alt="Chief Trunk logo"></a>
+        <a href="{{ shop.url }}" class="main-logo logo-light"><img src="{{ 'chief_trunk_logo.png' | asset_url }}" alt="Chief Trunk logo"></a>
         <ul class="l-horizontal-nav">
             {% for link in linklists.main-menu.links %}
                 {% assign link_title = link.title | handleize %}

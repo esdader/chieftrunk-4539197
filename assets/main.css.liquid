@@ -256,6 +256,32 @@ a {
     background-image: url({{ 'temp_product_bg.jpg' | asset_url }});
 }
 
+/* main logo */
+
+.main-logo {
+    position: absolute;
+    left: 50%;
+    top: 40px;
+    margin-left: -142px;
+
+}
+
+.alt-color .logo-dark {
+    display: none;
+}
+
+.logo-light {
+    position: absolute;
+    display: none;
+}
+
+.alt-color .logo-light {
+    display: block;
+}
+
+
+
+
 
 /* main nav */
 .main-nav ul {
@@ -337,6 +363,12 @@ a {
 .chief-trunk.active a {
     border-top: none;
     border-bottom: none;
+}
+
+/* main nav logo clenaup */
+.main-nav .main-logo:hover {
+    border: none;
+    margin-top: 1px;
 }
 
 /* main footer */
