@@ -667,8 +667,19 @@ body {  height:100%; }
    Modify as content requires.
    ========================================================================== */
 
-@media only screen and (min-width: 35.3125em) and (max-width: 59em) {
+@media only screen and (max-width: 59em) {
+    .container {
+        width: 100%;
+    }
+    .main-header {
+        width: 100%;
+    }
+    .main-nav {
+        width: 100%;
+        text-align: center;
+    }
     .main-nav ul {
+        display: inline-block;
         margin: 5.625em 0 0 0;
     }
 
@@ -676,8 +687,14 @@ body {  height:100%; }
         width: 5.875em;
         margin-right: 0;
     }
+    .journal {
+        border-left: none;
+    }
 
 
+}
+
+@media only screen and (max-width: 35.3125em) {
 
 }
 
