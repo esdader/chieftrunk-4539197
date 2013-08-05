@@ -132,8 +132,9 @@ a {
 }
 .main-header {
     position: relative;
-    width: 59em;
+    width: 100%;
     margin: 0 auto;
+    text-align: center;
 }
 .container {
     position: relative;
@@ -158,7 +159,7 @@ a {
 
 .shop-nav {
     position: relative;
-    width: 59em;
+    max-width: 59em;
     margin: 2.5em auto 0 auto;
     border-top: 1px solid #474747;
     border-bottom: 1px solid #474747;
@@ -179,8 +180,16 @@ a {
     text-align: center;
 }
 
+.l-horizontal-nav {
+    display: inline-block;
+}
 .l-horizontal-nav li {
     float: left;
+}
+
+.l-mini-nav-container {
+    position: relative;
+    margin: 5.625em 0 0 0;
 }
 
 .l-product-page {
@@ -280,28 +289,25 @@ a {
 }
 
 
-
-
-
 /* main nav */
-.main-nav ul {
+.large-nav {
     margin: 2.5em 0 0 0;
     padding:0;
 }
 
-.main-nav li {
+.large-nav li {
     width: 5.875em;
     height: 1.25em;
     border-right: 1px solid #464646;
 }
 
-.main-nav li:first-child,
-.journal {
+.large-nav li:first-child,
+.large-nav .journal {
     width: 5.875em;
     border-left: 1px solid #464646;
 }
 
-.main-nav a {
+.large-nav a {
     width: 7.8333333333em;
     height: 1.6666666666em;
     display: block;
@@ -318,48 +324,78 @@ a {
     
 }
 
-.main-nav li:first-child a,
-.journal a {
+.large-nav li:first-child a,
+.large-nav .journal a {
     width: 7.75em;
 }
 
-.lineage {
+.large-nav .lineage {
     margin-right: 23.5625em;
 }
 
-.main-nav .chief-trunk {
-    width: 23.5625em;
-}
-.main-nav .active a,
-.main-nav a:hover {
+.large-nav .active a,
+.large-nav a:hover {
     margin-top: 0;
     border-top: 1px solid #464646;
     border-bottom: 1px solid #464646;
 }
 
-.alt-color .main-nav li,
-.alt-color .main-nav li:first-child {
+.alt-color .large-nav li,
+.alt-color .large-nav li:first-child {
     border-color: #fff;
 }
 
-.alt-color .main-nav a {
+.alt-color .large-nav a {
     color: #fff;
 }
-.alt-color .main-nav .active a,
-.alt-color .main-nav a:hover {
+.alt-color .large-nav .active a,
+.alt-color .large-nav a:hover {
     border-color: #fff;
 }
 
-.chief-trunk a:hover,
-.chief-trunk.active a {
-    border-top: none;
-    border-bottom: none;
+/* mini nav for smallest screen */
+
+
+.mini-nav-btn {
+    max-width: 28.4em;
+    margin: 0 auto;
+    color: #fff;
+    font-size: .625em;
+    line-height: 2.5;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid #fff;
 }
 
-/* main nav logo clenaup */
-.main-nav .main-logo:hover {
-    border: none;
-    margin-top: 1px;
+.mini-nav {
+    display: none;
+    position: relative;
+    width: 100%;
+    max-width: 17.75em;
+    margin: 0 auto;
+    background: #464646;
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid #fff;
+}
+
+.is-open .mini-nav {
+    display: block;
+}
+.is-open .mini-nav-btn {
+    display: none;
+}
+.mini-nav-links {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+}
+.mini-nav-links li a {
+    color: #fff;
+    font-size: .625em;
+    letter-spacing: 3px;
+    text-transform: uppercase;
 }
 
 /* main footer */
@@ -370,11 +406,10 @@ a {
     z-index: 999;
 }
 
-
-
 /* footer nav */
 .footer-nav ul {
     display: inline-block;
+    vertical-align: middle;
     margin: 0;
     padding: 0;
 }
@@ -532,37 +567,16 @@ a {
 }
 
 
-/*
-
-    Supersized - Fullscreen Slideshow jQuery Plugin
-    Version : Core 3.2.1
-    
-    Site    : www.buildinternet.com/project/supersized
-    Author  : Sam Dunn
-    Company : One Mighty Roar (www.onemightyroar.com)
-    License : MIT License / GPL License
-    
-*/
-
-/* ==========================================================================
-   Supersized classes
-   ========================================================================== */
-body {  height:100%; }
-    img{ border:none; }
-    
-    #supersized-loader { position:absolute; top:50%; left:50%; z-index:0; width:60px; height:60px; margin:-30px 0 0 -30px; text-indent:-999em; background:url(progress.gif) no-repeat center center;}
-    
-    #supersized { position:fixed; left:0; top:0; overflow:hidden; z-index:-999; height:100%; width:100%; padding: 0; margin: 0;}
-        #supersized img{ width:auto; height:auto; position:relative; outline:none; border:none; }
-        
-        #supersized a { z-index:-30; position:fixed; overflow:hidden; top:0; left:0; width:100%; height:100%; background:#111; display:block; }
-            #supersized a.image-loading { background:#111 url(progress.gif) no-repeat center center; width:100%; height:100%; }
-
-
-
 /* ==========================================================================
    Helper classes
    ========================================================================== */
+
+/* author helpers */
+
+.small-screen {
+    display: none;
+    visibility: hidden;
+}
 
 /*
  * Image replacement
@@ -671,23 +685,15 @@ body {  height:100%; }
     .container {
         width: 100%;
     }
-    .main-header {
-        width: 100%;
-    }
-    .main-nav {
-        width: 100%;
-        text-align: center;
-    }
-    .main-nav ul {
-        display: inline-block;
+    .large-nav {
         margin: 5.625em 0 0 0;
     }
 
-    .lineage {
+    .large-nav .lineage {
         width: 5.875em;
         margin-right: 0;
     }
-    .journal {
+    .large-nav .journal {
         border-left: none;
     }
 
@@ -695,14 +701,14 @@ body {  height:100%; }
 }
 
 @media only screen and (max-width: 35.3125em) {
-
-}
-
-@media print,
-       (-o-min-device-pixel-ratio: 5/4),
-       (-webkit-min-device-pixel-ratio: 1.25),
-       (min-resolution: 120dpi) {
-    /* Style adjustments for high resolution devices */
+    .small-screen {
+        display:  block;
+        visibility: visible;
+    }
+    .not-small-screen {
+        display: none;
+        visibility: hidden;
+    }
 }
 
 /* ==========================================================================

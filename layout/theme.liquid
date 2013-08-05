@@ -45,22 +45,36 @@
     <nav class="main-nav clearfix">
         <a href="{{ shop.url }}" class="main-logo logo-dark"><img src="{{ 'chief_trunk_logo_dark.png' | asset_url }}" alt="Chief Trunk logo"></a>
         <a href="{{ shop.url }}" class="main-logo logo-light"><img src="{{ 'chief_trunk_logo.png' | asset_url }}" alt="Chief Trunk logo"></a>
-        <ul class="l-horizontal-nav">
+        <ul class="l-horizontal-nav large-nav not-small-screen">
             {% for link in linklists.main-menu.links %}
-                {% assign link_title = link.title | handleize %}
-                <li class="{{ link_title }}{% if link.active %} active{% endif %}">
-                    <a href="{{ link.url }}" title="{{ link.title }}"{% if link_title == 'chief-trunk' %} class="ir"{% endif %}>
+                <li class="{{ link.title | handleize }}{% if link.active %} active{% endif %}">
+                    <a href="{{ link.url }}" title="{{ link.title }}">
                         {{ link.title }}
                     </a>
                 </li>
             {% endfor %}
         </ul>
+        
+        <div class="l-mini-nav-container">
+            <a href="#open-menu" class="mini-nav-btn small-screen">Menu</a>
+            <div class="mini-nav">
+                <ul class="small-screen mini-nav-links">
+                    {% for link in linklists.small-screen-nav.links %}
+                        <li class="{{ link.title | handleize }}{% if link.active %} active{% endif %}">
+                            <a href="{{ link.url }}" title="{{ link.title }}">
+                                {{ link.title }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
     </nav>
 </header>
 
 {{ content_for_layout }}
 
-<footer class="main-footer">
+<footer class="main-footer  not-small-screen">
     <nav class="footer-nav">
         <ul class="l-horizontal-nav">
             {% for link in linklists.footer.links %}
