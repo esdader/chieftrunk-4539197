@@ -28,9 +28,22 @@
             self.miniNavBtn.on('click', function(e) {
                 e.preventDefault();
                 self.miniNav.addClass('is-open');
-                console.log('you clicked me');
+                self.trackOutsideClick();
             });
 
+        },
+
+        trackOutsideClick: function() {
+            var self = this;
+
+            $('html').on('click', function(e){
+                self.miniNav.removeClass('is-open');
+                $('html').off('click');
+            });
+
+            self.miniNavBtn.on('click', function(e){
+                e.stopPropagation();
+            });
         },
 
         setInitialMargin: function () {
