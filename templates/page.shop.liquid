@@ -12,27 +12,15 @@
 				<h1>{{ link.title | escape }}</h1>
 			</header>
 			<ul class="l-horizontal-nav">
-				<li>
-					<article>
-						<a href="#">
-							<img src="http://placehold.it/185x185" alt="product image">
-						</a>
-					</article>
-				</li>
-				<li>
-					<article>
-						<a href="#">
-							<img src="http://placehold.it/185x185" alt="product image">
-						</a>
-					</article>
-				</li>
-				<li>
-					<article>
-						<a href="#">
-							<img src="http://placehold.it/185x185" alt="product image">
-						</a>
-					</article>
-				</li>
+				{% for product in link.object.products %}
+					<li>
+						<article class="collection-item">
+							<a href="{{ product.url | within: collection }}" title="{{ product.title }}">
+								<img src="{{ product.featured_image | product_img_url: 'medium' }}" alt="product.featured_image.alt | escape }}">
+							</a>
+						</article>
+					</li>
+				{% endfor %}
 			</ul>
 		</section>
 	{% endfor %}
