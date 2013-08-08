@@ -30,7 +30,7 @@
     {{ 'modernizr-2.6.2.min.js' | asset_url | script_tag }}
     {{ content_for_header }}
 </head>
-<body{% if template == 'index' %} class="alt-color"{% endif %}>
+<body{% if template == 'index' %} class="alt-color"{% endif %}{% if template contains 'shop' %} class="alt-color"{% endif %}>
 {% if template == 'index' or template contains 'shop' or template contains 'product' %}
     {% if template == 'index' %}
         {% assign image_class = 'home' %}
