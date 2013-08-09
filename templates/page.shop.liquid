@@ -1,9 +1,11 @@
 <nav class="shop-nav clearfix">
-    <ul class="l-horizontal-nav">
-        {% for link in linklists.shop-navigation.links %}
-            <li><a href="#{{ link.title | handleize }}" title="{{ link.title }}">{{ link.title }}</a></li>
-        {% endfor %}
-    </ul>
+	<div class="shop-nav-container">
+	    <ul class="l-horizontal-nav">
+	        {% for link in linklists.shop-navigation.links %}
+	            <li><a href="#{{ link.title | handleize }}" title="{{ link.title }}">{{ link.title }}</a></li>
+	        {% endfor %}
+	    </ul>
+	</div>
 </nav>
 <div class="container clearfix shop-landing">
 	{% for link in $linklists.shop-navigation.links %}

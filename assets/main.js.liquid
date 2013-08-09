@@ -6,15 +6,17 @@
         init: function () {
             var self = this;
 
-            self.mainHeader       = $('.main-header');
-            self.mainHeaderHeight = self.mainHeader.height();
             self.shopNav          = $('.shop-nav');
+            if (self.shopNav.length > 0) {
+                self.shopNavTop    = self.shopNav.offset().top;
+            }
+    
             self.shopNavLinks     = self.shopNav.find('a');
             self.shopNavHeight    = self.shopNav.height();
             self.mainFooter       = $('.main-footer');
             self.mainFooterHeight = self.mainFooter.height();
             self.shopLanding      = $('.shop-landing');
-            self.landingMargin    = $(window).height() - self.mainHeaderHeight - self.shopNavHeight;
+            self.landingMargin    = $(window).height() - self.mainFooterHeight;
             self.theBody          = $('body');
 
             self.scrollElem = scrollableElement('html', 'body');
@@ -22,14 +24,18 @@
             self.miniNavBtn = $('.mini-nav-btn');
             self.miniNav = $('.l-mini-nav-container');
 
+            self.imageLinks = $('.product-images').find('a').not('.product-link');
+
             self.setInitialMargin();
+            self.initializeProductPage();
+
             self.vents();
         },
 
         vents: function () {
             var self = this;
 
-            self.miniNavBtn.on('click', function(e) {
+            self.miniNavBtn.on('click tap', function(e) {
                 e.preventDefault();
                 self.miniNav.addClass('is-open');
                 self.trackOutsideClick();
@@ -43,18 +49,63 @@
                 self.scrollToCollection($this.attr('href'));
             });
 
+            self.shopLanding.waypoint(function(direction) {
+                if (direction === 'down') {
+                    self.theBody.addClass('active-shop-section');
+                } else {
+                    self.theBody.removeClass('active-shop-section');
+                }
+
+            }, { offset: self.shopNavTop });
+
+            self.imageLinks.on('click', function(e){
+                e.preventDefault();
+                var $this  = $(this),
+                    earl   = $this.attr('href'),
+                    theAlt = $this.attr('alt');
+                
+                $('.featured-img').attr({'src': earl, 'alt': theAlt});
+            });
+        },
+
+        initializeProductPage: function () {
+            var self = this;
+            
+            self.productInfo    = $('.product-info');
+            self.productImages  = $('.product-images');
+            self.viewportHeight = $.waypoints('viewportHeight');
+
+            if (self.productInfo.css("height") > self.productImages.css("height")) {
+                setHeights(self.productInfo, self.productImages);
+            } else {
+                setHeights(self.productImages, self.productInfo);
+            }
+
+            function setHeights(tallCol, shortCol) {
+                shortCol.css('height', tallCol.css('height'));
+
+                setMargins(tallCol);
+            }
+
+            function setMargins(tallCol) {
+
+                var margTop = (self.viewportHeight - 169 - tallCol.height() + 1) / 2,
+                    featuredImage = $('featured-img'),
+                    imageOffset;
+                    
+                $('.l-product-page').css('margin-top', margTop);
+
+                imageOffset = -(480 - tallCol.height() + 1) / 2;
+
+                featuredImage.css('margin-top', imageOffset);
+            }
         },
 
         scrollToCollection: function(collectionName) {
                 
             var self             = this,
                 theCollection    = $(collectionName),
-                collectionOffset = theCollection.offset().top - 107;
-                console.log(collectionOffset);
-
-            self.theBody
-                .removeClass('alt-color')
-                .addClass('is-scrolling');
+                collectionOffset = theCollection.offset().top - self.shopNavTop;
 
             $(self.scrollElem).animate({scrollTop: collectionOffset}, 1000);
 

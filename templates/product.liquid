@@ -1,8 +1,6 @@
-<div class="main-product-image">
-      <img src="{{ "City_1_V1.png" | asset_url | }}" alt="">
-    </div> 
 <div class="container l-product-page clearfix">
-    <article>
+    <article class="product-page">
+      <img src="{{ product.featured_image | product_img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}" class="featured-img">
       <section class="l-product-col product-info">
         <header>
           <h1 class="product-name">{{ product.title }}</h1>

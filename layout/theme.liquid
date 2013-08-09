@@ -30,16 +30,28 @@
     {{ 'modernizr-2.6.2.min.js' | asset_url | script_tag }}
     {{ content_for_header }}
 </head>
-<body{% if template == 'index' %} class="alt-color"{% endif %}{% if template contains 'shop' %} class="alt-color"{% endif %}>
-{% if template == 'index' or template contains 'shop' or template contains 'product' %}
-    {% if template == 'index' %}
-        {% assign image_class = 'home' %}
-    {% elsif  template contains 'shop' %}
-        {% assign image_class = 'shop' %}
-    {% elsif  template contains 'product' %}
-        {% assign image_class = 'product' %}
-    {% endif %}
+<body class="{{page.handle}}{% if template == 'index' %} alt-color{% endif %}{% if template contains 'shop' %} alt-color{% endif %}">
+{% if template contains 'shop' %}
+    {% assign image_class = 'shop' %}
     <div class="full-body-img {{ image_class }}-bg-img"> </div>
+{% endif %}
+
+{% if template == 'index' %}
+    <div class="homepage-full-bg">
+        <div class="flexslider">
+          <ul class="slides">
+            <li class="slide-holder">
+              <img src="{{'Home_Slide_1.jpg' | asset_url }}" alt="" class="slide-image">
+            </li>
+            <li class="slide-holder">
+              <img src="{{'Home_Slide_2.jpg' | asset_url }}" alt="" class="slide-image">
+            </li>
+            <li class="slide-holder">
+              <img src="{{'Home_Slide_3.jpg' | asset_url }}" alt="" class="slide-image">
+            </li>
+          </ul>
+        </div>
+    </div>
 {% endif %}
 <header class="main-header">
     <nav class="main-nav clearfix">
@@ -91,14 +103,75 @@
     {{ 'plugins.js' | asset_url | script_tag }}
     {{ 'main.js' | asset_url | script_tag }}
 
-    {% if template == 'index-not-now' %}
-        {{ 'supersized.3.2.7.min.js' | asset_url | script_tag }}        
+    {% if template == 'index' %}
         <script>
-            jQuery(function($){
-                
-                $.supersized({
-                    slides  :   [ {image : "{{ 'temp-homepage-bg.jpg' | asset_url }}"} ]
-                });
+            $(window).load(function() {
+                function scale_layout(){
+                    var winheight = $(window).height();
+                    var winwidth = $(window).width();
+                    var aspect_ratio = winwidth / winheight;
+                    var photo_ratio = 2000 / 1011;
+
+                    if (aspect_ratio > photo_ratio) { // Fit to width and cut off bottom
+                       $('.slide-image').css({
+                            'margin-left' : '0',
+                            'width' : winwidth+'px',
+                            'height' : 'auto'
+                        });
+                        
+                        var header_width = winwidth * 0.26; // need this for margins below
+
+                    } else { // Fit to height, center, and cut off sides
+                        var side_crop = (winheight *  photo_ratio - winwidth) / 2;
+                        var image_width = winheight * photo_ratio;
+
+                        $('.slide-image').css({
+                            'margin-left' : '-'+side_crop+'px',
+                            'width' : image_width+'px',
+                            'height' : winheight+'px'
+                        });
+         
+                    } // end if aspect ratio > 1.34
+                }
+
+
+
+              if (!Modernizr.touch) {
+                    scale_layout();
+                    $(window).resize(function(){scale_layout();});
+                } else {
+                    function scale_slides(){
+                        var winheight = $(window).height();
+                        var winwidth = $(window).width();
+                        var aspect_ratio = winwidth / winheight;
+                        if (aspect_ratio > photo_ratio) { // Fit to width and cut off bottom
+                           $('.slide-image').css({
+                                'margin-left' : '0',
+                                'width' : winwidth+'px',
+                                'height' : 'auto'
+                            });
+                        } else { // Fit to height, center, and cut off sides
+                            var side_crop = (winheight * photo_ratio - winwidth) / 2;
+                            var image_width = winheight * photo_ratio;
+                            $('.slide-image').css({
+                                'margin-left' : '-'+side_crop+'px',
+                                'width' : image_width+'px',
+                                'height' : winheight+'px'
+                            });
+                        } // end if aspect ratio > 1.34
+                        fix_margin_top();
+                    }
+                    scale_slides();
+                    $(window).resize(function(){scale_slides();});
+
+                }
+
+
+             $('.flexslider').flexslider({
+                animation: "slide",
+                controlNav: false,
+                directionNav: false
+              });
             });
         </script>
     {% endif %}

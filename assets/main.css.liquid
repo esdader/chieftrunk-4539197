@@ -124,6 +124,11 @@ a {
 
 /* layout
  * -------------------------------------------------------------------------- */
+ body, html {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+ }
 
 * {
     -webkit-box-sizing: border-box; 
@@ -137,12 +142,16 @@ a {
     text-align: center;
 }
 
-.is-scrolling .main-header {
+.shop .main-header {
     position: fixed;
     top: 0;
+    height: 96px;
     z-index: 999;
-    background: #fff;
 }
+.active-shop-section .main-header {
+    background-color: #fff;
+}
+
 .container {
     position: relative;
     width: 59em;
@@ -165,16 +174,18 @@ a {
 }
 
 .shop-nav {
-    position: relative;
-    max-width: 59em;
-    margin: 2.5em auto 0 auto;
-    border-top: 1px solid #474747;
-    border-bottom: 1px solid #474747;
+    position: fixed;
+    top: 96px;
+    width: 100%;
+    margin: 0 auto 0 auto;
     text-align: center;
 }
 
-.is-scrolling .shop-nav {
-    margin-top: 107px;
+.shop-nav-container {
+    width: 944px;
+    margin: 0 auto;
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid #fff;
 }
 
 .alt-color .shop-nav {
@@ -200,6 +211,10 @@ a {
 }
 .l-horizontal-nav li {
     float: left;
+}
+
+.shop-nav .l-horizontal-nav {
+    max-width: 944px;
 }
 
 .l-mini-nav-container {
@@ -293,7 +308,6 @@ a {
 }
 
 .logo-light {
-    position: absolute;
     display: none;
 }
 
@@ -301,11 +315,18 @@ a {
     display: block;
 }
 
+.active-shop-section .logo-dark {
+    display: block;
+}
+
+.active-shop-section .logo-light {
+    display: none;
+}
 
 /* main nav */
 .large-nav {
     margin: 2.5em 0 0 0;
-    padding:0;
+    padding:0 0 40px 0;
 }
 
 .large-nav li {
@@ -334,7 +355,6 @@ a {
     text-align: center;
     text-decoration: none;
     text-transform: uppercase;
-    
 }
 
 .large-nav li:first-child a,
@@ -358,12 +378,27 @@ a {
     border-color: #fff;
 }
 
+.active-shop-section .large-nav li,
+.active-shop-section .large-nav li:first-child {
+    border-color: #464646;
+}
+
 .alt-color .large-nav a {
     color: #fff;
 }
+
+.active-shop-section .large-nav a {
+    color: #464646;
+}
+
 .alt-color .large-nav .active a,
 .alt-color .large-nav a:hover {
     border-color: #fff;
+}
+
+.active-shop-section .large-nav .active a,
+.active-shop-section .large-nav a:hover {
+    border-color: #464646;
 }
 
 /* mini nav for smallest screen */
@@ -477,6 +512,7 @@ a {
     letter-spacing: 3px;
     text-transform: uppercase;
     text-decoration: none;
+    cursor: pointer;
 }
 
 .alt-color .shop-nav a {
@@ -495,7 +531,7 @@ a {
 
 .shop-landing {
     margin-top: 100%;
-    padding: 12.3125em 0 100% 0;
+    padding: 40px 0 100% 0;
 }
 
 /* shop section heading */
@@ -526,6 +562,14 @@ a {
 
 /* product page */
 
+.product-page {
+    text-align: center;
+}
+.featured-img {
+    max-height: 480px;
+    width: auto;
+    margin-top: -121px;
+}
 .main-product-image {
     position: absolute;
     width: 604px;
@@ -554,7 +598,7 @@ a {
 }
 
 .price {
-    margin-top: 1.1em 0;
+    margin: 1.1em 0;
     font-size: 1em;
     letter-spacing: 3px;
 }
@@ -598,7 +642,68 @@ a {
     height: auto;
 }
 
+/* flex slider */
+/*
+ * jQuery FlexSlider v2.2.0
+ * http://www.woothemes.com/flexslider/
+ *
+ * Copyright 2012 WooThemes
+ * Free to use under the GPLv2 license.
+ * http://www.gnu.org/licenses/gpl-2.0.html
+ *
+ * Contributing author: Tyler Smith (@mbmufffin)
+ */
 
+/* custom overrides
+*********************************/ 
+.homepage-full-bg {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+}
+
+/* Browser Resets
+*********************************/
+.flex-container a:active,
+.flexslider a:active,
+.flex-container a:focus,
+.flexslider a:focus  {outline: none;}
+.slides,
+.flex-control-nav,
+.flex-direction-nav {margin: 0; padding: 0; list-style: none;}
+
+/* FlexSlider Necessary Styles
+*********************************/
+.flexslider {display: block; position: relative; height: 100%; overflow: hidden; width: 100%;margin: 0; padding: 0;}
+.flexslider .slides,
+.flexslider .slides li {
+    width: 100%;
+    height: 100%;
+}
+.flexslider .slides > li {display: none; -webkit-backface-visibility: hidden;} /* Hide the slides before the JS is loaded. Avoids image jumping */
+.flexslider .slides img {min-height: 100%; min-width: 100%; max-width: 10000%;}
+.slide-holder { overflow:hidden; position:relative; width:100%;height:100%;}
+.flex-pauseplay span {text-transform: capitalize;}
+
+/* Clearfix for the .slides element */
+.slides:after {content: "\0020"; display: block; clear: both; visibility: hidden; line-height: 0; height: 0;}
+html[xmlns] .slides {display: block;}
+* html .slides {height: 1%;}
+
+/* No JavaScript Fallback */
+/* If you are not using another script, such as Modernizr, make sure you
+ * include js that eliminates this class on page load */
+.no-js .slides > li:first-child {display: block;}
+
+/* FlexSlider Default Theme
+*********************************/
+.flexslider { 
+    position: relative;  
+    zoom: 1; }
+.flex-viewport { max-height: 2000px; -webkit-transition: all 1s ease; -moz-transition: all 1s ease; -o-transition: all 1s ease; transition: all 1s ease; }
+.loading .flex-viewport { max-height: 300px; }
+.flexslider .slides { zoom: 1; }
+.carousel li { margin-right: 5px; }
 
 /* ==========================================================================
    Helper classes
@@ -744,6 +849,7 @@ a {
     }
     .l-mini-nav-container {
         display: block;
+        cursor: pointer;
     }
 }
 
