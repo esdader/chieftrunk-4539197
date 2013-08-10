@@ -140,6 +140,7 @@ a {
     width: 100%;
     margin: 0 auto;
     text-align: center;
+    z-index: 999;
 }
 
 .shop .main-header {
@@ -161,7 +162,6 @@ a {
 
 .main-footer {
     width: 100%;
-    height: 1.75em;
     background-color: #474747;
     text-align: center;
 }
@@ -224,7 +224,11 @@ a {
 }
 
 .l-product-page {
-    margin-top: 12.1875em;
+    /*margin-top: 12.1875em;*/
+}
+
+.container.l-product-page {
+    width: 100%;
 }
 
 .shop-section article {
@@ -232,16 +236,16 @@ a {
 }
 
 .l-product-col {
-    width: 15em;
+    width: 23em;
     float: left;
     position: relative;
-    display: inline-block;
+    display: block;
     border-top: 1px solid #474747;
     text-align: center;
 }
 
 .product-images {
-    width: 9.375em;
+    width: 14.375em;
     float: right;
     padding: 3px;
     text-align: left;
@@ -250,7 +254,7 @@ a {
 }
 
 .product-description {
-    width: 16.5em;
+    width: 25em;
     margin: 0 0 1.6em -1em;
     line-height: 1.5;
 }
@@ -463,18 +467,19 @@ a {
 }
 
 .footer-nav li {
-    padding-left: 1.875em;
+    padding: 0 0 0 1.875em;
 }
 .footer-nav li:first-child {
     padding-left: 0;
 }
 
 .footer-nav a {
+    padding: 0 0 3px 0;
     color: #fff;
     font-family: 'NewsGothicBT-Bold';
     font-weight: normal;
     font-size: .625em;
-    line-height: 2;
+    line-height: 2.2;
     letter-spacing: 3px;
     text-transform: uppercase;
     text-decoration: none;
@@ -568,7 +573,6 @@ a {
 .featured-img {
     max-height: 480px;
     width: auto;
-    margin-top: -121px;
 }
 .main-product-image {
     position: absolute;
@@ -608,7 +612,7 @@ a {
     position: absolute;
     bottom: -4.75em;
     letter-spacing: 2px;
-    width: 12.5em;
+    width: 19.1666666666666666666666em;
     text-align: center;
     left: 0;
 }
@@ -638,8 +642,10 @@ a {
 
 .product-images img {
     padding: 5px;
+    margin: 0 auto;
     max-width: 70px;
     height: auto;
+    display: block;
 }
 
 /* flex slider */

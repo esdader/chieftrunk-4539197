@@ -102,7 +102,6 @@
     <script>window.jQuery || document.write('<script src="{{ "jquery-1.10.2.min.js" | asset_url }}"><\/script>')</script>
     {{ 'plugins.js' | asset_url | script_tag }}
     {{ 'main.js' | asset_url | script_tag }}
-
     {% if template == 'index' %}
         <script>
             $(window).load(function() {
@@ -112,16 +111,16 @@
                     var aspect_ratio = winwidth / winheight;
                     var photo_ratio = 2000 / 1011;
 
-                    if (aspect_ratio > photo_ratio) { // Fit to width and cut off bottom
+                    if (aspect_ratio > photo_ratio) {
                        $('.slide-image').css({
                             'margin-left' : '0',
                             'width' : winwidth+'px',
                             'height' : 'auto'
                         });
                         
-                        var header_width = winwidth * 0.26; // need this for margins below
+                        var header_width = winwidth * 0.26;
 
-                    } else { // Fit to height, center, and cut off sides
+                    } else {
                         var side_crop = (winheight *  photo_ratio - winwidth) / 2;
                         var image_width = winheight * photo_ratio;
 
@@ -131,7 +130,7 @@
                             'height' : winheight+'px'
                         });
          
-                    } // end if aspect ratio > 1.34
+                    }
                 }
 
 
@@ -144,13 +143,13 @@
                         var winheight = $(window).height();
                         var winwidth = $(window).width();
                         var aspect_ratio = winwidth / winheight;
-                        if (aspect_ratio > photo_ratio) { // Fit to width and cut off bottom
+                        if (aspect_ratio > photo_ratio) {
                            $('.slide-image').css({
                                 'margin-left' : '0',
                                 'width' : winwidth+'px',
                                 'height' : 'auto'
                             });
-                        } else { // Fit to height, center, and cut off sides
+                        } else {
                             var side_crop = (winheight * photo_ratio - winwidth) / 2;
                             var image_width = winheight * photo_ratio;
                             $('.slide-image').css({
@@ -158,7 +157,7 @@
                                 'width' : image_width+'px',
                                 'height' : winheight+'px'
                             });
-                        } // end if aspect ratio > 1.34
+                        }
                         fix_margin_top();
                     }
                     scale_slides();
@@ -168,10 +167,74 @@
 
 
              $('.flexslider').flexslider({
-                animation: "slide",
+                animation: "fade",
                 controlNav: false,
-                directionNav: false
+                directionNav: false,
+                slideshowSpeed: 5000
               });
+            });
+        </script>
+    {% endif %}
+    {% if template contains 'product' %}
+        <script>
+            $(window).load(function(){
+
+                var CheifTrunkProduct = (function ($, window) {
+
+                        var productInfo         = $('.product-info'),
+                            productInfoWidth    = productInfo.width(),
+                            productInfoHeight    = productInfo.height(),
+                            productImages       = $('.product-images'),
+                            thumbs              = productImages.find('img'),
+                            productImagesWidth  = productImages.width(),
+                            productImagesHeight = productImages.height(),
+                            winHeight      = $.waypoints('viewportHeight'),
+                            winWidth            = $(window).width(),
+                            mainImage           = $('.featured-img'),
+                            tallestCol, availableWidth, availableHeight, colMargin;
+
+                        function initializeProductPage () {
+                            availableHeight = winHeight - 170;
+                            availableWidth = winWidth - productInfoWidth - productImagesWidth;
+
+                            // set image height or width
+                            if (availableHeight > availableWidth) {
+                                mainImage.css({'max-width': availableWidth, 'height': 'auto'});
+                            } else {
+                                var mLeft = availableHeight / 2;
+                                mainImage.css({
+                                        'max-height': availableHeight,
+                                        'width': 'auto',
+                                        'position': 'absolute',
+                                        'left': '50%',
+                                        'margin-left': -availableHeight / 2
+                                        
+                                        });
+                                colMargin = (availableWidth - availableHeight) / 4;
+                                productInfo.css('margin-left', colMargin);
+                                productImages.css('margin-right', colMargin);
+
+                            }
+
+                            // center columns within page
+
+                            if (productInfoHeight > productImagesHeight) {
+                                productImages.css('height', productInfoHeight);
+                                var topMargin = (availableHeight - productInfoHeight) / 2;
+                                productImages.css('margin-top', topMargin);
+                                productInfo.css('margin-top', topMargin);
+                                var $thumbs = $(thumbs);
+                                var thmbMargin = (productInfoHeight - $thumbs.length * 70) / 2;
+                                
+                                $(thumbs[0]).css('margin-top', thmbMargin);
+
+
+                            }
+
+                        }
+                        initializeProductPage();
+
+                })(jQuery, window);
             });
         </script>
     {% endif %}

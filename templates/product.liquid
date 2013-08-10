@@ -1,13 +1,15 @@
 <div class="container l-product-page clearfix">
     <article class="product-page">
-      <img src="{{ product.featured_image | product_img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}" class="featured-img">
+      
       <section class="l-product-col product-info">
         <header>
           <h1 class="product-name">{{ product.title }}</h1>
         </header>
         <p class="price">{{ product.price | money }}</p>
         <div class="product-description">
-          <p>Ro veriorrovid quis eiundandit, untisit, nis aspievndel eosanderis sint in porem estotat as cus est eri nonseribus atem sum idebita deliciis ullis es volupta dolu.</p> </div> <a href="/page.shop" class="shop-link">Back to Shop</a>
+          {{ product.description }}
+        </div> 
+        <a href="/page.shop" class="shop-link">Back to Shop</a>
         <div class="add-to-cart-btn">
           <a href="#">Add to Cart</a>
         </div>
@@ -15,14 +17,11 @@
             <a href="{{ collection.previous_product | url }}" class="product-link prev">&lt; Previous Product</a>
           {% endif %}
       </section>
+      <img src="{{ product.featured_image | product_img_url: '1024x1024' }}" alt="{{ product.featured_image.alt | escape }}" class="featured-img">
       <secion class="l-product-col product-images">
         {% for image in product.images %}
-          {% if forloop.first %}
-          {% else %}
-            <a href="{{ image | product_img_url: 'large' }}"><img src="{{ image | product_img_url: 'small' }}" alt="{{ image.alt | escape }}"></a>    
-          {% endif %}
+            <a href="{{ image | product_img_url: '1024x1024' }}"><img src="{{ image | product_img_url: 'small' }}" alt="{{ image.alt | escape }}"></a>    
         {% endfor %}
-        <a href="{{ product.featured_image | product_img_url: 'large' }}"><img src="{{ product.featured_image | product_img_url: 'small' }}" alt="{{ product.featured_image.alt | escape }}"></a> 
         {% if collection.next_product %} 
           <a href="{{ collection.next_product | url }}" class="product-link next">Next Product &gt;</a>
         {% endif %}
