@@ -1,35 +1,12 @@
-(function ($, window) {
+var ChiefTrunk = {
 
-    'use strict';
+    common: {
 
-    var ChiefTrunk = {
         init: function () {
             var self = this;
 
-            self.shopNav          = $('.shop-nav');
-            if (self.shopNav.length > 0) {
-                self.shopNavTop    = self.shopNav.offset().top;
-            }
-    
-            self.shopNavLinks     = self.shopNav.find('a');
-            self.shopNavHeight    = self.shopNav.height();
-            self.mainFooter       = $('.main-footer');
-            self.mainFooterHeight = self.mainFooter.height();
-            self.shopLanding      = $('.shop-landing');
-            self.landingMargin    = $(window).height() - self.mainFooterHeight;
-            self.theBody          = $('body');
-
-            self.scrollElem = scrollableElement('html', 'body');
-
-            self.miniNavBtn = $('.mini-nav-btn');
-            self.miniNav = $('.l-mini-nav-container');
-
-            self.imageLinks = $('.product-images').find('a').not('.product-link');
-
-            self.setInitialMargin();
-            //self.initializeProductPage();
-
             self.vents();
+
         },
 
         vents: function () {
@@ -40,75 +17,6 @@
                 self.miniNav.addClass('is-open');
                 self.trackOutsideClick();
             });
-
-            self.shopNavLinks.on('click', function(e){
-                e.preventDefault();
-
-                var $this = $(this);
-
-                self.scrollToCollection($this.attr('href'));
-            });
-
-            self.shopLanding.waypoint(function(direction) {
-                if (direction === 'down') {
-                    self.theBody.addClass('active-shop-section');
-                } else {
-                    self.theBody.removeClass('active-shop-section');
-                }
-
-            }, { offset: self.shopNavTop });
-
-            self.imageLinks.on('click', function(e){
-                e.preventDefault();
-                var $this  = $(this),
-                    earl   = $this.attr('href'),
-                    theAlt = $this.attr('alt');
-                
-                $('.featured-img').attr({'src': earl, 'alt': theAlt});
-            });
-        },
-
-        initializeProductPage: function () {
-            var self = this;
-            
-            self.productInfo    = $('.product-info');
-            self.productImages  = $('.product-images');
-            self.viewportHeight = $.waypoints('viewportHeight');
-
-            if (self.productInfo.css("height") > self.productImages.css("height")) {
-                setHeights(self.productInfo, self.productImages);
-            } else {
-                setHeights(self.productImages, self.productInfo);
-            }
-
-            function setHeights(tallCol, shortCol) {
-                shortCol.css('height', tallCol.css('height'));
-
-                setMargins(tallCol);
-            }
-
-            function setMargins(tallCol) {
-
-                var margTop = (self.viewportHeight - 169 - tallCol.height() + 1) / 2,
-                    featuredImage = $('featured-img'),
-                    imageOffset;
-                    
-                $('.l-product-page').css('margin-top', margTop);
-
-                imageOffset = -(480 - tallCol.height() + 1) / 2;
-
-                featuredImage.css('margin-top', imageOffset);
-            }
-        },
-
-        scrollToCollection: function(collectionName) {
-                
-            var self             = this,
-                theCollection    = $(collectionName),
-                collectionOffset = theCollection.offset().top - self.shopNavTop;
-
-            $(self.scrollElem).animate({scrollTop: collectionOffset}, 1000);
-
         },
 
         trackOutsideClick: function() {
@@ -122,35 +30,180 @@
             self.miniNavBtn.on('click', function(e){
                 e.stopPropagation();
             });
+        }
+
+    },
+
+    giantImage: {
+        init: function () {
+            var self = this;
+            self.photoRatio = 2000 / 1011;
+            self.sideCrop = 0;
+            self.imageWidth = 0;
+            self.slideImage = $('.slide-image');
+
+            if (!Modernizr.touch) {
+                self.scaleLayout();
+            } else {
+                self.scaleSlides();
+            }
+
+            self.vents();
         },
 
-        setInitialMargin: function () {
+        findLayout: function() {
             var self = this;
-            self.shopLanding.css('margin-top', self.landingMargin);
-        }
 
+            self.winHeight = $(window).height();
+            self.winWidth  = $(window).width();
+            self.aspectRatio = self.winWidth / self.winHeight;
+        },
 
-    };
+        vents: function () {
+            var self = this;
 
-    // use the first element that is "scrollable"
-      function scrollableElement(els) {
-        for (var i = 0, argLength = arguments.length; i <argLength; i++) {
-          var el = arguments[i],
-              $scrollElement = $(el);
-          if ($scrollElement.scrollTop()> 0) {
-            return el;
-          } else {
-            $scrollElement.scrollTop(1);
-            var isScrollable = $scrollElement.scrollTop()> 0;
-            $scrollElement.scrollTop(0);
-            if (isScrollable) {
-              return el;
+            $(window).resize(function(){
+                
+                if (!Modernizr.touch) {
+                    self.scaleLayout();
+                } else {
+                    self.scaleSlides();
+                }
+            });
+        },
+
+        scaleLayout: function () {
+            var self = this;
+            self.findLayout();
+            
+            if (self.aspectRatio > self.photoRatio) {
+               self.slideImage.css({
+                    'margin-left' : '0',
+                    'width' : self.winWidth+'px',
+                    'height' : 'auto'
+                });
+
+            } else {
+                self.sideCrop = (self.winHeight *  self.photoRatio - self.winWidth) / 2;
+                self.imageWidth = self.winHeight * self.photoRatio;
+                var marginLeft = '-' + self.sideCrop + 'px';
+                self.slideImage.css({
+                    'margin-left' : '-'+self.sideCrop+'px',
+                    'width' : self.imageWidth+'px',
+                    'height' : self.winHeight+'px'
+                });
+
             }
-          }
+        },
+
+        scaleSlides: function () {
+            var self = this;
+            self.findLayout();
+
+            if (self.aspectRatio > self.photoRatio) {
+               self.slideImage.css({
+                    'margin-left' : '0',
+                    'width' : self.winWidth+'px',
+                    'height' : 'auto'
+                });
+            } else {
+                self.sideCrop = (self.winHeight * self.photoRatio - self.winWidth) / 2;
+                self.imageWidth = self.winHeight * self.photoRatio;
+                self.slideImage.css({
+                    'margin-left' : '-'+self.sideCrop+'px',
+                    'width' : self.imageWidth+'px',
+                    'height' : self.winHeight+'px'
+                });
+            }
+
         }
-        return [];
-      }
+    },
 
-    ChiefTrunk.init();
-})(jQuery, window);
+    product: {
 
+        init: function () {
+            var self = this;
+
+            self.productInfo         = $('.product-info');
+            self.productInfoWidth    = self.productInfo.width();
+            self.productInfoHeight   = self.productInfo.height();
+            self.productImages       = $('.product-images');
+            self.imageLinks          = self.productImages.find('a');
+            self.thumbs              = self.productImages.find('img');
+            self.productImagesWidth  = self.productImages.width();
+            self.productImagesHeight = self.productImages.height();
+            self.winHeight           = $.waypoints('viewportHeight');
+            self.winWidth            = $(window).width();
+            self.mainImage           = $('.featured-img');
+            self.tallestCol          = 0;
+            self.availableWidth      = 0;
+            self.availableHeight     = 0;
+            self.colMargin           = 0;
+
+            // kick off funtions
+            self.initializeProductPage();
+            self.vents();
+
+        },
+
+        vents: function () {
+            var self = this;
+
+            self.imageLinks.on('click', function(e){
+                e.preventDefault();
+                var $this  = $(this),
+                    earl   = $this.attr('href'),
+                    theAlt = $this.attr('alt');
+                
+                $('.featured-img').attr({'src': earl, 'alt': theAlt});
+            });
+
+        },
+
+        initializeProductPage: function () {
+            var self = this;
+
+            self.availableHeight = self.winHeight - 170;
+            self.availableWidth  = self.winWidth - self.productInfoWidth - self.productImagesWidth;
+
+            // set image height or width
+            if (self.availableHeight > self.availableWidth) {
+                self.mainImage.css({'max-width': sef.availableWidth, 'height': 'auto'});
+            } else {
+                var mLeft = self.availableHeight / 2;
+                self.mainImage.css({
+                        'max-height': self.availableHeight,
+                        'width': 'auto',
+                        'position': 'absolute',
+                        'left': '50%',
+                        'margin-left': -self.availableHeight / 2
+                        
+                        });
+                self.colMargin = (self.availableWidth - self.availableHeight) / 4;
+                self.productInfo.css('margin-left', self.colMargin);
+                self.productImages.css('margin-right', self.colMargin);
+
+            }
+
+            // center columns within page
+
+            if (self.productInfoHeight > self.productImagesHeight) {
+                self.productImages.css('height', self.productInfoHeight);
+                var topMargin = (self.availableHeight - self.productInfoHeight) / 2;
+                self.productImages.css('margin-top', topMargin);
+                self.productInfo.css('margin-top', topMargin);
+                var $thumbs = $(self.thumbs);
+                var thmbMargin = (self.productInfoHeight - $thumbs.length * 70) / 2;
+                
+                $(self.thumbs[0]).css('margin-top', thmbMargin);
+
+            }
+
+        }
+
+    },
+
+    shopLanding: {
+
+    }
+};
