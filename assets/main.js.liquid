@@ -240,10 +240,22 @@ ChiefTrunk = {
 
     products: {
         init: function() {
+            var self = this;
 
+            self.headerHeight      = $('.main-header').height();
+            self.productsLanding   = $('.products-landing');
+            self.lastSectionHeight = self.productsLanding.find('section').last().height();
+
+            // set bottom padding
+            self.setBottomPadding();
         },
         setBottomPadding: function() {
-            
+            var self      = this,
+                winHeight = $(window).height(),
+                bottomPadding;
+
+            bottomPadding = winHeight - self.headerHeight - self.lastSectionHeight;
+            self.productsLanding.css('padding-bottom', bottomPadding);
         }
     },
 

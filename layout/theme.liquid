@@ -116,15 +116,17 @@
         </script>
     {% endif %}
     {% if template contains 'product' %}
+        {% unless page.handle == 'products' %}
         <script>
             $(window).load(function(){
                 ChiefTrunk.product.init();
             });
         </script>
+        {% endunless %}
     {% endif %}
 
     {% case page.handle %}
-    {%when 'shop' %}
+    {% when 'shop' %}
         <script>
             ChiefTrunk.giantImage.init();
             $('.flexslider').flexslider({
@@ -144,7 +146,14 @@
                 slideshow: false,
             });
         </script>
+    {% when 'products' %}
+        <script>
+            $(window).load(function(){
+                ChiefTrunk.products.init();
+            });
+        </script>
     {% else %}
     {% endcase %}
+
 </body>
 </html>
