@@ -181,7 +181,12 @@ ChiefTrunk = {
                     earl   = $this.attr('href'),
                     theAlt = $this.attr('alt');
                 
-                $('.featured-img').attr({'src': earl, 'alt': theAlt});
+                self.mainImage
+                    .fadeOut(function(){
+                        self.mainImage.attr({'src': earl, 'alt': theAlt})
+                            .fadeIn();
+                    });
+                    
             });
 
         },
@@ -231,6 +236,15 @@ ChiefTrunk = {
 
     shopLanding: {
 
+    },
+
+    products: {
+        init: function() {
+
+        },
+        setBottomPadding: function() {
+            
+        }
     },
 
     adminPages: {

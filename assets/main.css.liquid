@@ -143,14 +143,15 @@ a {
     z-index: 999;
 }
 
+.products .main-header,
 .shop .main-header {
     position: fixed;
     top: 0;
     height: 96px;
     z-index: 999;
 }
-.active-shop-section .main-header {
-    background-color: #fff;
+.products .main-header {
+    background: #fff;
 }
 
 .container {
@@ -166,7 +167,7 @@ a {
     text-align: center;
 }
 
-.shop-landing {
+.products-landing {
     width: 100%;
     padding-bottom: 28px;
     text-align: center;
@@ -534,9 +535,9 @@ a {
 
 /* shop landing container */
 
-.shop-landing {
-    margin-top: 100%;
-    padding: 40px 0 100% 0;
+.products-landing {
+    margin: 107px 0 0;
+    padding: 0 0 100%;
 }
 
 /* shop section heading */
@@ -720,6 +721,116 @@ a {
     text-indent: 0;
     border-left: none;
 }
+
+/* care guide */
+
+.care-guide {
+    max-width: 944px;
+    position: relative;
+    height: 665px;
+    margin: -40px auto 0;
+    background: url( {{ "care_guide_infographic.jpg" | asset_url }}) no-repeat 280px 20px;
+}
+.care-guide p {
+    display: none;
+}
+
+.care-guide h1 {
+    font-size: 10px;
+    padding: 1em 0;
+    margin: 0 0 .5em;
+    letter-spacing: 3px;
+    border-bottom: 1px solid #464646;
+}
+
+.brass-hardware:hover p,
+.signature-canvas:hover p,
+.latigo-leather:hover p,
+.brushed-lining:hover p,
+.black-canvas:hover p {
+    display: block;
+}
+
+.care-guide p {
+    font-size: 10px;
+}
+
+.intro p {
+    position: absolute;
+    left: 0;
+    top: 20px;
+    display: block;
+}
+.care-guide .intro p {
+    width: 415px;
+    font: normal normal normal 18px/1.27 "ClarendonBT-Light", serif;
+}
+.brass-hardware {
+    position: absolute;
+    left: 0;
+    top: 186px;
+    width: 355px;
+    cursor: pointer;
+}
+.brass-hardware p {
+    width: 255px;
+}
+
+.brass-hardware img {
+    float: right;
+}
+
+.signature-canvas {
+    position: absolute;
+    left: 0;
+    top: 412px;
+    width: 275px;
+    cursor: pointer;
+}
+
+.latigo-leather {
+    position: absolute;
+    right: 0;
+    top: 3px;
+    z-index: 1000;
+    width: 328px;
+    text-align: right;
+    cursor: pointer;
+
+}
+
+.latigo-leather p {
+    width: 280px;
+    float: right;
+}
+
+.brushed-lining {
+    position: absolute;
+    right: 0;
+    top: 186px;
+    width: 240px;
+    text-align: right;
+    cursor: pointer;
+}
+
+.brushed-lining p {
+    float: right;
+    width: 173px;
+}
+
+.black-canvas{
+    position: absolute;
+    right: 0;
+    top:  510px;
+    width: 166px;
+    text-align: right;
+    cursor: pointer;
+}
+
+.black-canvas p {
+    width: 160px;
+}
+
 
 /* flex slider */
 /*

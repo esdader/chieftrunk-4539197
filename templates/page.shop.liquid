@@ -11,28 +11,8 @@
 	<div class="shop-nav-container">
 	    <ul class="l-horizontal-nav">
 	        {% for link in linklists.shop-navigation.links %}
-	            <li><a href="#{{ link.title | handleize }}" title="{{ link.title }}">{{ link.title }}</a></li>
+	            <li><a href="/pages/products#{{ link.title | handleize }}" title="{{ link.title }}">{{ link.title }}</a></li>
 	        {% endfor %}
 	    </ul>
 	</div>
 </nav>
-<div class="container clearfix shop-landing">
-	{% for link in $linklists.shop-navigation.links %}
-		<section id="{{ link.title | handleize }}" class="clearfix shop-section">
-			<header class="shop-section-header">
-				<h1>{{ link.title | escape }}</h1>
-			</header>
-			<ul class="l-horizontal-nav">
-				{% for product in link.object.products %}
-					<li>
-						<article class="collection-item">
-							<a href="/collections/{{ link.object.title | handleize }}/products/{{ product.handle }}" title="{{ product.title }}">
-								<img src="{{ product.featured_image | product_img_url: 'medium' }}" alt="product.featured_image.alt | escape }}">
-							</a>
-						</article>
-					</li>
-				{% endfor %}
-			</ul>
-		</section>
-	{% endfor %}
-</div>
