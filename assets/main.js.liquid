@@ -1,4 +1,6 @@
-var ChiefTrunk = {
+var ChiefTrunk = ChiefTrunk || {};
+
+ChiefTrunk = {
 
     common: {
 
@@ -35,8 +37,20 @@ var ChiefTrunk = {
     },
 
     giantImage: {
-        init: function () {
+        init: function (customControls) {
             var self = this;
+
+            // check if should track custom controls
+            if ( typeof(customControls) === 'undefined') {
+                self.customControls = false;
+            } else {
+                self.customControls = true;
+
+                self.nextBtns = $('.slider-next-btn');
+                self.prevBtns = $('.slider-prev-btn');
+                self.flex     = $('.flexslider');
+            }
+
             self.photoRatio = 2000 / 1011;
             self.sideCrop = 0;
             self.imageWidth = 0;
@@ -70,6 +84,18 @@ var ChiefTrunk = {
                     self.scaleSlides();
                 }
             });
+
+            if (self.customControls === true ) {
+                self.nextBtns.on('click', function(e) {
+                    e.preventDefault();
+                    self.flex.flexslider('next');
+                });
+
+                self.prevBtns.on('click', function(e) {
+                    e.preventDefault();
+                    self.flex.flexslider('previous');
+                });
+            }
         },
 
         scaleLayout: function () {
@@ -160,7 +186,7 @@ var ChiefTrunk = {
 
         },
 
-        initializeProductPage: function () {
+        initializeProductPage: function initializeProductPage () {
             var self = this;
 
             self.availableHeight = self.winHeight - 170;
@@ -168,7 +194,7 @@ var ChiefTrunk = {
 
             // set image height or width
             if (self.availableHeight > self.availableWidth) {
-                self.mainImage.css({'max-width': sef.availableWidth, 'height': 'auto'});
+                self.mainImage.css({'max-width': self.availableWidth, 'height': 'auto'});
             } else {
                 var mLeft = self.availableHeight / 2;
                 self.mainImage.css({
@@ -205,5 +231,15 @@ var ChiefTrunk = {
 
     shopLanding: {
 
+    },
+
+    adminPages: {
+        init: function () {
+
+        },
+
+        positionFauxModal: function () {
+
+        }
     }
 };

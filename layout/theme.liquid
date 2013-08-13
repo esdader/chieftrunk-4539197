@@ -37,7 +37,7 @@
 {% endif %}
 
 {% if template == 'index' %}
-    <div class="homepage-full-bg">
+    <div class="fullsize-image-bg">
         <div class="flexslider">
           <ul class="slides">
             <li class="slide-holder">
@@ -123,7 +123,8 @@
         </script>
     {% endif %}
 
-    {% if template contains 'shop' %}
+    {% case page.handle %}
+    {%when 'shop' %}
         <script>
             ChiefTrunk.giantImage.init();
             $('.flexslider').flexslider({
@@ -133,6 +134,17 @@
                 slideshowSpeed: 5000
             });
         </script>
-    {% endif %}
+    {% when 'about' %}
+        <script>
+            ChiefTrunk.giantImage.init(true);
+            $('.flexslider').flexslider({
+                animation: "fade",
+                controlNav: false,
+                directionNav: false,
+                slideshow: false,
+            });
+        </script>
+    {% else %}
+    {% endcase %}
 </body>
 </html>
