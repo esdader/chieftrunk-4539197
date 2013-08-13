@@ -9,10 +9,13 @@
         <div class="product-description">
           {{ product.description }}
         </div> 
-        <a href="/page.shop" class="shop-link">Back to Shop</a>
-        <div class="add-to-cart-btn">
-          <a href="#">Add to Cart</a>
-        </div>
+        <a href="/pages/shop" class="shop-link">Back to Shop</a>
+        <form action="/cart/add" method="post" enctype="multipart/form-data">
+          <input type="hidden" id="{{ product.variants[0].id }}" name="id" value="{{ product.variants[0].id }}" />
+          <div class="add-to-cart-btn">
+            <input type="submit" name="add" id="add" value="Add to cart">
+          </div>
+        </form>
           {% if collection.previous_product %}
             <a href="{{ collection.previous_product | url }}" class="product-link prev">&lt; Previous Product</a>
           {% endif %}
