@@ -1,3 +1,27 @@
+{% comment %} for some reason when I tried reordering the list it kept saving it in reverser.  Everything here is backwards {% endcomment %}
+{% for product_link in collections.all-products.products %}
+  {% if product_link.handle == product.handle %}
+    {% if forloop.first %}
+      {% assign curNum = forloop.index0 %}
+      {% assign prevNum = curNum | plus: 1 %}
+      {% assign nextNum = forloop.length | minus: 1 %}
+      {% assign next_link = collections.all-products.products[nextNum].url %}
+      {% assign prev_link = collections.all-products.products[prevNum].url %}
+    {% elsif forloop.last %}
+      {% assign curNum = forloop.index0 %}
+      {% assign nextNum = curNum | minus: 1 %}
+      {% assign next_link = collections.all-products.products[nextNum].url %}
+      {% assign prev_link = collections.all-products.products[0].url %}
+    {% else %}
+      {% assign curNum = forloop.index0 %}
+      {% assign prevNum = curNum | plus: 1 %}
+      {% assign nextNum = curNum | minus: 1 %}
+      {% assign next_link = collections.all-products.products[nextNum].url %}
+      {% assign prev_link = collections.all-products.products[prevNum].url %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+
 <div class="container l-product-page clearfix">
     <article class="product-page">
       
@@ -16,18 +40,14 @@
             <input type="submit" name="add" id="add" value="Add to cart">
           </div>
         </form>
-          {% if collection.previous_product %}
-            <a href="{{ collection.previous_product | url }}" class="product-link prev">&lt; Previous Product</a>
-          {% endif %}
+          <a href="{{ prev_link }}" class="product-link prev">&lt; Previous Product</a>
       </section>
       <img src="{{ product.featured_image | product_img_url: '1024x1024' }}" alt="{{ product.featured_image.alt | escape }}" class="featured-img">
-      <secion class="l-product-col product-images">
+      <section class="l-product-col product-images">
         {% for image in product.images %}
-            <a href="{{ image | product_img_url: '1024x1024' }}"><img src="{{ image | product_img_url: 'small' }}" alt="{{ image.alt | escape }}"></a>    
+            <a href="{{ image | product_img_url: '1024x1024' }}" class="thmb-links"><img src="{{ image | product_img_url: 'small' }}" alt="{{ image.alt | escape }}"></a>    
         {% endfor %}
-        {% if collection.next_product %} 
-          <a href="{{ collection.next_product | url }}" class="product-link next">Next Product &gt;</a>
-        {% endif %}
+        <a href="{{ next_link }}" class="product-link next">Next Product &gt;</a>
       </section>  
     </article>
     
