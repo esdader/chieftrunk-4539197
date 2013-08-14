@@ -9,7 +9,7 @@
         <div class="product-description">
           {{ product.description }}
         </div> 
-        <a href="/pages/shop" class="shop-link">Back to Shop</a>
+        <a href="/pages/products" class="shop-link">Back to Shop</a>
         <form action="/cart/add" method="post" enctype="multipart/form-data">
           <input type="hidden" id="{{ product.variants[0].id }}" name="id" value="{{ product.variants[0].id }}" />
           <div class="add-to-cart-btn">
