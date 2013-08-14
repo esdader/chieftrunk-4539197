@@ -11,7 +11,12 @@
 	<div class="shop-nav-container">
 	    <ul class="l-horizontal-nav">
 	        {% for link in linklists.shop-navigation.links %}
-	            <li><a href="/pages/products#{{ link.title | handleize }}" title="{{ link.title }}">{{ link.title }}</a></li>
+	        	{% if forloop.first %}
+		        	<li><a href="/pages/products" title="{{ link.title }}">{{ link.title }}</a></li>
+		        {% else %}
+		            <li><a href="/pages/products#{{ link.title | handleize }}" title="{{ link.title }}">{{ link.title }}</a></li>
+		        {% endif %}
+
 	        {% endfor %}
 	    </ul>
 	</div>

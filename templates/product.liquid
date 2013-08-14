@@ -38,15 +38,19 @@
           <input type="hidden" id="{{ product.variants[0].id }}" name="id" value="{{ product.variants[0].id }}" />
             <input type="submit" name="add" id="add" class="add-to-cart-btn" value="Add to cart">
         </form>
-          <a href="{{ prev_link }}" class="product-link prev">&lt; Previous Product</a>
+          <div class="product-link-holder"><a href="{{ prev_link }}" class="product-link prev">&lt; Previous Product</a></div>
       </section>
-      <img src="{{ product.featured_image | product_img_url: '1024x1024' }}" alt="{{ product.featured_image.alt | escape }}" class="featured-img">
+      <img src="{{ product.featured_image | product_img_url: '1024x1024' }}" alt="{{ product.featured_image.alt | escape }}" data-giant-image="{{ product.featured_image | product_img_url: 'original' }}" class="featured-img">
+      <div class="tool-tip"></div>
       <section class="l-product-col product-images">
         {% for image in product.images %}
-            <a href="{{ image | product_img_url: '1024x1024' }}" class="thmb-links"><img src="{{ image | product_img_url: 'small' }}" alt="{{ image.alt | escape }}"></a>    
+            <a href="{{ image | product_img_url: '1024x1024' }}" class="thmb-links" data-giant-image="{{ image | product_img_url: 'original' }}"><img src="{{ image | product_img_url: 'small' }}" alt="{{ image.alt | escape }}"></a>
         {% endfor %}
-        <a href="{{ next_link }}" class="product-link next">Next Product &gt;</a>
+        <div class="product-link-holder"><a href="{{ next_link }}" class="product-link next">Next Product &gt;</a></div>
       </section>  
     </article>
     
+</div>
+<div class="giant-image-holder">
+  <img src="{{product.featured_image | product_img_url: pico}}">
 </div>

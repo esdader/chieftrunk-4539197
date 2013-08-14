@@ -161,6 +161,9 @@ ChiefTrunk = {
             self.winHeight           = $.waypoints('viewportHeight');
             self.winWidth            = $(window).width();
             self.mainImage           = $('.featured-img');
+            self.tip                 = $('.tool-tip');
+            self.giantImageHolder    = $('.giant-image-holder');
+            self.giantImage          = self.giantImageHolder.find('img');
             self.tallestCol          = 0;
             self.availableWidth      = 0;
             self.availableHeight     = 0;
@@ -177,17 +180,65 @@ ChiefTrunk = {
 
             self.imageLinks.on('click', function(e){
                 e.preventDefault();
-                var $this  = $(this),
-                    earl   = $this.attr('href'),
-                    theAlt = $this.attr('alt');
+                var $this    = $(this),
+                    earl     = $this.attr('href'),
+                    theAlt   = $this.attr('alt'),
+                    theGiant = $this.data('giant-image');
+                    console.log(theGiant);
                 
                 self.mainImage
                     .fadeOut(function(){
                         self.mainImage.attr({'src': earl, 'alt': theAlt})
+                            .data('giant-image', theGiant)
                             .fadeIn();
                     });
                     
             });
+
+
+            //Tooltips
+            self.mainImage.hover(function(){
+                self.tip.show(); //Show tooltip
+            }, function() {
+                self.tip.hide(); //Hide tooltip
+            })
+            .mousemove(function(e) {
+                //Change these numbers to move the tooltip offset
+                var mousex = e.pageX + 16; //Get X coodrinates
+                var mousey = e.pageY + 16 - 107; //Get Y coordinates. 
+                var tipWidth = self.tip.width(); //Find width of tooltip
+                var tipHeight = self.tip.height(); //Find height of tooltip
+                
+                //Distance of element from the right edge of viewport
+                var tipVisX = $(window).width() - (mousex + tipWidth);
+                //Distance of element from the bottom of viewport
+                var tipVisY = $(window).height() - (mousey + tipHeight);
+                if (tipVisX < 20) { //If tooltip exceeds the X coordinate of viewport
+                    mousex = e.pageX - tipWidth - 20;
+                } if (tipVisY < 20) { //If tooltip exceeds the Y coordinate of viewport
+                    mousey = e.pageY - tipHeight - 20 - 107;
+                }
+                //Absolute position the tooltip according to mouse position
+                self.tip.css({  top: mousey, left: mousex });
+            })
+            .on('click', function(e){
+                e.preventDefault();
+
+                var $this = $(this),
+                    earl  = self.mainImage.data('giant-image');
+
+                console.log(self.giantImage.attr('src'));
+
+                self.giantImage.attr('src', earl);
+                self.giantImageHolder.show();
+            });
+
+            self.giantImageHolder.on('click', function(e){
+                e.preventDefault();
+                $(this).hide();
+            });
+
+            
 
         },
 
