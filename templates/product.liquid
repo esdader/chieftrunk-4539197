@@ -36,9 +36,7 @@
         <a href="/pages/products" class="shop-link">Back to Shop</a>
         <form action="/cart/add" method="post" enctype="multipart/form-data">
           <input type="hidden" id="{{ product.variants[0].id }}" name="id" value="{{ product.variants[0].id }}" />
-          <div class="add-to-cart-btn">
-            <input type="submit" name="add" id="add" value="Add to cart">
-          </div>
+            <input type="submit" name="add" id="add" class="add-to-cart-btn" value="Add to cart">
         </form>
           <a href="{{ prev_link }}" class="product-link prev">&lt; Previous Product</a>
       </section>
