@@ -25,7 +25,7 @@
 <div class="container l-product-page clearfix">
     <article class="product-page">
       
-      <section class="l-product-col product-info">
+      <section class="l-product-col product-info invisible">
         <header>
           <h1 class="product-name">{{ product.title }}</h1>
         </header>
@@ -40,11 +40,11 @@
         </form>
           <div class="product-link-holder"><a href="{{ prev_link }}" class="product-link prev">&lt; Previous Product</a></div>
       </section>
-      <img src="{{ product.featured_image | product_img_url: '1024x1024' }}" alt="{{ product.featured_image.alt | escape }}" data-giant-image="{{ product.featured_image | product_img_url: 'original' }}" class="featured-img">
-      <div class="tool-tip"></div>
-      <section class="l-product-col product-images">
+      <img src="{{ product.featured_image | product_img_url: '1024x1024' }}" alt="{{ product.featured_image.alt | escape }}" data-giant-image="{{ product.featured_image | product_img_url: '2048x2048' }}" class="featured-img invisible">
+      <div class="tool-tip ir">Click to view larger</div>
+      <section class="l-product-col product-images invisible">
         {% for image in product.images %}
-            <a href="{{ image | product_img_url: '1024x1024' }}" class="thmb-links" data-giant-image="{{ image | product_img_url: 'original' }}"><img src="{{ image | product_img_url: 'small' }}" alt="{{ image.alt | escape }}"></a>
+            <a href="{{ image | product_img_url: '1024x1024' }}" class="thmb-links" data-giant-image="{{ image | product_img_url: '2048x2048' }}"><img src="{{ image | product_img_url: 'small' }}" alt="{{ image.alt | escape }}"></a>
         {% endfor %}
         <div class="product-link-holder"><a href="{{ next_link }}" class="product-link next">Next Product &gt;</a></div>
       </section>  
@@ -53,4 +53,5 @@
 </div>
 <div class="giant-image-holder">
   <img src="{{product.featured_image | product_img_url: pico}}">
+  <div class="close-btn ir">Click to close</div>
 </div>

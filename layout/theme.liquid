@@ -81,7 +81,17 @@
         <a href="{{ shop.url }}" class="main-logo logo-light"><img src="{{ 'chief_trunk_logo.png' | asset_url }}" alt="Chief Trunk logo"></a>
         <ul class="l-horizontal-nav large-nav not-small-screen">
             {% for link in linklists.main-menu.links %}
-                <li class="{{ link.title | handleize }}{% if link.active %} active{% endif %}">
+                {% assign link_handle = link.title | handleize %}
+                {% if link_handle == 'shop' %}
+                    {% if page.handle == 'products' or template contains 'product' %}
+                        {% assign make_active = ' active' %}
+                    {% else %}
+                        {% assign make_active = '' %}
+                    {% endif %}
+                {% else %}
+                    {% assign make_active = '' %}
+                {% endif %}
+                <li class="{{ link.title | handleize }}{% if link.active %} active{% endif %}{{ make_active }}">
                     <a href="{{ link.url }}" title="{{ link.title }}">
                         {{ link.title }}
                     </a>
@@ -132,7 +142,7 @@
                     animation: "fade",
                     controlNav: false,
                     directionNav: false,
-                    slideshowSpeed: 5000
+                    slideshowSpeed: 6000
                 });
             });
         </script>
@@ -155,7 +165,7 @@
                 animation: "fade",
                 controlNav: false,
                 directionNav: false,
-                slideshowSpeed: 5000
+                slideshowSpeed: 6000
             });
         </script>
     {% when 'about' %}

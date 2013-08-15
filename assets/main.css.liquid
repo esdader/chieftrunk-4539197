@@ -138,19 +138,21 @@ a {
 .main-header {
     position: relative;
     width: 100%;
+    height: 96px;
     margin: 0 auto;
     text-align: center;
     z-index: 999;
 }
 
 .products .main-header,
-.shop .main-header {
+.shop .main-header,
+.lineage .main-header {
     position: fixed;
     top: 0;
-    height: 96px;
     z-index: 999;
 }
-.products .main-header {
+.products .main-header,
+.lineage .main-header {
     background: #fff;
 }
 
@@ -199,7 +201,7 @@ a {
 }
 .shop-section-header {
     position: relative;
-    width: 94.4em;
+    max-width: 941px;
     margin: 0 auto;
     border-top: 1px solid #474747;
     border-bottom: 1px solid #474747;
@@ -332,7 +334,7 @@ a {
 /* main nav */
 .large-nav {
     margin: 2.5em 0 0 0;
-    padding:0 0 40px 0;
+    padding:0;
 }
 
 .large-nav li {
@@ -351,7 +353,6 @@ a {
     width: 9.4em;
     height: 2em;
     display: block;
-    margin-top: 1px;
     font-size: .625em;
     line-height: 2;
     color: #464646;
@@ -361,6 +362,13 @@ a {
     text-align: center;
     text-decoration: none;
     text-transform: uppercase;
+    border-top: 1px solid transparent;
+    border-bottom: 1px solid transparent;
+
+    -webkit-transition : border 500ms ease-out; 
+       -moz-transition : border 500ms ease-out;
+         -o-transition : border 500ms ease-out; 
+            transition : border 500ms ease-out;
 }
 
 .large-nav li:first-child a,
@@ -374,9 +382,7 @@ a {
 
 .large-nav .active a,
 .large-nav a:hover {
-    margin-top: 0;
-    border-top: 1px solid #464646;
-    border-bottom: 1px solid #464646;
+    border-color: #464646;
 }
 
 .alt-color .large-nav li,
@@ -485,10 +491,17 @@ a {
     letter-spacing: 3px;
     text-transform: uppercase;
     text-decoration: none;
+    border-bottom: 2px solid transparent;
+    -webkit-transition : border 500ms ease-out; 
+       -moz-transition : border 500ms ease-out;
+         -o-transition : border 500ms ease-out; 
+            transition : border 500ms ease-out;
 }
 
-.footer-nav a:hover {
-    border-bottom: 2px solid #fff;
+.footer-nav a:hover,
+.footer-nav a.active {
+    border-color: #fff;
+
 }
 
 
@@ -499,14 +512,20 @@ a {
     margin: 0;
     padding: 0;
 }
-
+.shop-nav li {
+    border-left: 1px solid transparent;
+    border-right: 1px solid transparent;
+    -webkit-transition : border 500ms ease-out; 
+       -moz-transition : border 500ms ease-out;
+         -o-transition : border 500ms ease-out; 
+            transition : border 500ms ease-out;
+}
 .shop-nav li:hover {
-    border-left: 1px solid #464646;
-    border-right: 1px solid #464646;
+    border-color: #464646;
 }
 
 
-.alt-color .shop-nav li {
+.alt-color .shop-nav li:hover {
     border-color: #fff;
 }
 
@@ -521,11 +540,6 @@ a {
     text-decoration: none;
     cursor: pointer;
 }
-
-.shop-nav li:hover a {
-    padding: 5px 14px;
-}
-
 
 .alt-color .shop-nav a {
     color: #fff;
@@ -588,6 +602,15 @@ a {
     width: 185px;
     height: 19px;
     background: url({{ 'tool_tip.png' | asset_url }}) no-repeat left top;
+}
+
+.click-btn {
+    display: none;
+    position: absolute;
+    z-index: 999;
+    width: 131px;
+    height: 19px;
+    background: url({{ 'close_btn.png' | asset_url }}) no-repeat left top;
 }
 
 .giant-image-holder {
@@ -696,6 +719,7 @@ a {
 /* single page info pages */
 .callout-article {
     position: relative;
+    z-index: 999;
     max-width: 33em;
     padding: 0 1.875em;
     margin: 0 auto;
@@ -875,6 +899,86 @@ a {
 .black-canvas p {
     width: 160px;
 }
+
+/* lineage page */
+.lineage-container {
+    width: 100%;
+    margin-top: 95px;
+}
+
+.lineage-title {
+    display: block;
+    position: relative;
+    top: 40px;
+    width: 692px;
+    height: 32px;
+    margin: 0 auto;
+    background: url({{ 'lineage_title.png' | asset_url }}) no-repeat center top;
+}
+
+.lineage-intro {
+    position: relative;
+    width: 100%;
+    height: 521px;
+    background: #f6f2e7 url({{ 'lineage_intro.jpg' | asset_url}}) no-repeat center top;
+}
+.lineage-intro-content {
+    position: relative;
+    top: 76px;
+    max-width: 353px;
+    margin: 0 auto;
+}
+.lineage-intro-content p {
+    font-family: 'ClarendonBT-Light', serif;
+    font-size: 25px;
+    line-height: 1.2;
+    text-align: center;
+}
+
+.lineage-content {
+    position: relative;
+    width: 100%;
+    height: 948px;
+    background: url({{ 'lineage_content.jpg' | asset_url}}) no-repeat center top;
+}
+
+.lineage-content-content {
+    position: relative;
+    top: 53px;
+    max-width: 320px;
+    padding-left: 20px;
+    margin: 0 auto;
+}
+
+.lineage-content-content p {
+    text-align: justify;
+    font-size: 13px;
+    line-height: 1.5;
+    letter-spacing: 1px;
+
+}
+
+.lineage-footer {
+    position: relative;
+    width: 100%;
+    height: 637px;
+    background:  #f6f2e7 url({{ 'lineage_footer.jpg' | asset_url}}) no-repeat center top;
+}
+
+.lineage-footer-content {
+    position: relative;
+    max-width: 800px;
+    top: 112px;
+    margin: 0 auto;
+}
+
+.lineage-footer-content p {
+    font-family: 'ClarendonBT-Light', serif;
+    font-size: 25px;
+    line-height: 1.2;
+    text-align: center;
+}
+
 
 /* cart page */
 .cart-container {

@@ -150,6 +150,7 @@ ChiefTrunk = {
         init: function () {
             var self = this;
 
+            self.$window             = $(window);
             self.productInfo         = $('.product-info');
             self.productInfoWidth    = self.productInfo.width();
             self.productInfoHeight   = self.productInfo.height();
@@ -162,8 +163,10 @@ ChiefTrunk = {
             self.winWidth            = $(window).width();
             self.mainImage           = $('.featured-img');
             self.tip                 = $('.tool-tip');
+            self.close_btn           = $('.close_btn');
             self.giantImageHolder    = $('.giant-image-holder');
             self.giantImage          = self.giantImageHolder.find('img');
+            self.invisibles          = $('.invisible');
             self.tallestCol          = 0;
             self.availableWidth      = 0;
             self.availableHeight     = 0;
@@ -177,6 +180,10 @@ ChiefTrunk = {
 
         vents: function () {
             var self = this;
+
+            $(window).on('resize', function(e) {
+                self.initializeProductPage();
+            });
 
             self.imageLinks.on('click', function(e){
                 e.preventDefault();
@@ -227,23 +234,50 @@ ChiefTrunk = {
                 var $this = $(this),
                     earl  = self.mainImage.data('giant-image');
 
-                console.log(self.giantImage.attr('src'));
-
                 self.giantImage.attr('src', earl);
-                self.giantImageHolder.show();
+                self.giantImageHolder.fadeIn();
             });
 
-            self.giantImageHolder.on('click', function(e){
+            self.giantImageHolder.hover(function(){
+                self.close_btn.show(); //Show tooltip
+            }, function() {
+                self.close_btn.hide(); //Hide tooltip
+            })
+            .mousemove(function(e) {
+                //Change these numbers to move the tooltip offset
+                var mousex = e.pageX + 16; //Get X coodrinates
+                var mousey = e.pageY + 16 - 107; //Get Y coordinates. 
+                var tipWidth = self.close_btn.width(); //Find width of tooltip
+                var tipHeight = self.close_btn.height(); //Find height of tooltip
+                
+                //Distance of element from the right edge of viewport
+                var tipVisX = $(window).width() - (mousex + tipWidth);
+                //Distance of element from the bottom of viewport
+                var tipVisY = $(window).height() - (mousey + tipHeight);
+                if (tipVisX < 20) { //If tooltip exceeds the X coordinate of viewport
+                    mousex = e.pageX - tipWidth - 20;
+                } if (tipVisY < 20) { //If tooltip exceeds the Y coordinate of viewport
+                    mousey = e.pageY - tipHeight - 20 - 107;
+                }
+                //Absolute position the tooltip according to mouse position
+                self.close_btn.css({  top: mousey, left: mousex });
+            })
+            .on('click', function(e){
                 e.preventDefault();
-                $(this).hide();
-            });
 
-            
+                var $this = $(this);
+                $this.fadeOut();
+            });
 
         },
 
-        initializeProductPage: function initializeProductPage () {
+        initializeProductPage: function () {
+
+
             var self = this;
+
+            self.winHeight = $.waypoints('viewportHeight');
+            self.winWidth  = $(window).width();
 
             self.availableHeight = self.winHeight - 170;
             self.availableWidth  = self.winWidth - self.productInfoWidth - self.productImagesWidth;
@@ -281,6 +315,19 @@ ChiefTrunk = {
 
             }
 
+            self.displayItems();
+
+        },
+
+        displayItems: function() {
+            var self = this;
+
+            self.invisibles
+                .hide(function() {
+                    $(this)
+                        .removeClass('invisible')
+                        .fadeIn();
+                });
         }
 
     },
