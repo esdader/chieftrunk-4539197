@@ -6,7 +6,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="canonical" href="{{ canonical_url }}" /> 
+    <link rel="canonical" href="{{ canonical_url }}" />
+    <link rel="shortcut icon" href="{{ 'favicon.ico' | asset_url }}">
 {% if template == "index" %}
     <title>{{ shop.name  }}</title>
 {% elsif template contains "404" %}
@@ -197,6 +198,15 @@
             });
         </script>
     {% when 'returns' %}
+        <script>
+            ChiefTrunk.giantImage.init(true);
+            $('.flexslider').flexslider({
+                animation: "fade",
+                controlNav: false,
+                directionNav: false
+            });
+        </script>
+    {% when 'contact' %}
         <script>
             ChiefTrunk.giantImage.init(true);
             $('.flexslider').flexslider({
