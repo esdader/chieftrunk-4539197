@@ -1,7 +1,9 @@
-<div class="cart-container">
-  {% if cart.items == empty %} 
-    <p class="cart-empty">Your shopping cart is empty.</p>
+{% if cart.items == empty %} 
+    <div class="empty-cart-container">
+      <p class="cart-empty">Your cart is currently empty.</p>
+    </div>
   {% else %}
+  <div class="cart-container">
     <form action="/cart" method="post" id="cartform" class="clearfix">
       <table class="cart-table">
         {% if cart.items == empty %}
@@ -20,14 +22,14 @@
                 Quantity: <input class="text quantity update-quantity" type="text" size="4" id="updates_{{ item.id }}" name="updates[]" value="{{ item.quantity }}" class="replace" />
               </td>
               <td class="cart-actions">
-                <span class="cart-line"><input type="submit" name="update" value="Update" /></span>
-                <a class="btn remove-from-cart" href="/cart/change?line={{ forloop.index }}&quantity=0">Remove</a>
+                <span class="cart-line"><input type="submit" name="update" value="Update" class="cart-btn update-cart" /></span>
+                <a class="cart-btn remove-from-cart" href="/cart/change?line={{ forloop.index }}&quantity=0">Remove</a>
               </td>
           </tr>
         {% endfor %}
-        <tr>
+        <tr class="cart-totals-row">
           <td colspan="2" class="cart-site-links">
-            <a href="/pages/returns">Return Policy</a>
+            <a href="/pages/returns" class="cart-btn">Return</a> <a href="/pages/policies" class="cart-btn">Policy</a>
           </td>
           <td class="cart-totals">
             Subtotal
@@ -37,6 +39,8 @@
           </td>
         </tr>
       </table>
-    {% endif %}
-    <a href="/" class="cart-to-shop">Back to Shop</a>
-</div>
+      <a href="/" class="cart-to-shop cart-btn">Back to Shop</a>
+      <input type="submit" name="checkout" class="cart-btn checkout-btn" value="Checkout" />
+    </form>
+  </div>
+{% endif %}
