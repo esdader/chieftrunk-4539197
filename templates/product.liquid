@@ -36,7 +36,11 @@
         <a href="/pages/products" class="shop-link">Back to Shop</a>
         <form action="/cart/add" method="post" enctype="multipart/form-data">
           <input type="hidden" id="{{ product.variants[0].id }}" name="id" value="{{ product.variants[0].id }}" />
+          {% if product.available %}
             <input type="submit" name="add" id="add" class="add-to-cart-btn" value="Add to cart">
+          {% else %}
+            <div class="sold-out">Sold out</div>
+          {% endif %}
         </form>
           <div class="product-link-holder"><a href="{{ prev_link }}" class="product-link prev">&lt; Previous Product</a></div>
       </section>
@@ -53,5 +57,5 @@
 </div>
 <div class="giant-image-holder">
   <img src="{{product.featured_image | product_img_url: pico}}">
-  <div class="close-btn ir">Click to close</div>
 </div>
+<div class="close-btn ir">Click to close</div>

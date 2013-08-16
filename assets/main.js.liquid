@@ -37,24 +37,33 @@ ChiefTrunk = {
     },
 
     giantImage: {
-        init: function (customControls) {
+        init: function (config) {
             var self = this;
 
             // check if should track custom controls
-            if ( typeof(customControls) === 'undefined') {
-                self.customControls = false;
-            } else {
-                self.customControls = true;
+            if ( typeof(config) !== 'undefined') {
 
-                self.nextBtns = $('.slider-next-btn');
-                self.prevBtns = $('.slider-prev-btn');
-                self.flex     = $('.flexslider');
+                if ( typeof(config.customControls) !== 'undefined') {
+                    
+                    self.customControls = config.customControls;
+
+                    self.nextBtns = $('.slider-next-btn');
+                    self.prevBtns = $('.slider-prev-btn');
+                    self.flex     = $('.flexslider');
+                }
+
+                if ( typeof(config.shortenTop) !== 'undefined') {
+                    self.shortenTop = config.shortenTop;
+                }
+
+                
             }
 
-            self.photoRatio = 2000 / 1011;
-            self.sideCrop = 0;
-            self.imageWidth = 0;
-            self.slideImage = $('.slide-image');
+            self.photoRatio  = 2000 / 1011;
+            self.sideCrop    = 0;
+            self.imageWidth  = 0;
+            self.slideImage  = $('.slide-image'),
+            self.slideHolder = $('.slide-holder');
 
             if (!Modernizr.touch) {
                 self.scaleLayout();
@@ -99,15 +108,33 @@ ChiefTrunk = {
         },
 
         scaleLayout: function () {
-            var self = this;
+            var self = this,
+                topOffset = 0,
+                activeSlide = $('.flex-active-slide');
+
             self.findLayout();
             
             if (self.aspectRatio > self.photoRatio) {
-               self.slideImage.css({
+               
+                if ( self.shortenTop === true) {
+                    topOffset = 1011 / 2000 * self.winWidth - self.winHeight;
+
+                    if (topOffset < 0) {
+                        topOffset = 0;
+                    }
+                }
+
+                self.slideImage.css({
                     'margin-left' : '0',
+                    'margin-top' : '-' + topOffset + 'px',
                     'width' : self.winWidth+'px',
                     'height' : 'auto'
                 });
+
+                
+                
+
+
 
             } else {
                 self.sideCrop = (self.winHeight *  self.photoRatio - self.winWidth) / 2;
@@ -123,14 +150,25 @@ ChiefTrunk = {
         },
 
         scaleSlides: function () {
-            var self = this;
+            var self = this,
+                topOffset = 0;
             self.findLayout();
 
             if (self.aspectRatio > self.photoRatio) {
+
+                if ( self.shortenTop === true) {
+                    topOffset = 1011 / 2000 * self.winWidth - self.winHeight;
+
+                    if (topOffset < 0) {
+                        topOffset = 0;
+                    }
+                }
+               
                self.slideImage.css({
                     'margin-left' : '0',
                     'width' : self.winWidth+'px',
-                    'height' : 'auto'
+                    'height' : 'auto',
+                    'margin-top' : '-' + topOffset + 'px'
                 });
             } else {
                 self.sideCrop = (self.winHeight * self.photoRatio - self.winWidth) / 2;
@@ -163,7 +201,7 @@ ChiefTrunk = {
             self.winWidth            = $(window).width();
             self.mainImage           = $('.featured-img');
             self.tip                 = $('.tool-tip');
-            self.close_btn           = $('.close_btn');
+            self.close_btn           = $('.close-btn');
             self.giantImageHolder    = $('.giant-image-holder');
             self.giantImage          = self.giantImageHolder.find('img');
             self.invisibles          = $('.invisible');
@@ -181,9 +219,9 @@ ChiefTrunk = {
         vents: function () {
             var self = this;
 
-            $(window).on('resize', function(e) {
-                self.initializeProductPage();
-            });
+            // $(window).on('resize', function(e) {
+            //     self.initializeProductPage();
+            // });
 
             self.imageLinks.on('click', function(e){
                 e.preventDefault();
@@ -246,7 +284,7 @@ ChiefTrunk = {
             .mousemove(function(e) {
                 //Change these numbers to move the tooltip offset
                 var mousex = e.pageX + 16; //Get X coodrinates
-                var mousey = e.pageY + 16 - 107; //Get Y coordinates. 
+                var mousey = e.pageY + 16; //Get Y coordinates. 
                 var tipWidth = self.close_btn.width(); //Find width of tooltip
                 var tipHeight = self.close_btn.height(); //Find height of tooltip
                 
@@ -257,7 +295,7 @@ ChiefTrunk = {
                 if (tipVisX < 20) { //If tooltip exceeds the X coordinate of viewport
                     mousex = e.pageX - tipWidth - 20;
                 } if (tipVisY < 20) { //If tooltip exceeds the Y coordinate of viewport
-                    mousey = e.pageY - tipHeight - 20 - 107;
+                    mousey = e.pageY - tipHeight - 20;
                 }
                 //Absolute position the tooltip according to mouse position
                 self.close_btn.css({  top: mousey, left: mousex });
@@ -345,7 +383,7 @@ ChiefTrunk = {
             self.lastSectionHeight = self.productsLanding.find('section').last().height();
 
             // set bottom padding
-            self.setBottomPadding();
+            //self.setBottomPadding();
         },
         setBottomPadding: function() {
             var self      = this,

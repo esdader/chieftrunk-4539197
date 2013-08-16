@@ -177,17 +177,23 @@
         </script>
     {% when 'about' %}
         <script>
-            ChiefTrunk.giantImage.init(true);
-            $('.flexslider').flexslider({
-                animation: "fade",
-                controlNav: false,
-                directionNav: false,
-                slideshow: false
+            $(window).load(function() {
+                var config = {};
+                    config.customControls = true;
+                    config.shortenTop     = true;
+
+                ChiefTrunk.giantImage.init(config);
+                $('.flexslider').flexslider({
+                    animation: "fade",
+                    controlNav: false,
+                    directionNav: false,
+                    slideshow: false
+                });
             });
         </script>
     {% when 'policies' %}
         <script>
-            ChiefTrunk.giantImage.init(true);
+            ChiefTrunk.giantImage.init();
             $('.flexslider').flexslider({
                 animation: "fade",
                 controlNav: false,
@@ -196,7 +202,7 @@
         </script>
     {% when 'privacy' %}
         <script>
-            ChiefTrunk.giantImage.init(true);
+            ChiefTrunk.giantImage.init();
             $('.flexslider').flexslider({
                 animation: "fade",
                 controlNav: false,
@@ -205,7 +211,7 @@
         </script>
     {% when 'returns' %}
         <script>
-            ChiefTrunk.giantImage.init(true);
+            ChiefTrunk.giantImage.init();
             $('.flexslider').flexslider({
                 animation: "fade",
                 controlNav: false,
@@ -214,7 +220,7 @@
         </script>
     {% when 'contact' %}
         <script>
-            ChiefTrunk.giantImage.init(true);
+            ChiefTrunk.giantImage.init();
             $('.flexslider').flexslider({
                 animation: "fade",
                 controlNav: false,
