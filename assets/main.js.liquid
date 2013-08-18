@@ -7,14 +7,95 @@ ChiefTrunk = {
         init: function () {
             var self = this;
 
+            self.miniNavBtn    = $('.mini-nav-btn');
+            self.miniNav       = $('.l-mini-nav-container');
+            self.followBtn     = $('.footer-nav').find('.follow');
+            self.socialIcons   = $('.social-media');
+            self.socialShowing = false;
+
+            self.email_button  = $('.email_button');
+            self.emailSignup   = $('.emailsignup');
+            self.xLoc          = $('.go-signup').offset().left + 30;
+
+            self.emailSignup.css('left', self.xLoc + 'px');
+
+            // deals with form submision
+          // //   var err_style = '';
+          // //   var options = { errorClass: 'mce_inline_error', errorElement: 'div', errorStyle: err_style, onkeyup: function(){}, onfocusout:function(){}, onblur:function(){}  };
+          // // var mce_validator = $("#mc-embedded-subscribe-form").validate(options);
+
+          // // options = { url:'http://chieftrunk.us7.list-manage1.com/subscribe/post-json?u=b5c7d2ba7d35a0faa71a59dfd&id=45f52cea4b&c=?', type: 'GET', dataType: 'json', contentType: "application/json; charset=utf-8",
+          // //               beforeSubmit: function(){
+          // //                   $('#mce_tmp_error_msg').remove();
+          // //                   $('.datefield','#mc_embed_signup').each(
+          // //                       function(){
+          // //                           var txt = 'filled';
+          // //                           var fields = new Array();
+          // //                           var i = 0;
+          // //                           $(':text', this).each(
+          // //                               function(){
+          // //                                   fields[i] = this;
+          // //                                   i++;
+          // //                               });
+          // //                           $(':hidden', this).each(
+          // //                               function(){
+          // //                                   if ( fields[0].value=='MM' && fields[1].value=='DD' && fields[2].value=='YYYY' ){
+          // //                                       this.value = '';
+          // //                                   } else if ( fields[0].value=='' && fields[1].value=='' && fields[2].value=='' ){
+          // //                                       this.value = '';
+          // //                                   } else {
+          // //                                       this.value = fields[0].value+'/'+fields[1].value+'/'+fields[2].value;
+          // //                                   }
+          // //                               });
+          // //                       });
+          // //                   return mce_validator.form();
+          // //               }, 
+          // //               success: mce_success_cb
+          // //           };
+          // $('#mc-embedded-subscribe-form').ajaxForm(options);
+
             self.vents();
 
+        },
+
+        mce_success_cb: function (resp){
+            if (resp.result=="success"){
+                $('#mc-embedded-subscribe').hide();
+                $('#mce-error-response').hide();
+                $('.email_thanks').show();
+            } else {
+                $('#mc-embedded-subscribe').hide();
+                $('#mce-error-response').show();
+                $('.email_thanks').hide();
+            }
         },
 
         vents: function () {
             var self = this;
 
-            self.miniNavBtn.on('click tap', function(e) {
+            // track clisks on email button
+            self.email_button.on('click', function(e) {
+                e.preventDefault();
+                self.emailSignup.toggle();
+            });
+
+            // track clicks on follow button
+            self.followBtn.on('click', function(e) {
+                e.preventDefault();
+                if (self.socialShowing === false) {
+                    self.socialIcons.hide(function(){
+                        self.socialIcons.fadeIn();
+                        self.socialShowing = true;
+                    });
+                } else {
+                    self.socialIcons.fadeOut();
+                    self.socialShowing = false;
+                }
+                
+            });
+
+            // track click on min nav button
+            self.miniNavBtn.on('click', function(e) {
                 e.preventDefault();
                 self.miniNav.addClass('is-open');
                 self.trackOutsideClick();
@@ -62,7 +143,7 @@ ChiefTrunk = {
             self.photoRatio  = 2000 / 1011;
             self.sideCrop    = 0;
             self.imageWidth  = 0;
-            self.slideImage  = $('.slide-image'),
+            self.slideImage  = $('.slide-image');
             self.slideHolder = $('.slide-holder');
 
             if (!Modernizr.touch) {
@@ -229,7 +310,6 @@ ChiefTrunk = {
                     earl     = $this.attr('href'),
                     theAlt   = $this.attr('alt'),
                     theGiant = $this.data('giant-image');
-                    console.log(theGiant);
                 
                 self.mainImage
                     .fadeOut(function(){
@@ -397,11 +477,127 @@ ChiefTrunk = {
 
     adminPages: {
         init: function () {
+            var self = this;
+
+            self.modalArticle       = $('.callout-article');
+            self.modalArticleHeight = self.modalArticle.height();
+            self.initialModalHeight = self.modalArticleHeight;
+            self.scrollContent      = $('.scroll-content');
+            self.modalHeaderHeight  = $('.callout-header').outerHeight();
+            self.modalBody          = $('.callout-body');
+            self.win                = $(window);
+            self.modalFooterHeight  = $('.callout-footer').outerHeight();
+            self.mainHeaderHeight   = $('.main-nav').outerHeight();
+            self.mainFooterHeight   = $('.main-footer').outerHeight();
+
+            self.checkHeights();
+            self.vents();
+        },
+
+        vents: function() {
+            var self = this;
+
+
+            self.win.on('resize', function() {
+                self.winHeight = self.win.height();
+                self.curAvailable = self.winHeight - self.mainHeaderHeight - self.mainFooterHeight - 40;
+
+                if (self.initialModalHeight > self.curAvailable) {
+                    self.setBodyHeight();
+                    
+                } else {
+                    self.modalBody.css('height', 'auto');
+                    self.positionFauxModal();
+                }
+            });
+        },
+
+        checkHeights: function() {
+            var self = this;
+
+            self.winHeight = self.win.height();
+            self.curAvailable = self.winHeight - self.mainHeaderHeight - self.mainFooterHeight - 40;
+
+            if ( self.curAvailable > self.modalArticleHeight) {
+                self.positionFauxModal();
+            } else {
+                self.setBodyHeight();
+                self.modalBody.mCustomScrollbar({
+                    theme:"dark",
+                    autoDraggerLength: false
+                });
+            }
 
         },
 
-        positionFauxModal: function () {
+        setBodyHeight: function() {
+            var self = this;
 
+            self.modalBodyHeight = self.curAvailable - self.modalHeaderHeight - self.modalFooterHeight;
+            
+            if (self.modalBodyHeight < 120) {
+                self.modalBodyHeight = 120;
+            }
+
+            self.modalBody.css('height', self.modalBodyHeight + 'px');
+            self.modalArticleHeight = self.modalArticle.height();
+            
+            self.modalArticle.fadeIn();
+        },
+
+        positionFauxModal: function() {
+            var self = this,
+                mTop = (self.curAvailable - self.modalArticleHeight) / 2;
+
+            self.modalArticle.addClass('not-scrollable');
+            self.modalArticle.css('margin-top', mTop + 'px');
+            self.modalArticle.fadeIn();
+        }
+    },
+
+    care: {
+        init: function() {
+            var self = this;
+            
+            self.careGuide       = $('.care-guide');
+            self.careGuideHeight = self.careGuide.height();
+            self.headerHeight    = $('.main-header').outerHeight();
+            self.footerHeight    = $('.main-footer').height();
+            self.win             = $(window);
+            self.visible         = false;
+            self.positionGuide();
+            self.vents();
+        },
+
+        positionGuide: function() {
+            var self = this,
+                availableMargin = self.win.height() - self.headerHeight - self.footerHeight - self.careGuideHeight;
+
+            if (availableMargin > 0) {
+                var mTop = availableMargin / 2;
+
+                self.careGuide.css('margin-top', mTop + 'px');
+
+                if (self.visible === false) {
+                    self.careGuide.fadeIn();
+                    self.visible = true;
+                }
+
+            } else {
+                
+                if (self.visible === false) {
+                    self.careGuide.fadeIn();
+                    self.visible = true;
+                }
+            }
+        },
+
+        vents: function() {
+            var self = this;
+
+            self.win.on('resize', function(){
+                self.positionGuide();
+            });
         }
     }
 };

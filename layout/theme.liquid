@@ -94,14 +94,14 @@
                 {% endif %}
                 <li class="{{ link.title | handleize }}{% if link.active %} active{% endif %}{{ make_active }}">
                     <a href="{{ link.url }}" title="{{ link.title }}">
-                        {{ link.title }}
+                        {{ link.title }}{% if link_handle == 'cart' %}{% if cart.item_count > 0 %} {{ cart.item_count }}{% endif %}{% endif %}
                     </a>
                 </li>
             {% endfor %}
         </ul>
         
         <div class="l-mini-nav-container">
-            <a href="#open-menu" class="mini-nav-btn small-screen">Menu</a>
+            <div class="mini-nav-btn small-screen">Menu</div>
             <div class="mini-nav">
                 <ul class="small-screen mini-nav-links">
                     {% for link in linklists.small-screen-nav.links %}
@@ -123,17 +123,40 @@
     <nav class="footer-nav">
         <ul class="l-horizontal-nav">
             {% for link in linklists.footer.links %}
-                <li><a href="{{ link.url }}" title="{{ link.title }}" class="{{ link.title | handleize }}{% if link.active %} active{% endif %}">{{ link.title }}</a></li>
+                {% assign link_handle = link.title | handleize %}
+                {% unless link_handle == 'subscribe' %}
+                <li><a href="{{ link.url }}" title="{{ link.title }}" class="{{ link_handle }}{% if link.active %} active{% endif %}">{{ link.title }}</a>
+                    {% if link_handle == 'follow' %}
+                        <div class="social-media">
+                            <ul class="l-horizontal-nav">
+                                <li><a href="https://www.facebook.com/ChiefTrunk" class="facebook ir" target="_blank">Follow on Facebook</a></li>
+                                <li><a href="https://twitter.com/ChiefTrunk" class="twitter ir"  target="_blank">Follow on Twitter</a></li>
+                            </ul>
+                        </div>
+                    {% endif %}
+                </li>
+                {% else %}
+                <li class="go-signup">
+                    <a href="#" class="email_box" >
+                        <span class="email_button">Subscribe</span>
+                    </a>
+                </li>
+                {% endunless %}
             {% endfor %}
         </ul>
     </nav>
-    <div class="social-media hidden">
-        <ul class="l-horizontal-nav">
-            <li><a href="https://www.facebook.com/ChiefTrunk" class="facebook ir">Follow on Facebook</a></li>
-            <li><a href="https://twitter.com/ChiefTrunk" class="twitter ir">Follow on Twitter</a></li>
-        </ul>
-    </div>
 </footer>
+<div class="emailsignup"  style="display:none;" >
+  <form action="http://chieftrunk.us7.list-manage1.com/subscribe/post?u=b5c7d2ba7d35a0faa71a59dfd&amp;id=45f52cea4b" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank">
+    <fieldset style="border-style:none;">
+        <input type="text" value="YOUR EMAIL" name="EMAIL" class="your_email_address" id="mce-EMAIL" />
+        <input type="submit" value=">" name="subscribe" id="mc-embedded-subscribe" class="btn email-sub-btn" />
+        <input type="submit" value="PLEASE RE-ENTER" name="subscribe" id="mce-error-response" class="btn" style="display:none;" />
+        <a href="#" class="email_thanks btn" style="display:none;" >Thank You!</a>                 
+    </fieldset>    
+</form>
+</div>
+
 
 
 
@@ -141,6 +164,9 @@
     <script>window.jQuery || document.write('<script src="{{ "jquery-1.10.2.min.js" | asset_url }}"><\/script>')</script>
     {{ 'plugins.js' | asset_url | script_tag }}
     {{ 'main.js' | asset_url | script_tag }}
+    <script>
+        ChiefTrunk.common.init();
+    </script>
     {% if template == 'index' %}
         <script>
             $(window).load(function() {
@@ -178,9 +204,12 @@
     {% when 'about' %}
         <script>
             $(window).load(function() {
-                var config = {};
-                    config.customControls = true;
-                    config.shortenTop     = true;
+                var config = {
+                        customControls: true,
+                        shortenTop: true
+                };
+                    
+                    
 
                 ChiefTrunk.giantImage.init(config);
                 $('.flexslider').flexslider({
@@ -199,6 +228,7 @@
                 controlNav: false,
                 directionNav: false
             });
+            ChiefTrunk.adminPages.init();                                                       
         </script>
     {% when 'privacy' %}
         <script>
@@ -208,6 +238,7 @@
                 controlNav: false,
                 directionNav: false
             });
+            ChiefTrunk.adminPages.init();
         </script>
     {% when 'returns' %}
         <script>
@@ -217,20 +248,31 @@
                 controlNav: false,
                 directionNav: false
             });
+            ChiefTrunk.adminPages.init();
         </script>
     {% when 'contact' %}
         <script>
-            ChiefTrunk.giantImage.init();
+            var config = {
+                shortenTop: true
+            }
+            ChiefTrunk.giantImage.init(config);
             $('.flexslider').flexslider({
                 animation: "fade",
                 controlNav: false,
                 directionNav: false
             });
+            ChiefTrunk.adminPages.init();
         </script>
     {% when 'products' %}
         <script>
             $(window).load(function(){
                 //ChiefTrunk.products.init();
+            });
+        </script>
+    {% when 'care' %}
+        <script>
+            $(window).load(function(){
+                ChiefTrunk.care.init();
             });
         </script>
     {% else %}
