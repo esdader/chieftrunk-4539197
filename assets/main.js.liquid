@@ -15,9 +15,6 @@ ChiefTrunk = {
 
             self.email_button  = $('.email_button');
             self.emailSignup   = $('.emailsignup');
-            self.xLoc          = $('.go-signup').offset().left + 30;
-
-            self.emailSignup.css('left', self.xLoc + 'px');
 
             // deals with form submision
           // //   var err_style = '';
@@ -76,6 +73,8 @@ ChiefTrunk = {
             // track clisks on email button
             self.email_button.on('click', function(e) {
                 e.preventDefault();
+                var xLoc = $('.go-signup').offset().left + 30;
+                self.emailSignup.css('left', xLoc + 'px');
                 self.emailSignup.toggle();
             });
 
@@ -565,8 +564,15 @@ ChiefTrunk = {
             self.footerHeight    = $('.main-footer').height();
             self.win             = $(window);
             self.visible         = false;
+
+            self.guideBtns       = self.careGuide.find('h1');
+
             self.positionGuide();
             self.vents();
+
+            if (self.win.width() <= 944) {
+                $('body').addClass('show-care');
+            }
         },
 
         positionGuide: function() {
@@ -597,6 +603,23 @@ ChiefTrunk = {
 
             self.win.on('resize', function(){
                 self.positionGuide();
+            });
+
+            self.guideBtns.on('click', function(e){
+                var $this = $(this),
+                    activeGuide = $('.showing-guide');
+
+                activeGuide.children('.guide-info')
+                    .fadeOut(function(){
+                        activeGuide.removeClass('showing-guide');
+                    });
+                if (self.win.width() > 944) {
+                    $this.next('.guide-info')
+                        .fadeIn()
+                        .parent()
+                            .addClass('showing-guide');
+                }
+
             });
         }
     }

@@ -120,6 +120,7 @@
 {{ content_for_layout }}
 
 <footer class="main-footer  not-small-screen">
+    <div class="copyright">&copy; {{ 'now' | date: "%Y" }} Chief Trunk. All rights reserved.</div>
     <nav class="footer-nav">
         <ul class="l-horizontal-nav">
             {% for link in linklists.footer.links %}
@@ -146,11 +147,12 @@
         </ul>
     </nav>
 </footer>
+<div class="copyright small-screen">&copy; {{ 'now' | date: "%Y" }} Chief Trunk. All rights reserved.</div>
 <div class="emailsignup"  style="display:none;" >
   <form action="http://chieftrunk.us7.list-manage1.com/subscribe/post?u=b5c7d2ba7d35a0faa71a59dfd&amp;id=45f52cea4b" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank">
     <fieldset style="border-style:none;">
         <input type="text" value="YOUR EMAIL" name="EMAIL" class="your_email_address" id="mce-EMAIL" />
-        <input type="submit" value=">" name="subscribe" id="mc-embedded-subscribe" class="btn email-sub-btn" />
+        <input type="submit" value=" " name="subscribe" id="mc-embedded-subscribe" class="btn email-sub-btn" />
         <input type="submit" value="PLEASE RE-ENTER" name="subscribe" id="mce-error-response" class="btn" style="display:none;" />
         <a href="#" class="email_thanks btn" style="display:none;" >Thank You!</a>                 
     </fieldset>    
