@@ -252,6 +252,7 @@ a {
 
 .l-product-col {
     width: 230px;
+    margin: 0 40px;
     float: left;
     position: relative;
     display: block;
@@ -345,7 +346,7 @@ a {
 /* main nav */
 .large-nav {
     margin: 40px 0 0 0;
-    padding:0 0 40px 0;
+    padding:0 0 36px 0;
 }
 .products .large-nav {
     border-bottom: 1px solid #464646;
@@ -487,12 +488,14 @@ a {
 
 .copyright {
     position: absolute;
+    left: 7px;
     color: #939598;
     text-transform: uppercase;
     font-family: 'NewsGothicBT-Bold';
     font-weight: normal;
-    font-size: .5625em;
+    font-size: 7px;
     line-height: 23px;
+    letter-spacing: 1px;
 }
 
 /* footer nav */
@@ -537,6 +540,7 @@ a {
 .emailsignup {
     position: absolute;
     bottom: 41px;
+    z-index: 999;
 }
 .your_email_address {
     width: 168px;
@@ -804,6 +808,8 @@ a {
        -moz-transition : background-color 500ms ease-out;
          -o-transition : background-color 500ms ease-out; 
             transition : background-color 500ms ease-out;
+    -webkit-border-radius:0;
+    border-radius: 0;
 }
 
 .add-to-cart-btn:hover {
@@ -826,9 +832,16 @@ a {
 .product-images img {
     padding: 5px;
     margin: 0 auto;
-    max-width: 70px;
+    max-width: 80px;
     height: auto;
     display: block;
+}
+
+.two-col.product-images {
+    text-align: center;
+}
+.two-col.product-images img {
+    display: inline;
 }
 
 /* single page info pages */
@@ -1233,8 +1246,8 @@ a {
     text-align: center;
 }
 .update-quantity {
-    border: none;
-    width: 8px;
+    border: 1px solid #464646;
+    padding: 1px;
     color: #464646;
     text-align: center;
 }
@@ -2026,7 +2039,7 @@ html[xmlns] .slides {display: block;}
     /* main nav */
     .large-nav {
         margin: 5.625em 0 0 0;
-
+        padding-bottom: 40px;
     }
 
     .journal .large-nav {
@@ -2070,6 +2083,10 @@ html[xmlns] .slides {display: block;}
 
     .main-footer {
         height: 40px;
+    }
+
+    .empty-cart-container {
+        max-width: 564px;
     }
     /* copyright */
     .copyright {
@@ -2225,6 +2242,7 @@ html[xmlns] .slides {display: block;}
         bottom: 0;
         top: auto;
         text-align: center;
+        color: #fff;
     }
 
     .journal-entry {

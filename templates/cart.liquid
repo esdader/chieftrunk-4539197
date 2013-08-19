@@ -19,7 +19,7 @@
               </td>
               <td class="cart-price">
                 <span class="cart-line">{{ item.price | money }}</span>
-                Quantity: <input class="text quantity update-quantity" type="text" size="4" id="updates_{{ item.id }}" name="updates[]" value="{{ item.quantity }}" class="replace" />
+                Quantity: <input class="text quantity update-quantity" type="text" size="1" id="updates_{{ item.id }}" name="updates[]" value="{{ item.quantity }}" class="replace" />
               </td>
               <td class="cart-actions">
                 <span class="cart-line"><input type="submit" name="update" value="Update" class="cart-btn update-cart" /></span>
@@ -39,7 +39,7 @@
           </td>
         </tr>
       </table>
-      <a href="/" class="cart-to-shop cart-btn">Back to Shop</a>
+      <a href="/" class="cart-to-shop cart-btn">Back to Site</a>
       <input type="submit" name="checkout" class="cart-btn checkout-btn" value="Checkout" />
     </form>
   </div>

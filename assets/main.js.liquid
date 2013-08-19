@@ -12,44 +12,52 @@ ChiefTrunk = {
             self.followBtn     = $('.footer-nav').find('.follow');
             self.socialIcons   = $('.social-media');
             self.socialShowing = false;
+            self.win           = $(window);
 
             self.email_button  = $('.email_button');
             self.emailSignup   = $('.emailsignup');
 
-            // deals with form submision
-          // //   var err_style = '';
-          // //   var options = { errorClass: 'mce_inline_error', errorElement: 'div', errorStyle: err_style, onkeyup: function(){}, onfocusout:function(){}, onblur:function(){}  };
-          // // var mce_validator = $("#mc-embedded-subscribe-form").validate(options);
+            self.goSignup      = $('.go-signup');
+            self.xLoc          = 0;
+            
+            self.emailForm     = $("#mc-embedded-subscribe-form");
+            self.emailInput    = $("#mce-EMAIL");
 
-          // // options = { url:'http://chieftrunk.us7.list-manage1.com/subscribe/post-json?u=b5c7d2ba7d35a0faa71a59dfd&id=45f52cea4b&c=?', type: 'GET', dataType: 'json', contentType: "application/json; charset=utf-8",
-          // //               beforeSubmit: function(){
-          // //                   $('#mce_tmp_error_msg').remove();
-          // //                   $('.datefield','#mc_embed_signup').each(
-          // //                       function(){
-          // //                           var txt = 'filled';
-          // //                           var fields = new Array();
-          // //                           var i = 0;
-          // //                           $(':text', this).each(
-          // //                               function(){
-          // //                                   fields[i] = this;
-          // //                                   i++;
-          // //                               });
-          // //                           $(':hidden', this).each(
-          // //                               function(){
-          // //                                   if ( fields[0].value=='MM' && fields[1].value=='DD' && fields[2].value=='YYYY' ){
-          // //                                       this.value = '';
-          // //                                   } else if ( fields[0].value=='' && fields[1].value=='' && fields[2].value=='' ){
-          // //                                       this.value = '';
-          // //                                   } else {
-          // //                                       this.value = fields[0].value+'/'+fields[1].value+'/'+fields[2].value;
-          // //                                   }
-          // //                               });
-          // //                       });
-          // //                   return mce_validator.form();
-          // //               }, 
-          // //               success: mce_success_cb
-          // //           };
-          // $('#mc-embedded-subscribe-form').ajaxForm(options);
+
+          // deals with form submision
+            var err_style = '';
+            var options = { errorClass: 'mce_inline_error', errorElement: 'div', errorStyle: err_style, onkeyup: function(){}, onfocusout:function(){}, onblur:function(){}  };
+              var mce_validator = self.emailForm.validate(options);
+
+              options = { url:'http://chieftrunk.us7.list-manage1.com/subscribe/post-json?u=b5c7d2ba7d35a0faa71a59dfd&id=45f52cea4b&c=?', type: 'GET', dataType: 'json', contentType: "application/json; charset=utf-8",
+                            beforeSubmit: function(){
+                                $('#mce_tmp_error_msg').remove();
+                                $('.datefield','#mc_embed_signup').each(
+                                    function(){
+                                        var txt = 'filled';
+                                        var fields = new Array();
+                                        var i = 0;
+                                        $(':text', this).each(
+                                            function(){
+                                                fields[i] = this;
+                                                i++;
+                                            });
+                                        $(':hidden', this).each(
+                                            function(){
+                                                if ( fields[0].value=='MM' && fields[1].value=='DD' && fields[2].value=='YYYY' ){
+                                                    this.value = '';
+                                                } else if ( fields[0].value=='' && fields[1].value=='' && fields[2].value=='' ){
+                                                    this.value = '';
+                                                } else {
+                                                    this.value = fields[0].value+'/'+fields[1].value+'/'+fields[2].value;
+                                                }
+                                            });
+                                    });
+                                return mce_validator.form();
+                            }, 
+                            success: self.mce_success_cb
+                        };
+              self.emailForm.ajaxForm(options);
 
             self.vents();
 
@@ -67,20 +75,42 @@ ChiefTrunk = {
             }
         },
 
+        setXLoc: function() {
+            var self = this;
+            self.xLoc = self.goSignup.offset().left - 27;
+            self.emailSignup.css('left', self.xLoc + 'px');
+        },
+
         vents: function () {
             var self = this;
+            // make sure email signup opens where it should
+            self.win.on('resize', function(){
+                self.setXLoc();
+            });
 
             // track clisks on email button
             self.email_button.on('click', function(e) {
                 e.preventDefault();
-                var xLoc = $('.go-signup').offset().left + 30;
-                self.emailSignup.css('left', xLoc + 'px');
+                self.setXLoc();
                 self.emailSignup.toggle();
+                self.socialIcons.hide(function(){
+                    self.socialShowing = false;
+                });
+            });
+
+            // clear placeholder text from email input
+            self.emailInput.on('focus', function(e){
+                $this = $(this);
+                var val = $this.val();
+                if (val === 'YOUR EMAIL') {
+                    $this.val('');
+                }
             });
 
             // track clicks on follow button
             self.followBtn.on('click', function(e) {
                 e.preventDefault();
+                self.emailSignup.hide();
                 if (self.socialShowing === false) {
                     self.socialIcons.hide(function(){
                         self.socialIcons.fadeIn();
@@ -269,13 +299,15 @@ ChiefTrunk = {
             var self = this;
 
             self.$window             = $(window);
+            self.mainHeader          = $('.main-header');
+            self.mainFooter          = $('.main-footer');
             self.productInfo         = $('.product-info');
-            self.productInfoWidth    = self.productInfo.width();
+            self.productInfoWidth    = self.productInfo.outerWidth(true);
             self.productInfoHeight   = self.productInfo.height();
             self.productImages       = $('.product-images');
             self.imageLinks          = self.productImages.find('.thmb-links');
             self.thumbs              = self.productImages.find('img');
-            self.productImagesWidth  = self.productImages.width();
+            self.productImagesWidth  = self.productImages.outerWidth(true);
             self.productImagesHeight = self.productImages.height();
             self.winHeight           = $.waypoints('viewportHeight');
             self.winWidth            = $(window).width();
@@ -396,12 +428,19 @@ ChiefTrunk = {
             self.winHeight = $.waypoints('viewportHeight');
             self.winWidth  = $(window).width();
 
-            self.availableHeight = self.winHeight - 170;
-            self.availableWidth  = self.winWidth - self.productInfoWidth - self.productImagesWidth;
+            self.availableHeight = self.winHeight - self.mainHeader.height() - self.mainFooter.height() - 40;
+            
+            self.availableWidth  = self.winWidth - self.productInfoWidth - self.productImagesWidth - 5;
+            console.log(self.availableWidth);
 
             // set image height or width
             if (self.availableHeight > self.availableWidth) {
-                self.mainImage.css({'max-width': self.availableWidth, 'height': 'auto'});
+                var imageTopMargin = (self.availableHeight - self.availableWidth) / 2
+                self.mainImage.css({
+                    'max-width': self.availableWidth, 
+                    'height': 'auto',
+                    'margin-top': imageTopMargin 
+                });
             } else {
                 var mLeft = self.availableHeight / 2;
                 self.mainImage.css({
@@ -426,9 +465,17 @@ ChiefTrunk = {
                 self.productImages.css('margin-top', topMargin);
                 self.productInfo.css('margin-top', topMargin);
                 var $thumbs = $(self.thumbs);
-                var thmbMargin = (self.productInfoHeight - $thumbs.length * 70) / 2;
+                var twoCol = $('.two-col');
+                var thmbMargin = 0;
+                if (twoCol.length === 0) {
+                    thmbMargin = (self.productInfoHeight - $thumbs.length * 80) / 2;
+                    $(self.thumbs[0]).css('margin-top', thmbMargin);
+                } else {
+                    thmbMargin = (self.productInfoHeight - Math.floor($thumbs.length / 2) * 80) / 2;
+                    self.productImages.css('padding-top', thmbMargin);
+                }
                 
-                $(self.thumbs[0]).css('margin-top', thmbMargin);
+                
 
             }
 
@@ -605,7 +652,7 @@ ChiefTrunk = {
                 self.positionGuide();
             });
 
-            self.guideBtns.on('click', function(e){
+            self.guideBtns.on('click mouseenter', function(e){
                 var $this = $(this),
                     activeGuide = $('.showing-guide');
 
@@ -621,6 +668,7 @@ ChiefTrunk = {
                 }
 
             });
+
         }
     }
 };

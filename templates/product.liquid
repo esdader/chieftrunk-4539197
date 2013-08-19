@@ -46,7 +46,7 @@
       </section>
       <img src="{{ product.featured_image | product_img_url: '1024x1024' }}" alt="{{ product.featured_image.alt | escape }}" data-giant-image="{{ product.featured_image | product_img_url: '2048x2048' }}" class="featured-img invisible">
       <div class="tool-tip ir">Click to view larger</div>
-      <section class="l-product-col product-images invisible">
+      <section class="l-product-col product-images invisible {% if product.images.size > 3 %} two-col{% endif %}">
         {% for image in product.images %}
             <a href="{{ image | product_img_url: '1024x1024' }}" class="thmb-links" data-giant-image="{{ image | product_img_url: '2048x2048' }}"><img src="{{ image | product_img_url: 'small' }}" alt="{{ image.alt | escape }}"></a>
         {% endfor %}
