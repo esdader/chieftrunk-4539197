@@ -275,6 +275,18 @@ a {
     line-height: 1.5;
 }
 
+
+/* some hacks to fix problem with content shiftig w/ scroll bars
+/  these are all set on the body
+/  some classes are used elsewhere hence the body.class-name
+*/
+/*body.care,
+body.lineage, */
+body.journal {
+    overflow: hidden;
+}
+
+
 /* mods
  * -------------------------------------------------------------------------- */
 
@@ -942,8 +954,8 @@ a {
 .care-guide {
     display: none;
     max-width: 944px;
-    height: 665px;
     position: relative;
+    height: 705px;
     margin: 0 auto;
     background: url( {{ "care_guide_infographic.jpg" | asset_url }}) no-repeat 280px 20px;
 }
@@ -1136,14 +1148,27 @@ a {
 /* journal */
 
 .journal-entry {
-    max-width: 563px;
-    margin: 96px auto 0;
+    overflow: scroll;
+    position: absolute;
+    top: 96px;
+    width: 100%;
+    margin: 0 auto;
     padding-bottom: 63px;
     font-size: 10px;
     line-height: 1.3;
     letter-spacing: 1px;
     color: #414042;
     text-align: center;
+}
+
+.journal-entry section,
+.journal-entry header {
+    max-width: 563px;
+    margin: 0 auto;
+}
+
+.journal-entry section {
+    padding-bottom: 63px;
 }
 
 .journal-entry a {
@@ -1167,7 +1192,7 @@ a {
     height: auto;
 }
 
-.journal-header {
+.journal-entry .journal-header {
     position: relative;
     margin-bottom: 20px;
     border-top: 1px solid #464646;
@@ -2044,7 +2069,7 @@ html[xmlns] .slides {display: block;}
 
     .journal .large-nav {
         margin: 5.625em 0 40px 0;
-        border-bottom: 1px solid #464646;
+        /*border-bottom: 1px solid #464646;*/
     }
 
     .large-nav .lineage {
@@ -2076,9 +2101,11 @@ html[xmlns] .slides {display: block;}
         height: 150px;
     }
 
-    .lineage-container,
-    .journal-entry {
+    .lineage-container{
         margin-top: 150px;
+    }
+    .journal-entry {
+        top: 150px;
     }
 
     .main-footer {
@@ -2095,7 +2122,7 @@ html[xmlns] .slides {display: block;}
         width: 100%;
     }
 
-    .journal-entry {
+    .journal-entry section {
         padding-bottom: 80px;
     }
 
@@ -2212,6 +2239,50 @@ html[xmlns] .slides {display: block;}
 
 
 }
+@media only screen and (max-width: 53.0625em) {
+    .product-page {
+        padding-bottom: 40px;
+    }
+
+    .product-page .featured-img {
+        padding: 40px;
+        max-width: 100%;
+        max-height: none;
+        height: auto;
+    }
+
+    .l-product-col {
+        float: none;
+        margin: 0 auto;
+    }
+
+    .product-images {
+        float: none;
+        margin: 40px auto 0;
+    }
+
+    .product-link-holder.only-big {
+        display: none;
+    }
+    .prev-next-product-nav {
+        position: relative;
+        top: 16px;
+        padding: 0 40px
+    }
+    .product-link-holder.not-big {
+        display: inline;
+        position: relative;
+        bottom: auto;
+    }
+    .product-link.prev {
+        font-size: .75em;
+        float: left;
+    }
+    .product-link.next {
+        font-size: .75em;
+        float: right;
+    }
+}
 
 @media only screen and (max-width: 35.3125em) {
     .small-screen {
@@ -2246,12 +2317,24 @@ html[xmlns] .slides {display: block;}
     }
 
     .journal-entry {
-        margin: 96px 40px 0;
+        top: 96px;
+        margin: 0 40px;
         padding-bottom: 40px;
+    }
+    .journal-entry section {
+        margin: 0 auto;
+        padding-bottom: 40px;
+    }
+    .journal-entry header {
+        margin: 0 auto;
     }
 
     .care-guide {
         padding-bottom: 40px;
+    }
+
+    .product-page {
+        padding-bottom: 120px;
     }
 }
 
@@ -2259,6 +2342,10 @@ html[xmlns] .slides {display: block;}
     .shop-section .l-horizontal-nav li {
         clear: both;
         text-align: center;
+    }
+
+    .proudct-page {
+        padding-bottom: 40px;
     }
 }
 

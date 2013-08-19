@@ -24,7 +24,8 @@
 
 <div class="container l-product-page clearfix">
     <article class="product-page">
-      
+      <img src="{{ product.featured_image | product_img_url: '1024x1024' }}" alt="{{ product.featured_image.alt | escape }}" data-giant-image="{{ product.featured_image | product_img_url: '2048x2048' }}" class="featured-img invisible">
+      <div class="tool-tip ir">Click to view larger</div>
       <section class="l-product-col product-info invisible">
         <header>
           <h1 class="product-name">{{ product.title }}</h1>
@@ -42,16 +43,18 @@
             <div class="sold-out">Sold out</div>
           {% endif %}
         </form>
-          <div class="product-link-holder"><a href="{{ prev_link }}" class="product-link prev">&lt; Previous Product</a></div>
+          <div class="product-link-holder only-big"><a href="{{ prev_link }}" class="product-link prev">&lt; Previous Product</a></div>
       </section>
-      <img src="{{ product.featured_image | product_img_url: '1024x1024' }}" alt="{{ product.featured_image.alt | escape }}" data-giant-image="{{ product.featured_image | product_img_url: '2048x2048' }}" class="featured-img invisible">
-      <div class="tool-tip ir">Click to view larger</div>
       <section class="l-product-col product-images invisible {% if product.images.size > 3 %} two-col{% endif %}">
         {% for image in product.images %}
             <a href="{{ image | product_img_url: '1024x1024' }}" class="thmb-links" data-giant-image="{{ image | product_img_url: '2048x2048' }}"><img src="{{ image | product_img_url: 'small' }}" alt="{{ image.alt | escape }}"></a>
         {% endfor %}
-        <div class="product-link-holder"><a href="{{ next_link }}" class="product-link next">Next Product &gt;</a></div>
-      </section>  
+        <div class="product-link-holder only-big"><a href="{{ next_link }}" class="product-link next">Next Product &gt;</a></div>
+      </section>
+      <div class="prev-next-product-nav not-big invisible">
+        <div class="product-link-holder not-big"><a href="{{ prev_link }}" class="product-link prev">&lt; Previous</a></div>
+        <div class="product-link-holder not-big"><a href="{{ next_link }}" class="product-link next">Next &gt;</a></div>
+      </div>
     </article>
     
 </div>

@@ -26,7 +26,19 @@ body, #main, #container, #header, #footer {
   height: 65px;
   background: url({{ 'chief_trunk_logo_dark.png' | asset_url | replace: 'http://','https://' }}) center no-repeat;
 }
-
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: normal !important;
+  letter-spacing: 3px;
+}
+label {
+  font-weight: normal !important;
+  letter-spacing: 3px;
+}
 #header > h1{
   text-align:center;
 }
@@ -77,6 +89,7 @@ body, #main, #container, #header, #footer {
   line-height: 2;
   color: #464646;
   letter-spacing: 3px;
+  font-weight: normal;
 }
 
 #products .plisthead {
@@ -97,6 +110,8 @@ body, #main, #container, #header, #footer {
   color: #fff;
   background: #464646;
   font-family: 'CenturyStd-Book', serif;
+  font-weight: normal;
+  letter-spacing: 3px;
 }
 #cost, #order-num {
   text-shadow: none !important;
@@ -136,6 +151,7 @@ body, #main, #container, #header, #footer {
   color: #464646;
   text-transform: uppercase;
   letter-spacing: 3px;
+  font-weight: normal;
 }
 
 #content .group {
@@ -211,6 +227,8 @@ body, #main, #container, #header, #footer {
   line-height: 34px;
   letter-spacing: 1px;
   color: #fff;
+  font-weight: normal !important;
+  cursor: pointer;
 }
 
 #cancel-purchase {
@@ -236,6 +254,7 @@ body, #main, #container, #header, #footer {
   font-family: 'CenturyStd-Book', serif;
   font-size: 10px;
   line-height: 1.4;
+  letter-spacing: 1px;
 }
 
 #payment-method .group {
