@@ -754,6 +754,29 @@ ChiefTrunk = {
                 self.setJournalHeight();
             });
         }
+    },
+    lineage: {
+        init: function(){
+            var self              = this;
+            self.win              = $(window);
+            self.lineageContainer = $('.lineage-container');
+            self.mainHeader       = $('.main-header');
+            self.mainFooter       = $('.main-footer');
+            
+            self.setLineageHeight();
+            self.vents();
+        },
+        setLineageHeight: function() {
+            var self = this;
+            var h = self.win.height() - self.mainHeader.outerHeight() - self.mainFooter.outerHeight();
+            self.lineageContainer.height(h);
+        },
+        vents: function() {
+            var self = this;
+            self.win.on('resize', function(e){
+                self.setLineageHeight();
+            });
+        }
     }
 
 };

@@ -284,6 +284,10 @@
                 ChiefTrunk.journal.init();
             });
         </script>
+    {% when 'lineage' %}
+        <script>
+                ChiefTrunk.lineage.init();
+        </script>
     {% else %}
     {% endcase %}
 
