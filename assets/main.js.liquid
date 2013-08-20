@@ -666,20 +666,26 @@ ChiefTrunk = {
             self.headerHeight    = $('.main-header').outerHeight();
             self.footerHeight    = $('.main-footer').height();
             self.win             = $(window);
+            self.careCon         = $('.care-container');
             self.visible         = false;
 
             self.guideBtns       = self.careGuide.find('h1');
 
+            self.setCareHeight();
             self.positionGuide();
             self.vents();
 
             if (self.win.width() <= 944) {
                 $('body').addClass('show-care');
             }
+            
+        },
 
-            // // set care guide height
-            // var guideHeight = self.win.height() - self.headerHeight - self.footerHeight;
-            // self.careGuide.height(guideHeight);
+        setCareHeight: function(){
+            var self          = this,
+                careConHeight = self.win.height() - self.headerHeight - self.footerHeight;
+
+            self.careCon.height(careConHeight);
         },
 
         positionGuide: function() {
@@ -710,6 +716,7 @@ ChiefTrunk = {
 
             self.win.on('resize', function(){
                 self.positionGuide();
+                self.setCareHeight();
             });
 
             self.guideBtns.on('click mouseenter', function(e){
