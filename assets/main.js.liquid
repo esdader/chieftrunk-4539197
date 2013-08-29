@@ -517,8 +517,9 @@ ChiefTrunk = {
                 });
             });
 
-            var cc = $('.cart-count'),
-                count = parseInt(cc.text(), 10),
+            var cc       = $('.cart-count'),
+                miniCC = $('.mini-cart-count'),
+                count    = parseInt(cc.text(), 10),
                 newCount;
 
             if (isNaN(count)) {
@@ -528,6 +529,7 @@ ChiefTrunk = {
             }
 
             cc.text(" " + newCount);
+            miniCC.text(" " + newCount);
         },
 
         displayItems: function() {
@@ -873,7 +875,7 @@ ChiefTrunk = {
                 console.log('less one');
                 if (Modernizr.touch) {
                     console.log('touch');
-                    if ( self.win.width() < 565) {
+                    if ( self.win.width() < 570) {
                         landScape = true;
                         console.log('touch');
                     }

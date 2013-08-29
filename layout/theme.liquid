@@ -25,7 +25,7 @@
     <meta name="description" content="{{ shop.description | strip_html | strip_newlines | truncate: maxmeta | escape}}" />
 {% endif %}
     {% if page.handle == 'lineage' %}
-        <meta name="viewport" content="width=790">
+        <meta name="viewport" content="width=1024">
     {% else %}
         <meta name="viewport" content="width=device-width, initial-scale=1">
     {% endif %}
@@ -116,8 +116,18 @@
                 <ul class="small-screen mini-nav-links">
                     {% for link in linklists.small-screen-nav.links %}
                         {% assign link_handle = link.title | handleize %}
-                        {% unless link_handle == 'subscribe' %}
-                            <li{% if link_handle == 'follow' %} class="mini-subscribe"{% endif %}><a href="{{ link.url }}" title="{{ link.title }}" class="{{ link_handle }}{% if link.active %} active{% endif %}">{{ link.title }}</a>
+
+                        {% if link_handle == 'subscribe' %}
+                            <li class="mini-go-signup">
+                                <a href="#" class="email_box" >
+                                    <span class="mini-email_button">Subscribe</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li{% if link_handle == 'follow' %} class="mini-subscribe"{% endif %}>
+                                <a href="{{ link.url }}" title="{{ link.title }}" class="{{ link_handle }}{% if link.active %} active{% endif %}">
+                                    {{ link.title }}{% if link_handle == 'cart' %}<span class="mini-cart-count">{% if cart.item_count > 0 %} {{ cart.item_count }}{% endif %}</span>{% endif %}
+                                </a>
                                 {% if link_handle == 'follow' %}
                                     <div class="social-media">
                                         <ul class="l-horizontal-nav">
@@ -128,13 +138,7 @@
                                     </div>
                                 {% endif %}
                             </li>
-                        {% else %}
-                            <li class="mini-go-signup">
-                                <a href="#" class="email_box" >
-                                    <span class="mini-email_button">Subscribe</span>
-                                </a>
-                            </li>
-                        {% endunless %}
+                        {% endif %}
                     {% endfor %}
                 </ul>
             </div>
