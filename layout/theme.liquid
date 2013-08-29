@@ -24,7 +24,11 @@
 {% elsif template == 'index' and shop.description != '' %}
     <meta name="description" content="{{ shop.description | strip_html | strip_newlines | truncate: maxmeta | escape}}" />
 {% endif %}
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% if page.handle == 'lineage' %}
+        <meta name="viewport" content="width=790">
+    {% else %}
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% endif %}
 
     {{ 'normalize.css' | asset_url | stylesheet_tag }}
     {{ 'main.css' | asset_url | stylesheet_tag }}
@@ -78,8 +82,14 @@
 {% endif %}
 <header class="main-header">
     <nav class="main-nav clearfix">
-        <a href="{{ shop.url }}" class="main-logo logo-dark"><img src="{{ 'chief_trunk_logo_dark.png' | asset_url }}" alt="Chief Trunk logo"></a>
-        <a href="{{ shop.url }}" class="main-logo logo-light"><img src="{{ 'chief_trunk_logo.png' | asset_url }}" alt="Chief Trunk logo"></a>
+        <a href="{{ shop.url }}" class="main-logo logo-dark"><img src="{{ 'CT_Logo_Gray.svg' | asset_url }}" width="284px" height="19px" id="dark-logo" alt="Chief Trunk logo"></a>
+        <a href="{{ shop.url }}" class="main-logo logo-light"><img src="{{ 'CT_Logo_White.svg' | asset_url }}"  width="284px" height="19px"  id="white-logo" alt="Chief Trunk logo"></a>
+        <script>
+            if (!Modernizr.svg) {
+                var img = document.getElementById("dark-logo").src="{{ 'chief_trunk_logo_dark.png' | asset_url }}";
+                var img2 = document.getElementById("white-logo").src="{{ 'chief_trunk_logo.png' | asset_url }}";
+            }
+        </script>
         <ul class="l-horizontal-nav large-nav not-small-screen">
             {% for link in linklists.main-menu.links %}
                 {% assign link_handle = link.title | handleize %}
@@ -94,22 +104,37 @@
                 {% endif %}
                 <li class="{{ link.title | handleize }}{% if link.active %} active{% endif %}{{ make_active }}">
                     <a href="{{ link.url }}" title="{{ link.title }}">
-                        {{ link.title }}{% if link_handle == 'cart' %}{% if cart.item_count > 0 %} {{ cart.item_count }}{% endif %}{% endif %}
+                        {{ link.title }}{% if link_handle == 'cart' %}<span class="cart-count">{% if cart.item_count > 0 %} {{ cart.item_count }}{% endif %}</span>{% endif %}
                     </a>
                 </li>
             {% endfor %}
         </ul>
         
         <div class="l-mini-nav-container">
-            <div class="mini-nav-btn small-screen">Menu</div>
+            <a href="#" class="mini-nav-btn small-screen">Menu</a>
             <div class="mini-nav">
                 <ul class="small-screen mini-nav-links">
                     {% for link in linklists.small-screen-nav.links %}
-                        <li class="{{ link.title | handleize }}{% if link.active %} active{% endif %}">
-                            <a href="{{ link.url }}" title="{{ link.title }}">
-                                {{ link.title }}
-                            </a>
-                        </li>
+                        {% assign link_handle = link.title | handleize %}
+                        {% unless link_handle == 'subscribe' %}
+                            <li{% if link_handle == 'follow' %} class="mini-subscribe"{% endif %}><a href="{{ link.url }}" title="{{ link.title }}" class="{{ link_handle }}{% if link.active %} active{% endif %}">{{ link.title }}</a>
+                                {% if link_handle == 'follow' %}
+                                    <div class="social-media">
+                                        <ul class="l-horizontal-nav">
+                                            <li><a href="https://www.facebook.com/ChiefTrunk" class="facebook ir" target="_blank">Follow on Facebook</a></li>
+                                            <li><a href="https://twitter.com/ChiefTrunk" class="twitter ir"  target="_blank">Follow on Twitter</a></li>
+                                            <li><a href="#" class="social-close ir">Close</a></li/>
+                                        </ul>
+                                    </div>
+                                {% endif %}
+                            </li>
+                        {% else %}
+                            <li class="mini-go-signup">
+                                <a href="#" class="email_box" >
+                                    <span class="mini-email_button">Subscribe</span>
+                                </a>
+                            </li>
+                        {% endunless %}
                     {% endfor %}
                 </ul>
             </div>
@@ -147,7 +172,7 @@
         </ul>
     </nav>
 </footer>
-<div class="copyright small-screen">&copy; {{ 'now' | date: "%Y" }} Chief Trunk. All rights reserved.</div>
+
 <div class="emailsignup"  style="display:none;" >
   <form action="http://chieftrunk.us7.list-manage1.com/subscribe/post?u=b5c7d2ba7d35a0faa71a59dfd&amp;id=45f52cea4b" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank">
     <fieldset style="border-style:none;">
@@ -225,45 +250,55 @@
         </script>
     {% when 'policies' %}
         <script>
-            ChiefTrunk.giantImage.init();
-            $('.flexslider').flexslider({
-                animation: "fade",
-                controlNav: false,
-                directionNav: false
-            });
+            if ($(window).width() > 565) {
+                ChiefTrunk.giantImage.init();
+                $('.flexslider').flexslider({
+                    animation: "fade",
+                    controlNav: false,
+                    directionNav: false
+                });
+            }  
             ChiefTrunk.adminPages.init();                                                       
         </script>
     {% when 'privacy' %}
         <script>
-            ChiefTrunk.giantImage.init();
-            $('.flexslider').flexslider({
-                animation: "fade",
-                controlNav: false,
-                directionNav: false
-            });
+            if ($(window).width() > 565) {
+                ChiefTrunk.giantImage.init();
+                $('.flexslider').flexslider({
+                    animation: "fade",
+                    controlNav: false,
+                    directionNav: false
+                });
+            } 
             ChiefTrunk.adminPages.init();
         </script>
     {% when 'returns' %}
         <script>
-            ChiefTrunk.giantImage.init();
-            $('.flexslider').flexslider({
-                animation: "fade",
-                controlNav: false,
-                directionNav: false
+            if ($(window).width() > 565) {
+                ChiefTrunk.giantImage.init();
+                $('.flexslider').flexslider({
+                    animation: "fade",
+                    controlNav: false,
+                    directionNav: false
+                });
+            } 
+            $(window).load(function() {
+                ChiefTrunk.adminPages.init();
             });
-            ChiefTrunk.adminPages.init();
         </script>
     {% when 'contact' %}
         <script>
             var config = {
                 shortenTop: true
             }
-            ChiefTrunk.giantImage.init(config);
-            $('.flexslider').flexslider({
-                animation: "fade",
-                controlNav: false,
-                directionNav: false
-            });
+            if ($(window).width() > 565) {
+                ChiefTrunk.giantImage.init(config);
+                $('.flexslider').flexslider({
+                    animation: "fade",
+                    controlNav: false,
+                    directionNav: false
+                });
+            } 
             ChiefTrunk.adminPages.init();
         </script>
     {% when 'products' %}

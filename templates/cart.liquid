@@ -1,46 +1,42 @@
 {% if cart.items == empty %} 
     <div class="empty-cart-container">
       <p class="cart-empty">Your cart is currently empty.</p>
+      <div class="copyright small-screen">&copy; {{ 'now' | date: "%Y" }} Chief Trunk. All rights reserved.</div>
     </div>
   {% else %}
   <div class="cart-container">
     <form action="/cart" method="post" id="cartform" class="clearfix">
-      <table class="cart-table">
-        {% if cart.items == empty %}
-          <tr><td colspan="4">
-        {% endif %}
+      <div class="cart-items clearfix">
         {% for item in cart.items %}
-          <tr>
-              <td class="cart-thmb">
-                 <img src="{{ item.product.featured_image | product_img_url: 'small' }}"  alt="{{ item.product.title }}" />
-              </td>
-              <td class="cart-title">
+          <div class="cart-item clearfix">
+            <div class="cart-item-thmb">
+              <img src="{{ item.product.featured_image | product_img_url: 'small' }}"  alt="{{ item.product.title }}" />
+            </div>
+            <div class="cart-item-details">
+              <div class="cart-item-info">
                 {{ item.title }}
-              </td>
-              <td class="cart-price">
-                <span class="cart-line">{{ item.price | money }}</span>
+                <span class="cart-item-price">{{ item.price | money }}</span>
+              </div>
+              <div class="cart-item-actions">
                 Quantity: <input class="text quantity update-quantity" type="text" size="1" id="updates_{{ item.id }}" name="updates[]" value="{{ item.quantity }}" class="replace" />
-              </td>
-              <td class="cart-actions">
                 <span class="cart-line"><input type="submit" name="update" value="Update" class="cart-btn update-cart" /></span>
-                <a class="cart-btn remove-from-cart" href="/cart/change?line={{ forloop.index }}&quantity=0">Remove</a>
-              </td>
-          </tr>
-        {% endfor %}
-        <tr class="cart-totals-row">
-          <td colspan="2" class="cart-site-links">
-            <a href="/pages/returns" class="cart-btn">Return</a> <a href="/pages/policies" class="cart-btn">Policy</a>
-          </td>
-          <td class="cart-totals">
-            Subtotal
-          </td>
-          <td class="cart-totals">
-            {{ cart.total_price | money }}
-          </td>
-        </tr>
-      </table>
-      <a href="/" class="cart-to-shop cart-btn">Back to Site</a>
+                  <a class="cart-btn remove-from-cart" href="/cart/change?line={{ forloop.index }}&quantity=0">Remove</a>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+      </div>
+      <div class="cart-totals-row clearfix">
+        <div class="cart-site-links">
+          <a href="/pages/returns" class="cart-btn">Return</a> <a href="/pages/policies" class="cart-btn">Policy</a>
+          <a href="/" class="cart-to-shop cart-btn">Back to Site</a>
+        </div>
+        <div class="cart-subtotal">
+          Subtotal {{ cart.total_price | money }}
+        </div>
+      </div>
       <input type="submit" name="checkout" class="cart-btn checkout-btn" value="Checkout" />
     </form>
+    <div class="copyright small-screen">&copy; {{ 'now' | date: "%Y" }} Chief Trunk. All rights reserved.</div>
   </div>
 {% endif %}

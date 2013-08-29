@@ -6,22 +6,31 @@ ChiefTrunk = {
 
         init: function () {
             var self = this;
-
-            self.miniNavBtn    = $('.mini-nav-btn');
-            self.miniNav       = $('.l-mini-nav-container');
-            self.followBtn     = $('.footer-nav').find('.follow');
-            self.socialIcons   = $('.social-media');
-            self.socialShowing = false;
-            self.win           = $(window);
-
+            
+            self.miniNavBtn        = $('.mini-nav-btn');
+            self.miniNav           = $('.l-mini-nav-container');
+            self.miniNavList       = $('.mini-nav');
+            self.followBtn         = $('.footer-nav').find('.follow');
+            self.miniFollowBtn     = $('.mini-nav').find('.follow');
+            self.socialIcons       = $('.footer-nav').find('.social-media');
+            self.miniSocialIcons   = $('.mini-nav').find('.social-media');
+            self.socialClose       = $('.social-close');
+            self.socialShowing     = false;
+            self.miniSocialShowing = false;
+            self.win               = $(window);
+            
             self.email_button  = $('.email_button');
+            self.mini_email_button  = $('.mini-email_button');
             self.emailSignup   = $('.emailsignup');
 
-            self.goSignup      = $('.go-signup');
-            self.xLoc          = 0;
+            self.goSignup        = $('.go-signup');
+            self.miniGoSignup    = $('.mini-go-signup');
+            self.xLoc            = 0;
+            self.movedToMiniNave = false;
             
             self.emailForm     = $("#mc-embedded-subscribe-form");
             self.emailInput    = $("#mce-EMAIL");
+
 
 
           // deals with form submision
@@ -35,7 +44,7 @@ ChiefTrunk = {
                                 $('.datefield','#mc_embed_signup').each(
                                     function(){
                                         var txt = 'filled';
-                                        var fields = new Array();
+                                        var fields = [];
                                         var i = 0;
                                         $(':text', this).each(
                                             function(){
@@ -44,9 +53,9 @@ ChiefTrunk = {
                                             });
                                         $(':hidden', this).each(
                                             function(){
-                                                if ( fields[0].value=='MM' && fields[1].value=='DD' && fields[2].value=='YYYY' ){
+                                                if ( fields[0].value ==='MM' && fields[1].value ==='DD' && fields[2].value ==='YYYY' ){
                                                     this.value = '';
-                                                } else if ( fields[0].value=='' && fields[1].value=='' && fields[2].value=='' ){
+                                                } else if ( fields[0].value ==='' && fields[1].value ==='' && fields[2].value ==='' ){
                                                     this.value = '';
                                                 } else {
                                                     this.value = fields[0].value+'/'+fields[1].value+'/'+fields[2].value;
@@ -54,7 +63,7 @@ ChiefTrunk = {
                                             });
                                     });
                                 return mce_validator.form();
-                            }, 
+                            },
                             success: self.mce_success_cb
                         };
               self.emailForm.ajaxForm(options);
@@ -75,8 +84,21 @@ ChiefTrunk = {
 
         setXLoc: function() {
             var self = this;
-            self.xLoc = self.goSignup.offset().left - 27;
-            self.emailSignup.css('left', self.xLoc + 'px');
+            if (self.movedToMiniNave === false) {
+                self.xLoc = self.goSignup.offset().left - 27;
+                self.emailSignup.css('left', self.xLoc + 'px');
+            }
+        },
+
+        placeMiniEmailBtn: function() {
+            var self = this,
+                xLoc = self.miniGoSignup.offset().left + 45,
+                yLoc = self.miniGoSignup.offset().top;
+                
+                self.emailSignup.css({
+                    'left': xLoc,
+                    'top': yLoc
+                });
         },
 
         vents: function () {
@@ -89,11 +111,26 @@ ChiefTrunk = {
             // track clisks on email button
             self.email_button.on('click', function(e) {
                 e.preventDefault();
+                if(self.movedToMiniNave === true) {
+                    self.emailSignup.appendTo($('body'));
+                    self.movedToMiniNave = false;
+                }
                 self.setXLoc();
                 self.emailSignup.toggle();
                 self.socialIcons.hide(function(){
                     self.socialShowing = false;
                 });
+            });
+
+            // track clicks on mini nav email button
+            self.mini_email_button.on('click', function(e){
+                e.preventDefault();
+                if (self.movedToMiniNave === false) {
+                    self.emailSignup.prependTo(self.miniGoSignup);
+                    self.emailSignup.css('left', '45px');
+                    self.movedToMiniNave = true;
+                }
+                self.emailSignup.toggle();
             });
 
             // clear placeholder text from email input
@@ -121,9 +158,34 @@ ChiefTrunk = {
                 
             });
 
+            // track clicks on mini follow button
+            self.miniFollowBtn.on('click', function(e) {
+                e.preventDefault();
+                self.emailSignup.hide();
+                if (self.miniSocialShowing === false) {
+                    self.miniSocialIcons.hide(function(){
+                        self.miniSocialIcons.fadeIn();
+                        self.miniSocialShowing = true;
+                    });
+                } else {
+                    self.miniSocialIcons.fadeOut();
+                    self.miniSocialShowing = false;
+                }
+                
+            });
+
+            self.socialClose.on('click', function(e){
+                e.preventDefault();
+                self.miniSocialIcons.fadeOut();
+                self.miniSocialShowing = false;
+            });
+
             // track click on min nav button
             self.miniNavBtn.on('click', function(e) {
                 e.preventDefault();
+                // self.miniNavList.hammer().on('tap', function(e) {
+                //     e.stopImediatePropagation();
+                // });
                 self.miniNav.addClass('is-open');
                 self.trackOutsideClick();
             });
@@ -137,7 +199,11 @@ ChiefTrunk = {
                 $('html').off('click');
             });
 
-            self.miniNavBtn.on('click', function(e){
+            self.miniNav.on('click', function(e){
+                e.stopPropagation();
+            });
+
+            self.emailSignup.on('click', function(e){
                 e.stopPropagation();
             });
         }
@@ -315,15 +381,33 @@ ChiefTrunk = {
             self.giantImageHolder    = $('.giant-image-holder');
             self.giantImage          = self.giantImageHolder.find('img');
             self.invisibles          = $('.invisible');
+            self.bod                 = $('body');
             self.tallestCol          = 0;
             self.availableWidth      = 0;
             self.availableHeight     = 0;
             self.colMargin           = 0;
 
-            // kick off funtions
+            self.productForm         = $('#product-form');
+            self.add_btn             = $('#add');
+
+
+            self.productFormOptions = {
+                url:'/cart/add.js',
+                type: 'POST',
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                beforeSubmit: function(){
+                    self.add_btn.hide();
+                },
+                success: self.itemAdded
+            };
+              
+
+            // kick off functions
             if (self.winWidth > 849) {
                 self.initializeProductPage();
             } else {
+                self.bod.addClass('small-product-view');
                 self.displayItems();
             }
             
@@ -334,9 +418,9 @@ ChiefTrunk = {
         vents: function () {
             var self = this;
 
-            // $(window).on('resize', function(e) {
-            //     self.redoPageLayout();
-            // });
+            $(window).on('resize', function(e) {
+                self.redoPageLayout(e, self);
+            });
 
             self.imageLinks.on('click', function(e){
                 e.preventDefault();
@@ -354,73 +438,96 @@ ChiefTrunk = {
                     
             });
 
+            if ($(window).width() > 940 ) {
+                //Tooltips
+                self.mainImage.hover(function(){
+                    self.tip.show(); //Show tooltip
+                }, function() {
+                    self.tip.hide(); //Hide tooltip
+                })
+                .mousemove(function(e) {
+                    //Change these numbers to move the tooltip offset
+                    var mousex = e.pageX + 16; //Get X coodrinates
+                    var mousey = e.pageY + 16 - 107; //Get Y coordinates. 
+                    var tipWidth = self.tip.width(); //Find width of tooltip
+                    var tipHeight = self.tip.height(); //Find height of tooltip
+                    
+                    //Distance of element from the right edge of viewport
+                    var tipVisX = $(window).width() - (mousex + tipWidth);
+                    //Distance of element from the bottom of viewport
+                    var tipVisY = $(window).height() - (mousey + tipHeight);
+                    if (tipVisX < 20) { //If tooltip exceeds the X coordinate of viewport
+                        mousex = e.pageX - tipWidth - 20;
+                    } if (tipVisY < 20) { //If tooltip exceeds the Y coordinate of viewport
+                        mousey = e.pageY - tipHeight - 20 - 107;
+                    }
+                    //Absolute position the tooltip according to mouse position
+                    self.tip.css({  top: mousey, left: mousex });
+                })
+                .on('click', function(e){
+                    e.preventDefault();
 
-            //Tooltips
-            self.mainImage.hover(function(){
-                self.tip.show(); //Show tooltip
-            }, function() {
-                self.tip.hide(); //Hide tooltip
-            })
-            .mousemove(function(e) {
-                //Change these numbers to move the tooltip offset
-                var mousex = e.pageX + 16; //Get X coodrinates
-                var mousey = e.pageY + 16 - 107; //Get Y coordinates. 
-                var tipWidth = self.tip.width(); //Find width of tooltip
-                var tipHeight = self.tip.height(); //Find height of tooltip
-                
-                //Distance of element from the right edge of viewport
-                var tipVisX = $(window).width() - (mousex + tipWidth);
-                //Distance of element from the bottom of viewport
-                var tipVisY = $(window).height() - (mousey + tipHeight);
-                if (tipVisX < 20) { //If tooltip exceeds the X coordinate of viewport
-                    mousex = e.pageX - tipWidth - 20;
-                } if (tipVisY < 20) { //If tooltip exceeds the Y coordinate of viewport
-                    mousey = e.pageY - tipHeight - 20 - 107;
-                }
-                //Absolute position the tooltip according to mouse position
-                self.tip.css({  top: mousey, left: mousex });
-            })
-            .on('click', function(e){
-                e.preventDefault();
+                    var $this = $(this),
+                        earl  = self.mainImage.data('giant-image');
 
-                var $this = $(this),
-                    earl  = self.mainImage.data('giant-image');
+                    self.giantImage.attr('src', earl);
+                    self.giantImageHolder.fadeIn();
+                });
 
-                self.giantImage.attr('src', earl);
-                self.giantImageHolder.fadeIn();
+                self.giantImageHolder.hover(function(){
+                    self.close_btn.show(); //Show tooltip
+                }, function() {
+                    self.close_btn.hide(); //Hide tooltip
+                })
+                .mousemove(function(e) {
+                    //Change these numbers to move the tooltip offset
+                    var mousex = e.pageX + 16; //Get X coodrinates
+                    var mousey = e.pageY + 16; //Get Y coordinates. 
+                    var tipWidth = self.close_btn.width(); //Find width of tooltip
+                    var tipHeight = self.close_btn.height(); //Find height of tooltip
+                    
+                    //Distance of element from the right edge of viewport
+                    var tipVisX = $(window).width() - (mousex + tipWidth);
+                    //Distance of element from the bottom of viewport
+                    var tipVisY = $(window).height() - (mousey + tipHeight);
+                    if (tipVisX < 20) { //If tooltip exceeds the X coordinate of viewport
+                        mousex = e.pageX - tipWidth - 20;
+                    } if (tipVisY < 20) { //If tooltip exceeds the Y coordinate of viewport
+                        mousey = e.pageY - tipHeight - 20;
+                    }
+                    //Absolute position the tooltip according to mouse position
+                    self.close_btn.css({  top: mousey, left: mousex });
+                })
+                .on('click', function(e){
+                    e.preventDefault();
+
+                    var $this = $(this);
+                    $this.fadeOut();
+                });
+            }
+
+            self.productForm.ajaxForm(self.productFormOptions);
+
+        },
+
+        itemAdded: function() {
+            $('.adding-msg').delay(800).fadeOut(function(){
+                $('.added-msg').fadeIn(function(){
+                    $('#add').delay(2000).fadeIn();
+                });
             });
 
-            self.giantImageHolder.hover(function(){
-                self.close_btn.show(); //Show tooltip
-            }, function() {
-                self.close_btn.hide(); //Hide tooltip
-            })
-            .mousemove(function(e) {
-                //Change these numbers to move the tooltip offset
-                var mousex = e.pageX + 16; //Get X coodrinates
-                var mousey = e.pageY + 16; //Get Y coordinates. 
-                var tipWidth = self.close_btn.width(); //Find width of tooltip
-                var tipHeight = self.close_btn.height(); //Find height of tooltip
-                
-                //Distance of element from the right edge of viewport
-                var tipVisX = $(window).width() - (mousex + tipWidth);
-                //Distance of element from the bottom of viewport
-                var tipVisY = $(window).height() - (mousey + tipHeight);
-                if (tipVisX < 20) { //If tooltip exceeds the X coordinate of viewport
-                    mousex = e.pageX - tipWidth - 20;
-                } if (tipVisY < 20) { //If tooltip exceeds the Y coordinate of viewport
-                    mousey = e.pageY - tipHeight - 20;
-                }
-                //Absolute position the tooltip according to mouse position
-                self.close_btn.css({  top: mousey, left: mousex });
-            })
-            .on('click', function(e){
-                e.preventDefault();
+            var cc = $('.cart-count'),
+                count = parseInt(cc.text(), 10),
+                newCount;
 
-                var $this = $(this);
-                $this.fadeOut();
-            });
+            if (isNaN(count)) {
+                newCount = "1";
+            } else {
+                newCount = count + 1;
+            }
 
+            cc.text(" " + newCount);
         },
 
         displayItems: function() {
@@ -446,27 +553,29 @@ ChiefTrunk = {
             
             self.availableWidth  = self.winWidth - self.productInfoWidth - self.productImagesWidth - 5;
 
+
             // set image height or width
             if (self.availableHeight > self.availableWidth) {
-                var imageTopMargin = (self.availableHeight - self.availableWidth) / 2
+                var imageTopMargin = (self.availableHeight - self.availableWidth) / 2;
                 self.mainImage.css({
-                    'max-width': self.availableWidth, 
+                    'max-width': self.availableWidth,
                     'height': 'auto',
-                    'margin-top': imageTopMargin 
+                    'margin-top': imageTopMargin,
+                    'max-height': 'none'
                 });
             } else {
-                var mLeft = self.availableHeight / 2;
+                var mLeft = ((self.winWidth - self.availableHeight) / 2 - self.productInfoWidth) / 2;
+                if (mLeft < 40) {
+                    mLeft = 40;
+                    self.availableHeight -= 80;
+                }
                 self.mainImage.css({
                         'max-height': self.availableHeight,
                         'width': 'auto',
-                        'position': 'absolute',
-                        'left': '50%',
-                        'margin-left': -self.availableHeight / 2
-                        
+                        'max-width': 'none'
                         });
-                self.colMargin = (self.availableWidth - self.availableHeight) / 4;
-                self.productInfo.css('margin-left', self.colMargin);
-                self.productImages.css('margin-right', self.colMargin);
+                self.productInfo.css('margin-left', mLeft + 'px');
+                self.productImages.css('margin-right', mLeft + 'px');
 
             }
 
@@ -475,6 +584,9 @@ ChiefTrunk = {
             if (self.productInfoHeight > self.productImagesHeight) {
                 self.productImages.css('height', self.productInfoHeight);
                 var topMargin = (self.availableHeight - self.productInfoHeight) / 2;
+                if (topMargin < 0 ) {
+                    topMargin = 0;
+                }
                 self.productImages.css('margin-top', topMargin);
                 self.productInfo.css('margin-top', topMargin);
                 var $thumbs = $(self.thumbs);
@@ -496,59 +608,91 @@ ChiefTrunk = {
 
         },
 
-        redoPageLayout: function() {
-            var self = this;
+        redoPageLayout: function(e, self) {
 
-            self.winHeight = $.waypoints('viewportHeight');
+            self.winHeight = $(window).height();
             self.winWidth  = $(window).width();
 
-            self.availableHeight = self.winHeight - self.mainHeader.height() - self.mainFooter.height() - 40;
-            
-            self.availableWidth  = self.winWidth - self.productInfoWidth - self.productImagesWidth - 5;
-
-            // set image height or width
-            if (self.availableHeight > self.availableWidth) {
-                var imageTopMargin = (self.availableHeight - self.availableWidth) / 2
-                self.mainImage.css({
-                    'max-width': self.availableWidth, 
-                    'height': 'auto',
-                    'margin-top': imageTopMargin 
-                });
+            if (self.winWidth > 849) {
+                if (self.bod.hasClass('small-product-view')) {
+                    self.bod.removeClass('small-product-view');
+                    self.productImagesWidth = self.productImages.outerWidth(true);
+                    self.productInfoWidth = self.productInfo.outerWidth(true);
+                    // self.mainImage.removeAttr('style');
+                    // self.productInfo.removeAttr('style');
+                    // self.productImages.removeAttr('style');
+                }
             } else {
-                var mLeft = self.availableHeight / 2;
-                self.mainImage.css({
-                        'max-height': self.availableHeight,
-                        'width': 'auto',
+                if (self.bod.hasClass('small-product-view') === false) {
+                    self.bod.addClass('small-product-view');
+                    self.mainImage.removeAttr('style');
+                    self.productInfo.removeAttr('style');
+                    self.productImages.removeAttr('style');
+                    self.productImages.find('img').removeAttr('style');
+                }
+            }
+
+            if (self.winWidth > 849) {
+                self.availableHeight = self.winHeight - self.mainHeader.height() - self.mainFooter.height() - 40;
+                
+                self.availableWidth  = self.winWidth - self.productInfoWidth - self.productImagesWidth - 5;
+
+                // set image height or width
+                if (self.availableHeight > self.availableWidth) {
+                    var imageTopMargin = (self.availableHeight - self.availableWidth) / 2;
+                    var temp = 
+                    self.mainImage.css({
+                        'max-width': self.availableWidth,
+                        'height': 'auto',
+                        'margin-top': imageTopMargin,
+                        'max-height': 'none',
                         'position': 'absolute',
                         'left': '50%',
-                        'margin-left': -self.availableHeight / 2
-                        
-                        });
-                self.colMargin = (self.availableWidth - self.availableHeight) / 4;
-                self.productInfo.css('margin-left', self.colMargin);
-                self.productImages.css('margin-right', self.colMargin);
-
-            }
-
-            // center columns within page
-
-            if (self.productInfoHeight > self.productImagesHeight) {
-                self.productImages.css('height', self.productInfoHeight);
-                var topMargin = (self.availableHeight - self.productInfoHeight) / 2;
-                self.productImages.css('margin-top', topMargin);
-                self.productInfo.css('margin-top', topMargin);
-                var $thumbs = $(self.thumbs);
-                var twoCol = $('.two-col');
-                var thmbMargin = 0;
-                if (twoCol.length === 0) {
-                    thmbMargin = (self.productInfoHeight - $thumbs.length * 80) / 2;
-                    $(self.thumbs[0]).css('margin-top', thmbMargin);
+                        'margin-left': -self.availableWidth / 2 + 'px'
+                    });
                 } else {
-                    thmbMargin = (self.productInfoHeight - Math.floor($thumbs.length / 2) * 80) / 2;
-                    self.productImages.css('padding-top', thmbMargin);
-                } 
+                    var mLeft = ((self.winWidth - self.availableHeight) / 2 - self.productInfoWidth) / 2;
+                    if (mLeft < 40) {
+                        mLeft = 40;
+                        self.availableHeight -= 80;
+                    }
+                    self.mainImage.css({
+                            'max-height': self.availableHeight,
+                            'width': 'auto',
+                            'max-width': 'none',
+                            'position': 'absolute',
+                            'left': '50%',
+                            'margin-left': -self.availableHeight / 2 + 'px'
+                            });
+                    self.productInfo.css('margin-left', mLeft + 'px');
+                    self.productImages.css('margin-right', mLeft + 'px');
 
+                }
+
+                // center columns within page
+
+                if (self.productInfoHeight > self.productImagesHeight) {
+                    self.productImages.css('height', self.productInfoHeight);
+                    var topMargin = (self.availableHeight - self.productInfoHeight) / 2;
+                    if (topMargin < 0 ) {
+                        topMargin = 0;
+                    }
+                    self.productImages.css('margin-top', topMargin);
+                    self.productInfo.css('margin-top', topMargin);
+                    var $thumbs = $(self.thumbs);
+                    var twoCol = $('.two-col');
+                    var thmbMargin = 0;
+                    if (twoCol.length === 0) {
+                        thmbMargin = (self.productInfoHeight - $thumbs.length * 80) / 2;
+                        $(self.thumbs[0]).css('margin-top', thmbMargin);
+                    } else {
+                        thmbMargin = (self.productInfoHeight - Math.floor($thumbs.length / 2) * 80) / 2;
+                        self.productImages.css('padding-top', thmbMargin);
+                    }
+
+                }
             }
+
         }
     },
 
@@ -580,80 +724,117 @@ ChiefTrunk = {
     adminPages: {
         init: function () {
             var self = this;
+            
+            self.win                 = $(window);
+            self.header              = $('.main-header');
+            self.headerHeight        = self.header.outerHeight();
+            self.footer              = $('main-footer');
+            self.footerHeight        = self.footer.outerHeight();
+            self.availableHeight     = 0;
+            self.modal               = $('.callout-article');
+            self.modalHeight         = self.modal.height();
+            self.initialModalHeight  = self.modalHeight;
+            self.articleHeaderHeight = self.modal.find('.callout-header').outerHeight();
+            self.articleFooterHeight = self.modal.find('.callout-footer').outerHeight();
+            self.articleBody         = self.modal.find('.callout-body');
+            self.articleBodyHeight   = 0;
 
-            self.modalArticle       = $('.callout-article');
-            self.modalArticleHeight = self.modalArticle.height();
-            self.initialModalHeight = self.modalArticleHeight;
-            self.scrollContent      = $('.scroll-content');
-            self.modalHeaderHeight  = $('.callout-header').outerHeight();
-            self.modalBody          = $('.callout-body');
-            self.win                = $(window);
-            self.modalFooterHeight  = $('.callout-footer').outerHeight();
-            self.mainHeaderHeight   = $('.main-nav').outerHeight();
-            self.mainFooterHeight   = $('.main-footer').outerHeight();
+            self.isShowing   = false;
+            self.isScrolling = false;
 
-            self.checkHeights();
             self.vents();
+            self.checkInitialHeights();
+
         },
 
-        vents: function() {
+        checkInitialHeights: function() {
             var self = this;
-
-
-            self.win.on('resize', function() {
-                self.winHeight = self.win.height();
-                self.curAvailable = self.winHeight - self.mainHeaderHeight - self.mainFooterHeight - 40;
-
-                if (self.initialModalHeight > self.curAvailable) {
-                    self.setBodyHeight();
-                    
+            if (self.win.width() > 565 ) {
+                self.availableHeight = self.win.height() - self.headerHeight - self.footerHeight - 40;
+                if (self.availableHeight > self.initialModalHeight) {
+                    self.positionModal();
                 } else {
-                    self.modalBody.css('height', 'auto');
-                    self.positionFauxModal();
+                    self.setBodyHeight();
                 }
-            });
+            } else {
+                self.modal.addClass('not-scrollable');
+                $('body').removeClass('alt-color');
+                self.header.css('background-color', '#fff');
+
+                if (self.isShowing === false) {
+                    self.modal.fadeIn();
+                    self.isShowing = true;
+                }
+            }
         },
 
-        checkHeights: function() {
-            var self = this;
+        positionModal: function() {
+            var self = this,
+                mTop = (self.availableHeight - self.modalHeight) / 2;
 
-            self.winHeight = self.win.height();
-            self.curAvailable = self.winHeight - self.mainHeaderHeight - self.mainFooterHeight - 40;
-
-            if ( self.curAvailable > self.modalArticleHeight) {
-                self.positionFauxModal();
-            } else {
-                self.setBodyHeight();
-                self.modalBody.mCustomScrollbar({
-                    theme:"dark",
-                    autoDraggerLength: false
-                });
+            if (self.modal.hasClass('not-scrollable') === false) {
+                self.modal.addClass('not-scrollable');
             }
+            self.modal.css('margin-top', mTop + "px");
+
+            if (self.isShowing === false) {
+                self.modal.fadeIn();
+                self.isShowing = true;
+            }
+
 
         },
 
         setBodyHeight: function() {
             var self = this;
 
-            self.modalBodyHeight = self.curAvailable - self.modalHeaderHeight - self.modalFooterHeight;
+            self.articleBodyHeight = self.availableHeight - self.articleHeaderHeight - self.articleFooterHeight;
             
-            if (self.modalBodyHeight < 120) {
-                self.modalBodyHeight = 120;
+            if (self.articleBodyHeight < 120) {
+                self.articleBodyHeight = 120;
             }
 
-            self.modalBody.css('height', self.modalBodyHeight + 'px');
-            self.modalArticleHeight = self.modalArticle.height();
-            
-            self.modalArticle.fadeIn();
+            self.articleBody.css('height', self.articleBodyHeight + 'px');
+
+            if (self.isShowing === false) {
+                self.modal.fadeIn();
+                self.isShowing = true;
+            }
+
+            if (self.isScrolling === false) {
+                self.articleBody.mCustomScrollbar({
+                    theme:"dark",
+                    autoDraggerLength: false
+                });
+
+                self.isScrolling = true;
+            }
         },
 
-        positionFauxModal: function() {
-            var self = this,
-                mTop = (self.curAvailable - self.modalArticleHeight) / 2;
-
-            self.modalArticle.addClass('not-scrollable');
-            self.modalArticle.css('margin-top', mTop + 'px');
-            self.modalArticle.fadeIn();
+        vents: function() {
+            var self = this;
+            self.win.on('resize', function(){
+                self.availableHeight = self.win.height() - self.header.outerHeight() - $('.main-footer').outerHeight() - 40;
+                if (self.win.width() > 565) {
+                    if (self.availableHeight > self.initialModalHeight) {
+                        if (self.isScrolling === true) {
+                            self.articleBody.mCustomScrollbar('destroy');
+                            self.isScrolling = false;
+                        }
+                        self.positionModal();
+                    } else {
+                        if (self.isScrolling === false) {
+                            self.articleBody.mCustomScrollbar({
+                                theme:"dark",
+                                autoDraggerLength: false
+                            });
+                            self.isScrolling = true;
+                        }
+                        self.modal.removeClass('not-scrollable');
+                        self.setBodyHeight();
+                    }
+                }
+            });
         }
     },
 
@@ -668,8 +849,9 @@ ChiefTrunk = {
             self.win             = $(window);
             self.careCon         = $('.care-container');
             self.visible         = false;
+            self.body            = $('body');
 
-            self.guideBtns       = self.careGuide.find('h1');
+            self.guideBtns       = self.careGuide.find('section').not('.intro .care-infographic');
 
             self.setCareHeight();
             self.positionGuide();
@@ -682,10 +864,33 @@ ChiefTrunk = {
         },
 
         setCareHeight: function(){
-            var self          = this,
-                careConHeight = self.win.height() - self.headerHeight - self.footerHeight;
+            var self        = this,
+                aspectRatio = self.win.height() / self.win.width(),
+                landScape   = false,
+                careConHeight, footyH;
+             
+            if(aspectRatio < 1) {
+                console.log('less one');
+                if (Modernizr.touch) {
+                    console.log('touch');
+                    if ( self.win.width() < 565) {
+                        landScape = true;
+                        console.log('touch');
+                    }
+                }
+            }
 
-            self.careCon.height(careConHeight);
+            if (landScape === false) {
+                if (self.win.width() > 565) {
+                    footyH = self.footerHeight;
+                } else {
+                    footyH = 0;
+                }
+
+                careConHeight = self.win.height() - self.headerHeight - footyH;
+
+                self.careCon.height(careConHeight);
+            }
         },
 
         positionGuide: function() {
@@ -715,25 +920,38 @@ ChiefTrunk = {
             var self = this;
 
             self.win.on('resize', function(){
+                if (self.win.width() > 944) {
+                    if( self.body.hasClass('show-care')) {
+                        self.body.removeClass('show-care');
+                        self.visible = false;
+                        self.guideBtns.removeClass('showing-guide').find('.guide-info').hide();
+                    }
+                } else {
+                    if (self.body.hasClass('show-care') === false) {
+                        self.body.addClass('show-care');
+                        self.guideBtns.find('.guide-info').show();
+                    }
+                }
                 self.positionGuide();
                 self.setCareHeight();
             });
 
             self.guideBtns.on('click mouseenter', function(e){
-                var $this = $(this),
-                    activeGuide = $('.showing-guide');
 
-                activeGuide.children('.guide-info')
-                    .fadeOut(function(){
-                        activeGuide.removeClass('showing-guide');
-                    });
                 if (self.win.width() > 944) {
-                    $this.next('.guide-info')
-                        .fadeIn()
-                        .parent()
-                            .addClass('showing-guide');
-                }
+                    var $this = $(this);
 
+                    $('.showing-guide')
+                        .not($this)
+                        .removeClass('showing-guide')
+                        .find('.guide-info')
+                            .fadeOut();
+                    
+                    $this
+                        .addClass('showing-guide')
+                        .find('.guide-info')
+                            .fadeIn();
+                }
             });
 
         }
@@ -775,7 +993,12 @@ ChiefTrunk = {
         },
         setLineageHeight: function() {
             var self = this;
-            var h = self.win.height() - self.mainHeader.outerHeight() - self.mainFooter.outerHeight();
+            if (self.win.width() > 565) {
+                footyH = self.mainFooter.outerHeight()
+            } else {
+                footyH = 0;
+            }
+            var h = self.win.height() - self.mainHeader.outerHeight() - footyH;
             self.lineageContainer.height(h);
         },
         vents: function() {
