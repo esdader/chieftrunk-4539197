@@ -642,7 +642,6 @@ ChiefTrunk = {
                 // set image height or width
                 if (self.availableHeight > self.availableWidth) {
                     var imageTopMargin = (self.availableHeight - self.availableWidth) / 2;
-                    var temp = 
                     self.mainImage.css({
                         'max-width': self.availableWidth,
                         'height': 'auto',
@@ -872,12 +871,9 @@ ChiefTrunk = {
                 careConHeight, footyH;
              
             if(aspectRatio < 1) {
-                console.log('less one');
                 if (Modernizr.touch) {
-                    console.log('touch');
                     if ( self.win.width() < 570) {
                         landScape = true;
-                        console.log('touch');
                     }
                 }
             }
@@ -992,16 +988,19 @@ ChiefTrunk = {
             
             self.setLineageHeight();
             self.vents();
+
         },
         setLineageHeight: function() {
             var self = this;
-            if (self.win.width() > 565) {
-                footyH = self.mainFooter.outerHeight()
-            } else {
-                footyH = 0;
-            }
-            var h = self.win.height() - self.mainHeader.outerHeight() - footyH;
-            self.lineageContainer.height(h);
+            
+                if (self.win.width() > 565) {
+                    footyH = self.mainFooter.outerHeight();
+                } else {
+                    footyH = 0;
+                }
+                var h = self.win.height() - self.mainHeader.outerHeight() - footyH;
+                self.lineageContainer.height(h);
+            
         },
         vents: function() {
             var self = this;

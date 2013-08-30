@@ -32,10 +32,12 @@
           <a href="/" class="cart-to-shop cart-btn">Back to Site</a>
         </div>
         <div class="cart-subtotal">
-          Subtotal {{ cart.total_price | money }}
+          <span class="suby">Subtotal</span> <span class="suby-price">{{ cart.total_price | money }}</span>
         </div>
       </div>
-      <input type="submit" name="checkout" class="cart-btn checkout-btn" value="Checkout" />
+      <div class="checkout-btn-holder">
+        <input type="submit" name="checkout" class="cart-btn checkout-btn" value="Checkout" />
+      </div>
     </form>
     <div class="copyright small-screen">&copy; {{ 'now' | date: "%Y" }} Chief Trunk. All rights reserved.</div>
   </div>

@@ -282,7 +282,8 @@ a {
 /  some classes are used elsewhere hence the body.class-name
 */
 body.care, 
-body.journal {
+body.journal,
+body.lineage {
     overflow: hidden;
 }
 
@@ -1122,6 +1123,7 @@ body.journal {
 /* lineage page */
 .lineage-container {
     width: 100%;
+    overflow-y: auto;
 }
 
 .lineage-title {
@@ -1285,7 +1287,7 @@ body.journal {
 .cart-container {
     max-width: 753px;
     margin: 0 auto;
-    padding: 50px 0;
+    padding: 50px 0 120px;
 }
 
 .cart-items {
@@ -1297,6 +1299,7 @@ body.journal {
     border-bottom: 1px solid #464646;
 }
 .cart-item-thmb {
+    float: left;
     height: 140px;
     padding: 20px 0;
     text-align: center;
@@ -1306,30 +1309,40 @@ body.journal {
     max-width: 100%;
 }
 .cart-item-details {
-    padding-top: 20px;
+    float: right;
+    width: 70%;
+    height: 140px;
+    display: table;
+    vertical-align: middle;
 }
 .cart-item-price {
     display: block;
 }
 .cart-item-info {
     width: 50%;
-    float: left;
     font-size: 10px;
     line-height: 1.5;
     letter-spacing: 3px;
+    height: 140px;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    text-transform: uppercase;
 }
 
 .cart-item-actions {
-    text-align: right;
-    width: 45%;
-    float: right;
+    text-align: center;
     font-size: 10px;
     line-height: 1.5px;
     letter-spacing: 3px;
+    display: table-cell;
+    vertical-align: middle;
+    text-transform: uppercase;
 }
 
 .cart-item-actions .update-cart {
     padding-right: 0;
+    padding-left: 0;
 }
 
 .cart-totals-row {
@@ -1337,16 +1350,29 @@ body.journal {
     border-bottom: 1px solid #464646;
 }
 .cart-site-links {
-    width: 40%;
+    width: 25%;
     float: left;
 }
 .cart-subtotal {
-    width: 40%;
+    width: 70%;
     float: right;
     font-size: 10px;
     line-height: 43px;
     letter-spacing: 3px;
     text-transform: uppercase;
+    text-align: right;
+}
+.suby {
+    display: block;
+    width: 50%;
+    float: left;
+    text-align: center;
+}
+.suby-price {
+    display: block;
+    width: 50%;
+    float: right;
+    text-align: center;
 }
 
 .cart-to-shop {
@@ -1415,11 +1441,20 @@ body.journal {
     line-height: 1.5;
 }
 
-.checkout-btn {
-    width: 208px;
+.checkout-btn-holder {
     position: relative;
-    left: 50%;
-    margin: 20px 0 0 -104px;
+    width: 70%;
+    height: 80px;
+    float: right;
+}
+.checkout-btn {
+    /*width: 208px;*/
+    width: 50%;
+    position: absolute;
+    right: 0;
+    top: 20px;
+    /*left: 50%;
+    margin: 20px 0 0 -104px;*/
     padding: 0 6px;
     border: none;
     background: #464646;
@@ -2379,8 +2414,55 @@ html[xmlns] .slides {display: block;}
         width: auto;
     }
 
+    .cart-item-thmb {
+        float: none;
+    }
 
+    .cart-item-details {
+        float: none;
+        width: 100%;
+        height: auto;
+    }
 
+    .cart-item-info {
+        height: auto;
+    }
+
+    .cart-item-actions {
+        height: auto;
+    }
+    .cart-site-links {
+        width: 45%;
+    }
+    .cart-subtotal {
+        width: 54%;
+        float: right;
+        font-size: 10px;
+        line-height: 43px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        text-align: right;
+    }
+    .suby {
+        display: inline;
+        width: auto;
+        float: none;
+        text-align: right;
+    }
+    .suby-price {
+        display: inline;
+        width: auto;
+        float: none;
+        text-align: right;
+    }
+    .checkout-btn-holder {
+        width: 100%;
+        text-align: center;
+    }
+    .checkout-btn {
+        width: 208px;
+        position: relative;
+    }
 }
 @media only screen and (max-width: 53.0625em) {
 
@@ -2616,6 +2698,18 @@ html[xmlns] .slides {display: block;}
         padding-bottom: 50px;
     }
 }
+@media only screen and (max-width: 277px) {
+    .cart-subtotal {
+        width: 54%;
+        float: right;
+        font-size: 10px;
+        padding-top: 6px;
+        line-height: 1.2;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        text-align: right;
+    }
+}
 
 /* Smartphones (landscape) ----------- */
 @media only screen and (min-device-width : 320px) and (max-device-width:568px) and (orientation:landscape) {
@@ -2644,7 +2738,7 @@ html[xmlns] .slides {display: block;}
         margin-top: 70px;
     }
     .products-landing {
-        padding-top: 0;
+        padding-top: 20px;
     }
     .product-page {
         margin-top: 0;
@@ -2656,10 +2750,6 @@ html[xmlns] .slides {display: block;}
 
     .main-nav {
         position: relative;
-    }
-
-    .products .products-landing section:first-child .shop-section-header {
-        border-top: none;
     }
 
     body.care,
@@ -2726,10 +2816,20 @@ html[xmlns] .slides {display: block;}
         padding-bottom: 0;
     }
     
-    .products .products-landing section:first-child .shop-section-header {
-        border-top: none;
+}
+@media only screen and (min-width : 320px) and (max-device-width:568px) and (orientation:landscape) {
+    .lineage .main-logo {
+        top: 19px;
     }
-    
+}
+
+@media only screen and  (max-device-width: 1024px) {
+    body.lineage {
+        overflow: auto;
+    }
+    .lineage-container {
+        overflow-y: visible;
+    }
 }
 
 

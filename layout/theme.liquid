@@ -25,7 +25,7 @@
     <meta name="description" content="{{ shop.description | strip_html | strip_newlines | truncate: maxmeta | escape}}" />
 {% endif %}
     {% if page.handle == 'lineage' %}
-        <meta name="viewport" content="width=1024">
+        <meta id="testViewport"name="viewport" content="width=1024">
     {% else %}
         <meta name="viewport" content="width=device-width, initial-scale=1">
     {% endif %}
@@ -33,6 +33,19 @@
     {{ 'normalize.css' | asset_url | stylesheet_tag }}
     {{ 'main.css' | asset_url | stylesheet_tag }}
     {{ 'modernizr-2.6.2.min.js' | asset_url | script_tag }}
+    {% if page.handle == 'lineage' %}
+        <script>
+            window.onload = function() {
+                var mvp = document.getElementById('testViewport');
+                if(Modernizr.mq('only screen and (max-device-width:568px)')) {
+                    mvp.setAttribute('content','width=768');    
+                }
+                if(Modernizr.mq('only screen and (max-device-width:1024px) and (orientation : portrait)')) {
+                    mvp.setAttribute('content','width=768');    
+                }
+            }
+        </script>
+    {% endif %}
     {{ content_for_header }}
 </head>
 {% if template == 'index' %}
