@@ -571,6 +571,10 @@ ChiefTrunk = {
                     mLeft = 40;
                     self.availableHeight -= 80;
                 }
+                if (typeof mLeft === "undefined") {
+                    mLeft = 40;
+                    self.availableHeight -= 80;
+                }
                 self.mainImage.css({
                         'max-height': self.availableHeight,
                         'width': 'auto',
@@ -654,6 +658,10 @@ ChiefTrunk = {
                 } else {
                     var mLeft = ((self.winWidth - self.availableHeight) / 2 - self.productInfoWidth) / 2;
                     if (mLeft < 40) {
+                        mLeft = 40;
+                        self.availableHeight -= 80;
+                    }
+                    if (typeof mLeft === "undefined") {
                         mLeft = 40;
                         self.availableHeight -= 80;
                     }
