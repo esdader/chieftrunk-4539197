@@ -9,7 +9,7 @@
                 <li>
                     <article class="collection-item">
                         <a href="/collections/{{ link.object.title | handleize }}/products/{{ product.handle }}" title="{{ product.title }}">
-                            <img src="{{ product.featured_image | product_img_url: 'medium' }}" alt="product.featured_image.alt | escape }}">
+                            <img src="{{ product.featured_image | product_img_url: 'medium' }}" alt="{{ product.featured_image.alt | escape }}">
                         </a>
                     </article>
                 </li>

@@ -209,6 +209,106 @@ ChiefTrunk = {
         }
 
     },
+    addJustSB: {
+        init: function(config) {
+            var self = this;
+            self.adjustHeader = false;
+
+            if ( typeof(config.adjustHeader) !== 'undefined') {
+                if (config.adjustHeader === true) {
+                    self.adjustHeader = true;
+                }
+            }
+
+            if ( typeof(config.contentElm) !== 'undefined') {
+                self.contentElm = config.contentElm;
+            }
+
+            self.scrollAdjustment = self.scrollBarWidth();
+
+            if (self.scrollAdjustment > 0) {
+                self.adjustForScroll();
+            } else {
+                $('body').hide()
+                    .removeClass('hide-page-load')
+                    .fadeIn();
+            }
+
+        },
+        scrollBarWidth: function () {
+            var self = this;
+            /* This quickly adds & removes 2 nested divs to see how wide the scroll bar is on the user's browser */
+            var parent, child, width;
+            if (self.adjustHeader) {
+                parent = $('<div style="width:50px;height:50px;overflow:auto"><div/></div>').appendTo('body');
+            } else {
+                parent = $('<div style="width:50px;height:50px;overflow:auto"><div/></div>').appendTo(self.contentElm);
+            }
+            
+            child=parent.children();
+            width=child.innerWidth()-child.height(99).innerWidth();
+            parent.remove();
+            return width;
+        },
+
+        adjustForScroll: function() {
+            var self = this,
+                offset = $(window).width() + self.scrollAdjustment + 'px';
+
+            if( $(document).height() > $(window).height() ) {
+                if (self.adjustHeader === true) {
+                    $('.main-header').css({
+                        'width': offset,
+                        'overflow': 'hidden'
+                    });
+                    self.contentElm.css({
+                        'width': offset,
+                        'overflow': 'hidden'
+                    });
+                } else {
+                   self.contentElm.css({
+                        // 'width': offset
+                        'padding-left': self.scrollAdjustment + 'px'
+                    });
+                }
+    
+            } else if (self.adjustHeader === false) {
+                if( self.contentElm.children(':first').height() > self.contentElm.height() ) {
+                    self.contentElm.css({
+                        // 'width': offset
+                        'padding-left': self.scrollAdjustment + 'px'
+                    });
+
+                    $('body').css('overflow-x', 'hidden');
+                }
+
+            }
+            self.vents();
+            $('body').css('overflow-x', 'hidden');
+            $('body').hide()
+                    .removeClass('hide-page-load')
+                    .fadeIn();
+        },
+
+        vents: function() {
+            var self = this;
+            $(window).on('resize', function() {
+                var offset = $(window).width() + self.scrollAdjustment + 'px';
+                if (self.adjustHeader === true) {
+                    $('.main-header').css({
+                        'width': offset
+                    });
+                    self.contentElm.css({
+                        'width': offset
+                    });
+                } else {
+                    self.contentElm.css({
+                        'padding-left': self.scrollAdjustment + 'px'
+                    });
+                }
+            });
+        }
+    },
 
     giantImage: {
         init: function (config) {
@@ -420,6 +520,7 @@ ChiefTrunk = {
 
             $(window).on('resize', function(e) {
                 self.redoPageLayout(e, self);
+                // ChiefTrunk.addJustSB.init();
             });
 
             self.imageLinks.on('click', function(e){
@@ -546,24 +647,24 @@ ChiefTrunk = {
         initializeProductPage: function () {
 
 
-            var self = this;
+            var self = this,
+                bottomOffset = parseFloat($('.product-page').css('padding-bottom'));
 
-            self.winHeight = $.waypoints('viewportHeight');
+            self.winHeight = $(window).height();
             self.winWidth  = $(window).width();
 
-            self.availableHeight = self.winHeight - self.mainHeader.height() - self.mainFooter.height() - 40;
-            
-            self.availableWidth  = self.winWidth - self.productInfoWidth - self.productImagesWidth - 5;
-
+            self.availableHeight = self.winHeight - self.mainHeader.height() - self.mainFooter.height() - bottomOffset;
+            self.availableWidth  = self.winWidth - self.productInfoWidth - self.productImagesWidth;
 
             // set image height or width
             if (self.availableHeight > self.availableWidth) {
                 var imageTopMargin = (self.availableHeight - self.availableWidth) / 2;
+                console.log(self.availableHeight);
+                console.log(self.availableWidth);
                 self.mainImage.css({
-                    'max-width': self.availableWidth,
-                    'height': 'auto',
-                    'margin-top': imageTopMargin,
-                    'max-height': 'none'
+                    'width': self.availableWidth  + 'px',
+                    'height': self.availableWidth + 'px',
+                    'margin-top': imageTopMargin
                 });
             } else {
                 var mLeft = ((self.winWidth - self.availableHeight) / 2 - self.productInfoWidth) / 2;
@@ -576,9 +677,8 @@ ChiefTrunk = {
                     self.availableHeight -= 80;
                 }
                 self.mainImage.css({
-                        'max-height': self.availableHeight,
-                        'width': 'auto',
-                        'max-width': 'none'
+                        'height': self.availableHeight,
+                        'width': self.availableHeight,
                         });
                 self.productInfo.css('margin-left', mLeft + 'px');
                 self.productImages.css('margin-right', mLeft + 'px');
@@ -616,6 +716,8 @@ ChiefTrunk = {
 
         redoPageLayout: function(e, self) {
 
+            var bottomOffset = parseFloat($('.product-page').css('padding-bottom'));
+
             self.winHeight = $(window).height();
             self.winWidth  = $(window).width();
 
@@ -639,23 +741,23 @@ ChiefTrunk = {
             }
 
             if (self.winWidth > 849) {
-                self.availableHeight = self.winHeight - self.mainHeader.height() - self.mainFooter.height() - 40;
+                self.availableHeight = self.winHeight - self.mainHeader.height() - self.mainFooter.height() - bottomOffset;
                 
-                self.availableWidth  = self.winWidth - self.productInfoWidth - self.productImagesWidth - 5;
+                self.availableWidth  = self.winWidth - self.productInfoWidth - self.productImagesWidth;
 
                 // set image height or width
                 if (self.availableHeight > self.availableWidth) {
                     var imageTopMargin = (self.availableHeight - self.availableWidth) / 2;
                     self.mainImage.css({
-                        'max-width': self.availableWidth,
-                        'height': 'auto',
-                        'margin-top': imageTopMargin,
-                        'max-height': 'none',
-                        'position': 'absolute',
-                        'left': '50%',
-                        'margin-left': -self.availableWidth / 2 + 'px'
+                        'width': self.availableWidth + 'px',
+                        'height': self.availableWidth + 'px',
+                        'margin-top': imageTopMargin
+                        // 'position': 'absolute',
+                        // 'left': '50%',
+                        // 'margin-left': -self.availableWidth / 2 + 'px'
                     });
                 } else {
+                    console.log('wider than tall');
                     var mLeft = ((self.winWidth - self.availableHeight) / 2 - self.productInfoWidth) / 2;
                     if (mLeft < 40) {
                         mLeft = 40;
@@ -666,12 +768,11 @@ ChiefTrunk = {
                         self.availableHeight -= 80;
                     }
                     self.mainImage.css({
-                            'max-height': self.availableHeight,
-                            'width': 'auto',
-                            'max-width': 'none',
-                            'position': 'absolute',
-                            'left': '50%',
-                            'margin-left': -self.availableHeight / 2 + 'px'
+                            'height': self.availableHeight + 'px',
+                            'width': self.availableHeight + 'px'
+                            // 'position': 'absolute',
+                            // 'left': '50%',
+                            // 'margin-left': -self.availableHeight / 2 + 'px'
                             });
                     self.productInfo.css('margin-left', mLeft + 'px');
                     self.productImages.css('margin-right', mLeft + 'px');
